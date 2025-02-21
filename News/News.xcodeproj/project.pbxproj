@@ -619,6 +619,7 @@
 				C4F676ED2BB5A3B2002F3BCE /* ViewModel+Settings.swift */,
 				C41F1E592BC759D3006C6E90 /* ViewModel+ShortcutItems.swift */,
 				C4B40FA32C376493004CD2D5 /* ViewModel+Cache.swift */,
+				C4F676E12BB56CAB002F3BCE /* Managers */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -639,7 +640,6 @@
 			children = (
 				C4F676DF2BB56B7A002F3BCE /* Schema */,
 				C4F676E02BB56B90002F3BCE /* Extensions */,
-				C4F676E12BB56CAB002F3BCE /* Managers */,
 				C4F827112C3CB7BB00C27450 /* Modifiers */,
 				C4F676E42BB584F3002F3BCE /* Decorators */,
 				C45734AE2BBCFDD8005CA143 /* Wrappers */,
