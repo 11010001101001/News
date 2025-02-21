@@ -50,7 +50,12 @@ extension CachedAsyncImage {
 		if let cachedImage {
 			cachedImage
 				.makeRounded(height: Constants.imageHeight)
-				.applyRotationAndScale($rotating, $scale, coords, $origin, $counter)
+				.applyRotationAndScale($rotating, $scale, coords)
+				.modifier(RippleEffect(at: origin, trigger: counter))
+				.onTapGesture { location in
+					origin = location
+					counter += 1
+				}
 		} else {
 			asyncImage
 		}
@@ -72,7 +77,7 @@ extension CachedAsyncImage {
 
 	var error: some View {
 		ErrorView(viewModel: viewModel, title: Errors.imageLoadingError, action: nil)
-			.applyRotationAndScale($rotating, $scale, coords, $origin, $counter)
+			.applyRotationAndScale($rotating, $scale, coords)
 			.frame(height: Constants.imageHeight)
 	}
 
@@ -95,13 +100,10 @@ private extension CachedAsyncImage {
 
 // MARK: Common view extension
 private extension View {
-	// swiftlint:disable large_tuple
 	func applyRotationAndScale(
 		_ rotating: Binding<Bool>,
 		_ scale: Binding<CGFloat>,
-		_ coords: (x: CGFloat, y: CGFloat, z: CGFloat),
-		_ origin: Binding<CGPoint>,
-		_ counter: Binding<Int>
+		_ coords: (x: CGFloat, y: CGFloat, z: CGFloat)
 	) -> some View {
 		self
 			.rotation3DEffect(
@@ -118,11 +120,5 @@ private extension View {
 					scale.wrappedValue = 1.0
 				}
 			}
-			.modifier(RippleEffect(at: origin.wrappedValue, trigger: counter.wrappedValue))
-			.onTapGesture { location in
-				origin.wrappedValue = location
-				counter.wrappedValue += 1
-			}
 	}
-	// swiftlint:enable large_tuple
 }

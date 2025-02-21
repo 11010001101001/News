@@ -391,7 +391,6 @@
 			isa = PBXGroup;
 			children = (
 				C41587022BC67DE500C6BD2C /* Views */,
-				C47BBB582BBE3EE6009CBE8A /* LottieJsons */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -566,9 +565,7 @@
 			children = (
 				C44CFCBB2BBC65E000CCAC97 /* Info.plist */,
 				C4BC8D492BB318A500A0AFC8 /* Helpers */,
-				C4BC8D362BB3079200A0AFC8 /* Models */,
-				C4BC8D342BB3074F00A0AFC8 /* View */,
-				C4BC8D352BB3075B00A0AFC8 /* ViewModel */,
+				DA8D5E892D6923A900CFC570 /* MVVM */,
 				C4BC8D102BB2FA3B00A0AFC8 /* Preview Content */,
 			);
 			path = News;
@@ -622,6 +619,7 @@
 				C4F676ED2BB5A3B2002F3BCE /* ViewModel+Settings.swift */,
 				C41F1E592BC759D3006C6E90 /* ViewModel+ShortcutItems.swift */,
 				C4B40FA32C376493004CD2D5 /* ViewModel+Cache.swift */,
+				C4F676E12BB56CAB002F3BCE /* Managers */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -642,7 +640,6 @@
 			children = (
 				C4F676DF2BB56B7A002F3BCE /* Schema */,
 				C4F676E02BB56B90002F3BCE /* Extensions */,
-				C4F676E12BB56CAB002F3BCE /* Managers */,
 				C4F827112C3CB7BB00C27450 /* Modifiers */,
 				C4F676E42BB584F3002F3BCE /* Decorators */,
 				C45734AE2BBCFDD8005CA143 /* Wrappers */,
@@ -718,6 +715,7 @@
 				DA7A0C2E2CEA7A200061D585 /* Assets */,
 				C4A65E602BB76F47002E3F39 /* Sounds */,
 				DA2F86E12D5EADF3006F7B06 /* Shaders.metal */,
+				C47BBB582BBE3EE6009CBE8A /* LottieJsons */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -737,6 +735,16 @@
 				C4BC8D0E2BB2FA3B00A0AFC8 /* Assets.xcassets */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		DA8D5E892D6923A900CFC570 /* MVVM */ = {
+			isa = PBXGroup;
+			children = (
+				C4BC8D362BB3079200A0AFC8 /* Models */,
+				C4BC8D342BB3074F00A0AFC8 /* View */,
+				C4BC8D352BB3075B00A0AFC8 /* ViewModel */,
+			);
+			path = MVVM;
 			sourceTree = "<group>";
 		};
 		DAC06D2C2CE8DA8B00337E32 /* AdditionalInfoCell */ = {
@@ -910,7 +918,6 @@
 			mainGroup = C4BC8CFC2BB2FA3900A0AFC8;
 			packageReferences = (
 				C451169C2BB965010003250E /* XCRemoteSwiftPackageReference "lottie-spm" */,
-				C47BBB652BBEE6A1009CBE8A /* XCRemoteSwiftPackageReference "SwiftLint" */,
 			);
 			productRefGroup = C4BC8D062BB2FA3900A0AFC8 /* Products */;
 			projectDirPath = "";
@@ -1550,14 +1557,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.4.1;
-			};
-		};
-		C47BBB652BBEE6A1009CBE8A /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/SwiftLint.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.54.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
