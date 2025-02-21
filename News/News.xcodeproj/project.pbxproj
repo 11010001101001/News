@@ -910,7 +910,6 @@
 			mainGroup = C4BC8CFC2BB2FA3900A0AFC8;
 			packageReferences = (
 				C451169C2BB965010003250E /* XCRemoteSwiftPackageReference "lottie-spm" */,
-				C47BBB652BBEE6A1009CBE8A /* XCRemoteSwiftPackageReference "SwiftLint" */,
 			);
 			productRefGroup = C4BC8D062BB2FA3900A0AFC8 /* Products */;
 			projectDirPath = "";
@@ -1550,14 +1549,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.4.1;
-			};
-		};
-		C47BBB652BBEE6A1009CBE8A /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/SwiftLint.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.54.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
