@@ -100,7 +100,6 @@ private extension CachedAsyncImage {
 
 // MARK: Common view extension
 private extension View {
-	// swiftlint:disable large_tuple
 	func applyRotationAndScale(
 		_ rotating: Binding<Bool>,
 		_ scale: Binding<CGFloat>,
@@ -122,5 +121,4 @@ private extension View {
 				}
 			}
 	}
-	// swiftlint:enable large_tuple
 }

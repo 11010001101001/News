@@ -19,7 +19,6 @@ extension CGFloat {
 
     static let sideInsets: CGFloat = 32.0
 
-	// swiftlint:disable large_tuple
 	static var rotationCoordinates: [(x: CGFloat, y: CGFloat, z: CGFloat)] {
 		var randomNumbers = [CGFloat]()
 
@@ -45,5 +44,4 @@ extension CGFloat {
 	static var randomCoordinates: (x: CGFloat, y: CGFloat, z: CGFloat) {
 		rotationCoordinates.randomElement() ?? (x: 1.0, y: 1.0, z: 0.0)
 	}
-	// swiftlint:enable large_tuple
 }
