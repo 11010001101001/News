@@ -391,7 +391,6 @@
 			isa = PBXGroup;
 			children = (
 				C41587022BC67DE500C6BD2C /* Views */,
-				C47BBB582BBE3EE6009CBE8A /* LottieJsons */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -566,9 +565,7 @@
 			children = (
 				C44CFCBB2BBC65E000CCAC97 /* Info.plist */,
 				C4BC8D492BB318A500A0AFC8 /* Helpers */,
-				C4BC8D362BB3079200A0AFC8 /* Models */,
-				C4BC8D342BB3074F00A0AFC8 /* View */,
-				C4BC8D352BB3075B00A0AFC8 /* ViewModel */,
+				DA8D5E892D6923A900CFC570 /* MVVM */,
 				C4BC8D102BB2FA3B00A0AFC8 /* Preview Content */,
 			);
 			path = News;
@@ -718,6 +715,7 @@
 				DA7A0C2E2CEA7A200061D585 /* Assets */,
 				C4A65E602BB76F47002E3F39 /* Sounds */,
 				DA2F86E12D5EADF3006F7B06 /* Shaders.metal */,
+				C47BBB582BBE3EE6009CBE8A /* LottieJsons */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -737,6 +735,16 @@
 				C4BC8D0E2BB2FA3B00A0AFC8 /* Assets.xcassets */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		DA8D5E892D6923A900CFC570 /* MVVM */ = {
+			isa = PBXGroup;
+			children = (
+				C4BC8D362BB3079200A0AFC8 /* Models */,
+				C4BC8D342BB3074F00A0AFC8 /* View */,
+				C4BC8D352BB3075B00A0AFC8 /* ViewModel */,
+			);
+			path = MVVM;
 			sourceTree = "<group>";
 		};
 		DAC06D2C2CE8DA8B00337E32 /* AdditionalInfoCell */ = {
