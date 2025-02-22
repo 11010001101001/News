@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum Constants {
+public enum Constants {
 	static let newsCount = "100"
 	static let storageCapacity = 500
 	static let needDropCount = 250

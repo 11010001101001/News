@@ -9,6 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
+/// New params must be optional to avoid auto lightweight migration crash. Default value is also ok.
 final class SettingsModel {
     var category: String
     var soundTheme: String
@@ -17,10 +18,10 @@ final class SettingsModel {
     var watchedTopics: [String]?
 
     init(
-		category: String,
-		soundTheme: String,
-		loader: String,
-		appIcon: String
+		category: String = Constants.DefaultSettings.category,
+		soundTheme: String = Constants.DefaultSettings.soundTheme,
+		loader: String = Constants.DefaultSettings.loader,
+		appIcon: String = Constants.DefaultSettings.appIcon
 	) {
         self.category = category
         self.soundTheme = soundTheme
