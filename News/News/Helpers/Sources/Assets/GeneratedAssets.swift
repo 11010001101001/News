@@ -23,13 +23,7 @@ public extension UIImage {
 	}
 
 	enum LaunchScreenImages {
-		public static var ls1 = UIImage(named: "Ls1.imageset", in: .module, with: .none)!
-		public static var ls2 = UIImage(named: "Ls2.imageset", in: .module, with: .none)!
-		public static var ls3 = UIImage(named: "Ls3.imageset", in: .module, with: .none)!
-		public static var ls4 = UIImage(named: "Ls4.imageset", in: .module, with: .none)!
-		public static var ls5 = UIImage(named: "Ls5.imageset", in: .module, with: .none)!
-		public static var ls6 = UIImage(named: "Ls6.imageset", in: .module, with: .none)!
-		public static var ls8 = UIImage(named: "Ls8.imageset", in: .module, with: .none)!
+		public static var hl3 = UIImage(named: "Hl3.imageset", in: .module, with: .none)!
 	}
 
 }
