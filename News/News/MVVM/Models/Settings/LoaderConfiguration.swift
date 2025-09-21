@@ -13,6 +13,8 @@ enum LoaderConfiguration: String, CaseIterable, Identifiable {
 
 	static var title: String { "Loader" }
 
+    static var image: String { "hourglass" }
+
 	case rocket
 	case hourGlass = "hourglass"
 	case astronaut

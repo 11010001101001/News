@@ -25,7 +25,7 @@ struct SettingsCell: View, ImageProvider {
 				.frame(maxHeight: .infinity, alignment: .leading)
 			Spacer()
 		}
-		.card()
+		.glassCard()
         .markIsSelected(viewModel, id)
 		.frame(height: 70)
 		.applyOrNotSettingsModifier(

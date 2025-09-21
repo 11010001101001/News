@@ -18,7 +18,7 @@ struct TopicsList: View {
 
 				Loader(
 					loaderName: viewModel.loader,
-					shadowColor: viewModel.loaderShadowColor
+                    shadowColor: viewModel.loaderShadowColor
 				)
 				.opacity($viewModel.loadingSucceed.wrappedValue ? .zero : 1.0)
 				.id(viewModel.id)
@@ -38,16 +38,17 @@ struct TopicsList: View {
 // MARK: - Private
 private extension TopicsList {
 	func buildTopicsList(proxy: ScrollViewProxy) -> some View {
-		CustomScrollView(
-			content: {
-				VerStack {
-					buildTopic()
-					buildScrollEnder()
-				}
-				.padding(.top, Constants.padding)
-			},
-			viewModel: viewModel
-		)
+        ScrollView(.vertical) {
+            VerStack {
+                buildTopic()
+                buildScrollEnder()
+            }
+            .padding(.top, Constants.padding)
+        }
+        .refreshable {
+            viewModel.impactOccured(.light)
+            viewModel.refresh()
+        }
 		.opacity($viewModel.loadingSucceed.wrappedValue ? 1.0 : .zero)
 	}
 
@@ -74,9 +75,9 @@ private extension TopicsList {
 	func buildScrollEnder() -> some View {
 		HorStack {
 			Spacer()
-			Color.red
+            viewModel.loaderShadowColor
 				.clipShape(.rect(cornerRadius: Constants.cornerRadius))
-				.gloss(color: .red)
+                .gloss(color: viewModel.loaderShadowColor)
 				.frame(width: 150, height: 1)
 				.opacity(enderOpacity)
 				.padding(.top, -Constants.padding)

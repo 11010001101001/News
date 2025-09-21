@@ -24,22 +24,17 @@ struct ErrorView: View {
 		self.action = action
 	}
 
-	var body: some View {
-		TimelineView(.animation) { _ in
-			VerStack(alignment: .center) {
-				Group {
-					errorTitle
-					errorImage
-					reloadButton
-				}
-				.padding(Constants.padding)
-			}
-			.background { noiseShader }
-			.card()
-			.gloss(numberOfLayers: 1)
-			.ignoresSafeArea()
-		}
-	}
+    var body: some View {
+        VerStack(alignment: .center) {
+            Group {
+                errorTitle
+                errorImage
+                reloadButton
+            }
+            .padding(Constants.padding)
+        }
+        .glassCard()
+    }
 }
 
 // MARK: - Private

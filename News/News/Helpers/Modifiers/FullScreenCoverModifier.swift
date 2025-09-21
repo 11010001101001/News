@@ -27,7 +27,10 @@ struct FullScreenCoverModifier: ViewModifier {
 	func body(content: Content) -> some View {
 		content
 			.fullScreenCover(isPresented: _webViewPresented) {
-				FullScreenCover(title: Texts.Screen.More.title()) {
+                FullScreenCover(
+                    viewModel: viewModel,
+                    title: Texts.Screen.More.title()
+                ) {
 					VerStack {
 						progressView
 						buildCoverContents()

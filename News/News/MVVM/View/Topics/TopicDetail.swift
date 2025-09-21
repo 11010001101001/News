@@ -22,21 +22,18 @@ struct TopicDetail: View {
 	}
 
 	var body: some View {
-		ZStack {
-			VerStack(alignment: .center) {
-				Spacer()
-				otherContent
-			}
-			.ignoresSafeArea(edges: .bottom)
-			VerStack(alignment: .center) {
-				CachedAsyncImage(article: article, viewModel: viewModel)
-				Spacer()
-			}
+        VerStack(alignment: .center) {
+            CachedAsyncImage(article: article, viewModel: viewModel)
+            otherContent
 		}
 		.toolbarRole(.editor)
 		.toolbar {
 			ToolbarItem(placement: .topBarLeading) {
-				NavButton(type: .back, action: { dismiss() })
+                NavButton(
+                    viewModel: viewModel,
+                    type: .back,
+                    action: { dismiss() }
+                )
 			}
 
 			ToolbarItem(placement: .principal) {
@@ -52,37 +49,40 @@ struct TopicDetail: View {
 // MARK: - Private
 private extension TopicDetail {
 	var otherContent: some View {
-		VerStack {
-			description
-				.padding(.horizontal, Constants.padding / 2)
-			buttons
-				.padding(.vertical, Constants.padding)
-			Spacer()
-		}
-		.padding([.top, .horizontal])
-		.frame(height: CGFloat.screenHeight / 2)
-		.card()
+        VerStack(alignment: .leading, spacing: Constants.padding) {
+            description
+            buttons
+                .padding(.leading)
+            Spacer()
+        }
+        .padding([.top, .horizontal])
+        .frame(height: CGFloat.screenHeight / 2)
 	}
 
 	var description: some View {
-		DesignedText(text: article.description.orEmpty(Texts.State.noDescription()))
+        Group {
+            DesignedText(text: article.description.orEmpty(Texts.State.noDescription()))
+                .padding(.all, Constants.padding)
+        }
+        .glassEffect(.clear.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
 	}
 
 	var buttons: some View {
-		HorStack(spacing: Constants.padding / 2) {
-			shareButton
-				.padding(.leading, Constants.padding / 2)
-			linkButton
-			Spacer()
-		}
-	}
+        GlassEffectContainer {
+            HorStack(spacing: Constants.padding / 2) {
+                shareButton
+                linkButton
+                Spacer()
+            }
+        }
+    }
 
 	var shareButton: some View {
 		ShareButton(
 			viewModel: viewModel,
 			data: ButtonMetaData(
 				article: article,
-				title: Texts.Actions.share(),
+				title: nil,
 				iconName: "square.and.arrow.up"
 			)
 		)
@@ -94,7 +94,7 @@ private extension TopicDetail {
 			action: {
 				webViewPresented.toggle()
 			},
-			title: Texts.Actions.open(),
+			title: nil,
 			iconName: "link"
 		)
 		.modifier(

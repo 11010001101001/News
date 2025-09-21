@@ -12,6 +12,8 @@ enum Category: String, CaseIterable, Identifiable {
 
     static var title: String { String(describing: self) }
 
+    static var image: String { "list.bullet" }
+
     static var random: String {
         Category.allCases.randomElement()?.rawValue ?? ""
     }

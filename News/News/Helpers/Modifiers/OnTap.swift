@@ -24,6 +24,7 @@ struct OnTap: ViewModifier {
     func body(content: Content) -> some View {
         content
             .scaleEffect(scale)
+            .contentShape(.rect)
             .onTapGesture {
                 execute??()
 				withAnimation(.easeInOut(duration: .leastNonzeroMagnitude)) {

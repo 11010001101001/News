@@ -23,7 +23,7 @@ struct InfoCell: View, ImageProvider {
 				.frame(maxHeight: .infinity, alignment: .leading)
 			Spacer()
 		}
-		.card()
+		.glassCard()
 		.frame(height: 70)
 	}
 }

@@ -9,10 +9,9 @@ import Foundation
 import SwiftUI
 
 extension View {
-	func card() -> some View {
+	func glassCard() -> some View {
 		self
-			.background(.rowBackground)
-			.clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius, style: .continuous))
+            .glassEffect(.clear.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
 	}
 
 	func any() -> AnyView {

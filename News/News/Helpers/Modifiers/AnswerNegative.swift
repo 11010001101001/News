@@ -16,6 +16,7 @@ struct AnswerNegative: ViewModifier {
 	func body(content: Content) -> some View {
 		content
 			.offset(x: offset)
+            .contentShape(.rect)
 			.onTapGesture {
 				guard !isAnimating else { return }
 				isAnimating = true

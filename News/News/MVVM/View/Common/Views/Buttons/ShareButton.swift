@@ -44,3 +44,14 @@ struct ShareButton: View {
 		)
 	}
 }
+
+#Preview {
+    ShareButton(
+        viewModel: ViewModel(),
+        data: .init(
+            article: .init(),
+            title: "test",
+            iconName: .empty
+        )
+    )
+}
