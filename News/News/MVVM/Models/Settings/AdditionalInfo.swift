@@ -9,4 +9,6 @@ import Foundation
 
 enum AdditionalInfo {
     static var title: String { "Info" }
+
+    static var image: String { "info" }
 }

@@ -12,6 +12,8 @@ enum SoundTheme: String, CaseIterable, Identifiable {
 
     static var title: String { "Sound" }
 
+    static var image: String { "music.note" }
+
     case starwars = "star wars"
     case cats = "cats meow"
     case silentMode = "silent mode"

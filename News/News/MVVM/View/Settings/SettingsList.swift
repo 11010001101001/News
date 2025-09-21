@@ -9,88 +9,91 @@ import SwiftUI
 import Lottie
 
 struct SettingsList: View {
-	@ObservedObject private var viewModel: ViewModel
-	@Environment(\.dismiss) var dismiss
+    @ObservedObject private var viewModel: ViewModel
+    @Environment(\.dismiss) var dismiss
 
-	init(viewModel: ViewModel) {
-		self.viewModel = viewModel
-	}
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
+    }
 
-	var body: some View {
-		TabView {
-			buildTabItem(title: LoaderConfiguration.title) {
-				ForEach(LoaderConfiguration.allCases) { loader in
-					LoaderSettingsCell(viewModel: viewModel, id: loader.rawValue)
-				}
-			}
+    var body: some View {
+        TabView {
+            Tab(LoaderConfiguration.title, systemImage: LoaderConfiguration.image) {
+                buildContentScroll(title: LoaderConfiguration.title) {
+                    ForEach(LoaderConfiguration.allCases) { loader in
+                        LoaderSettingsCell(viewModel: viewModel, id: loader.rawValue)
+                    }
+                }
+            }
 
-			buildTabItem(title: Category.title) {
-				ForEach(Category.allCases) { category in
-					SettingsCell(viewModel: viewModel, id: category.rawValue)
-				}
-			}
+            Tab(Category.title, systemImage: Category.image) {
+                buildContentScroll(title: Category.title) {
+                    ForEach(Category.allCases) { category in
+                        SettingsCell(viewModel: viewModel, id: category.rawValue)
+                    }
+                }
+            }
 
-			buildTabItem(title: SoundTheme.title) {
-				ForEach(SoundTheme.allCases) { theme in
-					SettingsCell(viewModel: viewModel, id: theme.rawValue)
-				}
-			}
+            Tab(SoundTheme.title, systemImage: SoundTheme.image) {
+                buildContentScroll(title: SoundTheme.title) {
+                    ForEach(SoundTheme.allCases) { theme in
+                        SettingsCell(viewModel: viewModel, id: theme.rawValue)
+                    }
+                }
+            }
 
-			if UIApplication.shared.supportsAlternateIcons {
-				buildTabItem(title: AppIconConfiguration.title) {
-					ForEach(AppIconConfiguration.allCases) { theme in
-						AppIconSettingsCell(viewModel: viewModel, id: theme.rawValue)
-					}
-				}
-			}
+            if UIApplication.shared.supportsAlternateIcons {
+                Tab(AppIconConfiguration.title, systemImage: AppIconConfiguration.image) {
+                    buildContentScroll(title: AppIconConfiguration.title) {
+                        ForEach(AppIconConfiguration.allCases) { theme in
+                            AppIconSettingsCell(viewModel: viewModel, id: theme.rawValue)
+                        }
+                    }
+                }
+            }
 
-			buildTabItem(title: AdditionalInfo.title) {
-				AdditionalInfoCell(viewModel: viewModel)
-			}
-		}
-		.indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
-		.toolbarRole(.editor)
-		.toolbar {
-			ToolbarItem(placement: .topBarLeading) {
-				NavButton(type: .back, action: { dismiss() })
-			}
+            Tab(AdditionalInfo.title, systemImage: AdditionalInfo.image) {
+                buildContentScroll(title: AdditionalInfo.title) {
+                    AdditionalInfoCell(viewModel: viewModel)
+                }
+            }
+        }
+        .toolbarRole(.editor)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                NavButton(
+                    viewModel: viewModel,
+                    type: .back,
+                    action: { dismiss() }
+                )
+            }
 
-			ToolbarItem(placement: .principal) {
-				DesignedText(text: Texts.Screen.Settings.title())
-					.font(.title)
-			}
-		}
-		.scrollIndicators(.automatic)
-		.tabViewStyle(.page)
-		.navigationBarBackButtonHidden(true)
-		.navigationBarTitleDisplayMode(.inline)
-	}
+            ToolbarItem(placement: .principal) {
+                DesignedText(text: Texts.Screen.Settings.title())
+                    .font(.title)
+            }
+        }
+        .scrollIndicators(.automatic)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
+    }
 }
 
 // MARK: - Private
 extension SettingsList {
-	func buildTabItem(
-		title: String,
-		content: @escaping () -> some View
-	) -> some View {
-		ScrollView {
-			HorStack {
-				DesignedText(text: title)
-					.font(.title)
-					.fontDesign(.monospaced)
-					.padding(.top)
-				Spacer()
-			}
-			.padding(.horizontal, Constants.padding * 2)
-
-			VerStack(spacing: Constants.padding) {
-				content()
-			}
-			.padding(.horizontal, Constants.padding)
-		}
-	}
+    func buildContentScroll(
+        title: String,
+        content: @escaping () -> some View
+    ) -> some View {
+        ScrollView {
+            VerStack(spacing: Constants.padding) {
+                content()
+            }
+            .padding(.all, Constants.padding)
+        }
+    }
 }
 
 #Preview {
-	SettingsList(viewModel: ViewModel())
+    SettingsList(viewModel: ViewModel())
 }

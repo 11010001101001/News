@@ -38,21 +38,17 @@ enum NavButtonType {
 		case .settings: "settings"
 		}
 	}
-
-	var isSettings: Bool {
-		rawValue == "settings"
-	}
 }
 
 struct NavButton: View {
-	let viewModel: ViewModel?
+	let viewModel: ViewModel
 	let type: NavButtonType
 	let action: Action
 
 	init(
+        viewModel: ViewModel,
 		type: NavButtonType,
 		action: Action = nil,
-		viewModel: ViewModel? = nil
 	) {
 		self.type = type
 		self.action	= action
@@ -60,12 +56,11 @@ struct NavButton: View {
 	}
 
 	var body: some View {
-		ZStack(alignment: type.alignment) {
-			buildContent()
-			ConditionalView(!type.isSettings) {
-				buildTappableOverlay()
-			}
-		}
+        Button {
+            action?()
+        } label: {
+            buildContent()
+        }
 	}
 }
 
@@ -76,9 +71,9 @@ private extension NavButton {
 		switch type {
 		case .settings:
 			NavigationLink {
-				if let viewModel {
-					SettingsList(viewModel: viewModel)
-				}
+                OptionalView(viewModel) {
+                    SettingsList(viewModel: $0)
+                }
 			} label: {
 				image
 			}
@@ -91,13 +86,5 @@ private extension NavButton {
 		Image(systemName: type.imageName)
 			.tint(.primary)
 			.frame(width: 24, height: 24)
-	}
-
-	// Increasing tappable area
-	func buildTappableOverlay() -> some View {
-		Rectangle()
-			.foregroundColor(Color.yellow.opacity(0.001))
-			.frame(width: 70, height: 40)
-			.onTapGesture { action?() }
 	}
 }

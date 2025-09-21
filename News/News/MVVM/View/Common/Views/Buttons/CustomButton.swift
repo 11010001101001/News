@@ -39,8 +39,7 @@ struct CustomButton: View {
 					)
 				}
 			)
-			.buttonStyle(.bordered)
-			.clipShape(.capsule(style: .continuous))
+            .buttonStyle(.glass)
 		}
 	}
 
@@ -52,18 +51,17 @@ struct CustomButton: View {
 	}
 
 	private var titleView: some View {
-		Group {
-			if title == nil {
-				EmptyView()
-			} else {
-				DesignedText(text: title ?? .empty)
-					.foregroundStyle(.white)
-			}
-		}
+        ConditionalView(title != nil) {
+            DesignedText(text: title ?? .empty)
+                .foregroundStyle(.white)
+        }
 	}
 
 	private var iconView: some View {
-		iconName == nil ? nil : Image(systemName: iconName!).foregroundStyle(.white)
+        ConditionalView(iconName != nil) {
+            Image(systemName: iconName!)
+                .foregroundStyle(.white)
+        }
 	}
 }
 

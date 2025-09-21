@@ -42,7 +42,7 @@ extension ViewModel {
 extension ViewModel {
     func loadNews(
         isRefresh: Bool = false,
-        completion: Action = nil
+        completion: Action? = nil
     ) {
         if !isRefresh {
             loadingSucceed = false
@@ -63,7 +63,7 @@ extension ViewModel {
             .store(in: &cancellables)
     }
 
-    func refresh(completion: Action) {
+    func refresh(completion: Action? = nil) {
         playRefresh()
         loadNews(isRefresh: true, completion: completion)
     }
@@ -100,7 +100,7 @@ private extension ViewModel {
 
     func handleResponse(
         _ value: (data: Data, response: URLResponse),
-        _ completion: Action = nil
+        _ completion: Action? = nil
     ) {
         guard let response = value.response as? HTTPURLResponse,
               let model = try? JSONDecoder().decode(CommonInfo.self, from: value.data)
@@ -122,7 +122,7 @@ private extension ViewModel {
 			failureReason = (HttpStatusCodes(rawValue: statusCode)?.message).orEmpty
         }
 
-        completion?()
+        completion??()
     }
 
 	func sortIsRead(_ articles: [Article]?) -> [Article] {

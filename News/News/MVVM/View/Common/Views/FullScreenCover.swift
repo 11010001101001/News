@@ -10,10 +10,16 @@ import SwiftUI
 struct FullScreenCover<Content: View>: View {
 	@Environment(\.dismiss) var dismiss
 
+    private let viewModel: ViewModel
 	private let title: String
 	private let content: () -> Content
 
-	init(title: String, content: @escaping () -> Content) {
+	init(
+        viewModel: ViewModel,
+        title: String,
+        content: @escaping () -> Content
+    ) {
+        self.viewModel = viewModel
 		self.title = title
 		self.content = content
 	}
@@ -29,7 +35,11 @@ struct FullScreenCover<Content: View>: View {
 					}
 
 					ToolbarItem(placement: .topBarTrailing) {
-						NavButton(type: .close, action: { dismiss() })
+                        NavButton(
+                            viewModel: viewModel,
+                            type: .close,
+                            action: { dismiss() }
+                        )
 					}
 				}
 				.navigationBarTitleDisplayMode(.inline)
@@ -39,7 +49,10 @@ struct FullScreenCover<Content: View>: View {
 }
 
 #Preview {
-	FullScreenCover(title: "More") {
+	FullScreenCover(
+        viewModel: ViewModel(),
+        title: "More"
+    ) {
 		Color.green
 	}
 }

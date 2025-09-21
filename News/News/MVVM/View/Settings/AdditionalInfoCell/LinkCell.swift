@@ -33,7 +33,7 @@ struct LinkCell: View, ImageProvider {
 				.frame(maxHeight: .infinity, alignment: .leading)
 			Spacer()
 		}
-		.card()
+		.glassCard()
 		.frame(height: 70)
 		.modifier(
 			OnTap(

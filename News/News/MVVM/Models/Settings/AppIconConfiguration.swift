@@ -13,6 +13,8 @@ enum AppIconConfiguration: String, CaseIterable, Identifiable {
 
     static var title: String { "App icon" }
 
+    static var image: String { "photo" }
+
     case globe
     case sсull
     case jinx

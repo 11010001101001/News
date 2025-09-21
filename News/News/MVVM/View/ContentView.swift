@@ -25,8 +25,11 @@ struct ContentView: View {
 			TopicsList(viewModel: viewModel)
 				.toolbar {
 					ToolbarItem(placement: .topBarLeading) {
-						NavButton(type: .settings(isDefault: viewModel.isDefaultSettings), viewModel: viewModel)
-					}
+                        NavButton(
+                            viewModel: viewModel,
+                            type: .settings(isDefault: viewModel.isDefaultSettings)
+                        )
+                    }
 
 					ToolbarItem(placement: .principal) {
 						DesignedText(text: Texts.Screen.Main.title())
@@ -34,8 +37,12 @@ struct ContentView: View {
 					}
 
 					ToolbarItem(placement: .topBarTrailing) {
-						NavButton(type: .markAsRead(isAllRead: viewModel.isAllRead), action: viewModel.markAsReadOrUnread)
-					}
+                        NavButton(
+                            viewModel: viewModel,
+                            type: .markAsRead(isAllRead: viewModel.isAllRead),
+                            action: viewModel.markAsReadOrUnread
+                        )
+                    }
 				}
 				.navigationBarTitleDisplayMode(.inline)
 				.sheet(
