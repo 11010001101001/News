@@ -11,19 +11,6 @@ import Combine
 // MARK: - Logic
 
 extension ViewModel {
-    func playLoaded() {
-        guard soundTheme != SoundTheme.silentMode.rawValue else { return }
-
-        loadedSound = switch SoundTheme(rawValue: soundTheme) {
-        case .starwars:
-            "starwars_loaded"
-        case .cats:
-            "cats_loaded"
-        default:
-            String.empty
-        }
-    }
-
     func playRefresh() {
         guard soundTheme != SoundTheme.silentMode.rawValue else { return }
 
@@ -31,7 +18,7 @@ extension ViewModel {
         case .starwars:
             starwarsRefresh
         case .cats:
-            "cats_refresh"
+            catsRefresh
         default:
             String.empty
         }
@@ -49,10 +36,26 @@ extension ViewModel {
             String.empty
         }
     }
+
+    /// sound theme can change - do it during every app launch and sound changing
+    func configureNotifications() {
+        notificationSound = switch SoundTheme(rawValue: soundTheme) {
+        case .starwars:
+            "starwars_notification"
+        case .cats:
+            "cats_notification"
+        default:
+            String.empty
+        }
+    }
 }
 
-extension ViewModel {
-    private var starwarsRefresh: String {
-        Set(["starwars_refresh", "starwars_refresh1", "starwars_refresh2"]).randomElement() ?? ""
+private extension ViewModel {
+    var starwarsRefresh: String {
+        Set(["starwars_refresh", "starwars_refresh1"]).randomElement() ?? .empty
+    }
+
+    var catsRefresh: String {
+        Set(["cats_refresh", "cats_refresh1"]).randomElement() ?? .empty
     }
 }

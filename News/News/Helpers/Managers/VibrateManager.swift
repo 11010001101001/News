@@ -13,19 +13,36 @@ struct VibrateManager {
     private var notificationCancellable: AnyCancellable?
 
     init(viewModel: ViewModel) {
+        let notificationGen = UINotificationFeedbackGenerator()
+        notificationGen.prepare()
+
+        let light = UIImpactFeedbackGenerator(style: .light)
+        let medium = UIImpactFeedbackGenerator(style: .medium)
+        let soft = UIImpactFeedbackGenerator(style: .soft)
+        let rigid = UIImpactFeedbackGenerator(style: .rigid)
+        let heavy = UIImpactFeedbackGenerator(style: .heavy)
+
+        let impactGens: [UIImpactFeedbackGenerator.FeedbackStyle: UIImpactFeedbackGenerator] = [
+            .light: light,
+            .heavy: heavy,
+            .medium: medium,
+            .soft: soft,
+            .rigid: rigid
+        ]
+
+        impactGens.values.forEach { $0.prepare() }
+
         func bind() {
             impactCancellable = viewModel.$feedbackStyle
                 .sink { style in
                     guard let style else { return }
-                    UIImpactFeedbackGenerator().prepare()
-                    UIImpactFeedbackGenerator(style: style).impactOccurred()
+                    impactGens[style]?.impactOccurred(intensity: 0.4)
                 }
 
             notificationCancellable = viewModel.$feedBackType
                 .sink { type in
                     guard let type else { return }
-                    UINotificationFeedbackGenerator().prepare()
-                    UINotificationFeedbackGenerator().notificationOccurred(type)
+                    notificationGen.notificationOccurred(type)
                 }
         }
 

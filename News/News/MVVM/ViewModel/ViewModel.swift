@@ -21,7 +21,6 @@ final class ViewModel: Observable, ObservableObject {
 
     @Published var errorSound = String.empty
     @Published var refreshSound = String.empty
-    @Published var loadedSound = String.empty
     @Published var notificationSound = String.empty
 
     @Published var feedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle?

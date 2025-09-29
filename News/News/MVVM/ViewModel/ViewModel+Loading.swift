@@ -111,7 +111,6 @@ private extension ViewModel {
         switch statusCode {
         case 200:
             notificationOccurred(.success)
-            playLoaded()
             loadingSucceed = true
 			newsArray = sortIsRead(model.articles)
 
