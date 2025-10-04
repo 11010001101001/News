@@ -12,11 +12,11 @@ import UIKit
 
 	enum {{asset.name|swiftIdentifier:"pretty"|escapeReservedKeywords}} {
 			{% for item in asset.items %}
-		{{accessModifier}} static var {{item.name|swiftIdentifier:"pretty"|escapeReservedKeywords|lowerFirstWord}} = UIImage(named: "{{item.name|swiftIdentifier:"pretty"|escapeReservedKeywords}}.imageset", in: .module, with: .none)!
+		{{accessModifier}} static var {{item.name|swiftIdentifier:"pretty"|escapeReservedKeywords|lowerFirstWord}} = UIImage(named: "{{item.name|swiftIdentifier:"pretty"|escapeReservedKeywords}}.imageset", in: Bundle(for: BundleToken.self), with: .none)!
 			{% endfor %}
 	}
 			{% else %}
-	{{accessModifier}} static var {{asset.name|swiftIdentifier:"pretty"|escapeReservedKeywords|lowerFirstWord}} = UIImage(named: "{{asset.name|swiftIdentifier:"pretty"|escapeReservedKeywords}}.imageset", in: .module, with: .none)!
+	static var {{asset.name|swiftIdentifier:"pretty"|escapeReservedKeywords|lowerFirstWord}} = UIImage(named: "{{asset.name|swiftIdentifier:"pretty"|escapeReservedKeywords}}.imageset", in: Bundle(for: BundleToken.self), with: .none)!
 			{% endif %}
 {% endfor %}
 {% endmacro %}
@@ -25,3 +25,4 @@ import UIKit
 
 }
 // swiftlint:enable all
+private final class BundleToken {}

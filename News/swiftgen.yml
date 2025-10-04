@@ -1,16 +1,16 @@
 strings:
   inputs:
     # - News/Resources/Localization/ru.lproj
-    - News/Helpers/Sources/Strings/en.lproj
+    - News/Sources/Strings/en.lproj
   outputs:
     - templatePath: Templates/Localization.stencil
       params:
         publicAccess: true
         enumName: Texts
-      output: News/Helpers/Sources/Strings/GeneratedStrings.swift
+      output: News/Sources/Strings/GeneratedStrings.swift
 xcassets:
   inputs:
-    - News/Helpers/Sources/Assets/Assets.xcassets
+    - News/Sources/Assets/Assets.xcassets
   outputs:
     - templatePath: Templates/Assets.stencil
-      output: News/Helpers/Sources/Assets/GeneratedAssets.swift
+      output: News/Sources/Assets/GeneratedAssets.swift
