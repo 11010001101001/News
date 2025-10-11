@@ -16,22 +16,22 @@ enum AppIconConfiguration: String, CaseIterable, Identifiable {
     static var image: String { "photo" }
 
     case globe
-    case sсull
-    case jinx
+    case cat
+    case dart
 
     var iconName: String {
         return switch self {
         case .globe: "GlobeIcon"
-        case .sсull: "ScullIcon"
-        case .jinx: "JinxIcon"
+        case .cat: "CatIcon"
+        case .dart: "DartIcon"
         }
     }
 
     var shadowColor: Color {
         switch self {
         case .globe: .cyan
-        case .sсull: .purple
-        case .jinx: .orange
+        case .cat: .orange
+        case .dart: .red
         }
     }
 }

@@ -24,7 +24,7 @@ struct Provider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
         Task {
-            let category = Category.random
+            let category = NewsCategory.random
             guard let posted = try? await getTime(category: category) else { return }
             let entry = Entry(date: posted, category: category)
             guard let nextUpdate = Calendar.current.date(byAdding: DateComponents(minute: 360),
@@ -184,6 +184,6 @@ struct NewsWidgets: Widget {
 #Preview(as: .systemSmall) {
     NewsWidgets()
 } timeline: {
-    Entry(date: .now, category: Category.random)
+    Entry(date: .now, category: NewsCategory.random)
 }
 #endif

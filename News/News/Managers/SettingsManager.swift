@@ -37,7 +37,7 @@ extension SettingsManager: SettingsManagerProtocol {
     }
 
     var category: String {
-        (settings?.category).or(Category.technology.rawValue)
+        (settings?.category).or(NewsCategory.technology.rawValue)
     }
 
     var loader: String {

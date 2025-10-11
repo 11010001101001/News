@@ -15,23 +15,23 @@ struct SettingsList: View {
     var body: some View {
         TabView {
             Tab(LoaderConfiguration.title, systemImage: LoaderConfiguration.image) {
-                buildContentScroll(title: LoaderConfiguration.title) {
+                buildContentScroll {
                     ForEach(LoaderConfiguration.allCases) { loader in
                         LoaderSettingsCell(viewModel: viewModel, id: loader.rawValue)
                     }
                 }
             }
 
-            Tab(Category.title, systemImage: Category.image) {
-                buildContentScroll(title: Category.title) {
-                    ForEach(Category.allCases) { category in
+            Tab(NewsCategory.title, systemImage: NewsCategory.image) {
+                buildContentScroll {
+                    ForEach(NewsCategory.allCases) { category in
                         SettingsCell(viewModel: viewModel, id: category.rawValue)
                     }
                 }
             }
 
             Tab(SoundTheme.title, systemImage: SoundTheme.image) {
-                buildContentScroll(title: SoundTheme.title) {
+                buildContentScroll {
                     ForEach(SoundTheme.allCases) { theme in
                         SettingsCell(viewModel: viewModel, id: theme.rawValue)
                     }
@@ -40,7 +40,7 @@ struct SettingsList: View {
 
             if UIApplication.shared.supportsAlternateIcons {
                 Tab(AppIconConfiguration.title, systemImage: AppIconConfiguration.image) {
-                    buildContentScroll(title: AppIconConfiguration.title) {
+                    buildContentScroll {
                         ForEach(AppIconConfiguration.allCases) { theme in
                             AppIconSettingsCell(viewModel: viewModel, id: theme.rawValue)
                         }
@@ -49,7 +49,7 @@ struct SettingsList: View {
             }
 
             Tab(AdditionalInfo.title, systemImage: AdditionalInfo.image) {
-                buildContentScroll(title: AdditionalInfo.title) {
+                buildContentScroll {
                     AdditionalInfoCell(viewModel: viewModel)
                 }
             }
@@ -76,10 +76,7 @@ struct SettingsList: View {
 
 // MARK: - Private
 extension SettingsList {
-    func buildContentScroll(
-        title: String,
-        content: @escaping () -> some View
-    ) -> some View {
+    func buildContentScroll(content: @escaping () -> some View) -> some View {
         ScrollView {
             VerStack(spacing: Constants.padding) {
                 content()
