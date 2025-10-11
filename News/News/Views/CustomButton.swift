@@ -8,48 +8,45 @@
 import SwiftUI
 
 struct CustomButton: View {
-	private let action: Action
-	private var title: String?
-	private var iconName: String?
-
-	init(
-		action: Action,
-		title: String? = nil,
-		iconName: String? = nil
-	) {
-		self.action = action
-		self.title = title
-		self.iconName = iconName
-	}
+	let action: Action
+	var title: String?
+	var iconName: String?
 
 	var body: some View {
 		ConditionalView(action != nil) {
 			Button(
 				action: {
-					action?()
+                    action?()
 				},
 				label: {
-					Label(
-						title: { titleView },
-						icon: { iconView }
-					)
+                    label
 				}
 			)
             .buttonStyle(.glass)
 		}
 	}
+}
 
-	private var titleView: some View {
+// MARK: - Contents
+private extension CustomButton {
+    var label: some View {
+        Label(
+            title: { titleView },
+            icon: { iconView }
+        )
+    }
+
+    var titleView: some View {
         ConditionalView(title != nil) {
             DesignedText(text: title ?? .empty)
                 .foregroundStyle(.white)
         }
-	}
+    }
 
-	private var iconView: some View {
+    var iconView: some View {
         ConditionalView(iconName != nil) {
             Image(systemName: iconName!)
                 .foregroundStyle(.white)
         }
-	}
+    }
 }

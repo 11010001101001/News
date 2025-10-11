@@ -10,16 +10,8 @@ import SwiftUI
 struct FullScreenCover<Content: View>: View {
 	@Environment(\.dismiss) var dismiss
 
-	private let title: String
-	private let content: () -> Content
-
-	init(
-        title: String,
-        content: @escaping () -> Content
-    ) {
-		self.title = title
-		self.content = content
-	}
+	let title: String
+	let content: () -> Content
 
 	var body: some View {
 		NavigationStack {

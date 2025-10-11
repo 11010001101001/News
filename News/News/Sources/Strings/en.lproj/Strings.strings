@@ -43,6 +43,6 @@
 
 "state.noDescription" = "🌚";
 
-"actions.share" = "Share";
-"actions.open" = "Open";
-"actions.reload" = "Reload";
+"Actions.share" = "Share";
+"Actions.open" = "Open";
+"Actions.reload" = "Reload";

@@ -50,7 +50,7 @@ private extension FullScreenCoverModifier {
 	}
 }
 
-// MARK: Views
+// MARK: - Views
 private extension FullScreenCoverModifier {
 	var loader: some View {
 		Loader(

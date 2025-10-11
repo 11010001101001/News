@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct OpenLinkButton: View {
-	@Environment(\.openURL) private var openURL
 	let data: ButtonMetaData
+
+    @Environment(\.openURL) private var openURL
 
 	var body: some View {
 		CustomButton(

@@ -1,37 +1,51 @@
 import Foundation
+import Combine
 import SwiftUI
 
-final class DetailsViewModel: Observable, ObservableObject {
+final class DetailsViewModel: ObservableObject {
+    // MARK: Internal variables
     @Published var imageCacheData: (image: AnyObject, key: AnyObject)?
+    @Published var feedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle?
+    @Published var feedBackType: UINotificationFeedbackGenerator.FeedbackType?
 
-    var cacheManager: CacheManager?
+    var loader: String {
+        get { settingsManager.loader }
+        set { settingsManager.save(loader: newValue) }
+    }
 
-    private(set) var loader: String {
-        get { savedSettings?.first?.loader ?? LoaderConfiguration.hourGlass.rawValue }
-        set { savedSettings?.first?.loader = newValue }
+    var watchedTopics: [String] {
+        get { settingsManager.watchedTopics }
+        set { settingsManager.save(watchedTopics: newValue) }
     }
 
     var loaderShadowColor: Color {
-        LoaderConfiguration(rawValue: loader)?.shadowColor ?? .clear
+        settingsManager.loaderShadowColor
     }
 
-    var savedSettings: [SettingsModel]?
-    
-    var watchedTopics: [String] {
-        get { savedSettings?.first?.watchedTopics ?? [] }
-        set { savedSettings?.first?.watchedTopics = newValue }
-    }
-    
-    func checkIsRead(_ key: String) -> Bool {
-        watchedTopics.contains(where: { $0 == key })
-    }
+    // MARK: Private variables
+    private let cacheManager: CacheManagerProtocol
+    private let settingsManager: SettingsManagerProtocol
+    private let vibrateManager: VibrateManagerProtocol
 
-    func cache(object: AnyObject, key: AnyObject) {
-        imageCacheData = (object, key)
-    }
+    // MARK: Init
+    init(
+        cacheManager: CacheManagerProtocol,
+        settingsManager: SettingsManagerProtocol,
+        vibrateManager: VibrateManagerProtocol
+    ) {
+        self.cacheManager = cacheManager
+        self.settingsManager = settingsManager
+        self.vibrateManager = vibrateManager
 
+        bindCacheManager()
+        bindVibrateManager()
+    }
+}
+
+// MARK: - Internal
+extension DetailsViewModel {
     func getCachedImage(key: AnyObject) -> Image? {
-        cacheManager?.getCachedImage(key: key)
+        cacheManager.getCachedImage(key: key)
     }
 
     func markAsRead(_ key: String) {
@@ -43,16 +57,36 @@ final class DetailsViewModel: Observable, ObservableObject {
         clearStorageIfNeeded()
     }
 
-    private func clearStorageIfNeeded() {
+    func cache(object: AnyObject, key: AnyObject) {
+        imageCacheData = (object, key)
+    }
+
+    func checkIsRead(_ key: String) -> Bool {
+        watchedTopics.contains(where: { $0 == key })
+    }
+
+    func impactOccured(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
+        feedbackStyle = style
+    }
+
+    func notificationOccurred(_ feedBackType: UINotificationFeedbackGenerator.FeedbackType) {
+        self.feedBackType = feedBackType
+    }
+}
+
+// MARK: - Private
+private extension DetailsViewModel {
+    func bindCacheManager() {
+        cacheManager.bind(to: $imageCacheData.eraseToAnyPublisher())
+    }
+
+    func bindVibrateManager() {
+        vibrateManager.bind(to: $feedbackStyle.eraseToAnyPublisher())
+        vibrateManager.bind(to: $feedBackType.eraseToAnyPublisher())
+    }
+
+    func clearStorageIfNeeded() {
         guard watchedTopics.count >= Constants.storageCapacity else { return }
         watchedTopics = Array(watchedTopics.dropFirst(Constants.needDropCount))
-    }
-
-    init() {
-        cacheManager = CacheManager(viewModel: self)
-    }
-
-    deinit {
-        cacheManager = nil
     }
 }

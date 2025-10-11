@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DetailsView: View {
-    @StateObject var viewModel = DetailsViewModel()
+    @StateObject var viewModel: DetailsViewModel
 
     let article: Article
 

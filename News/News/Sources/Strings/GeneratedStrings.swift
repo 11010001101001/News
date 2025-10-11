@@ -12,13 +12,13 @@ import Foundation
 public enum Texts {
   public enum Actions {
     /// Open
-    public static func `open`() -> String { Texts.tr("Strings", "actions.open", fallback: "Open")
+    public static func `open`() -> String { Texts.tr("Strings", "Actions.open", fallback: "Open")
     }
     /// Reload
-    public static func reload() -> String { Texts.tr("Strings", "actions.reload", fallback: "Reload")
+    public static func reload() -> String { Texts.tr("Strings", "Actions.reload", fallback: "Reload")
     }
     /// Share
-    public static func share() -> String { Texts.tr("Strings", "actions.share", fallback: "Share")
+    public static func share() -> String { Texts.tr("Strings", "Actions.share", fallback: "Share")
     }
   }
   public enum App {

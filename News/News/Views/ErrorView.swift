@@ -9,17 +9,9 @@ import SwiftUI
 import Lottie
 
 struct ErrorView: View {
-	private var title: String?
-	private let action: Action
-	private let startDate = Date()
-
-	init(
-		title: String? = nil,
-		action: Action
-	) {
-		self.title = title
-		self.action = action
-	}
+	var title: String?
+	let action: Action
+	let startDate = Date()
 
     var body: some View {
         VerStack(alignment: .center) {
@@ -51,7 +43,7 @@ private extension ErrorView {
 	var errorImage: some View {
 		Image(uiImage: .errorCat)
 			.resizable()
-			.frame(width: 150, height: 150)
+			.frame(width: 170, height: 170)
 			.gloss(numberOfLayers: 1)
 			.scaledToFill()
 			.padding(.horizontal)
@@ -62,11 +54,5 @@ private extension ErrorView {
 			action: action,
 			title: Texts.Actions.reload()
 		)
-	}
-
-	var noiseShader: some View {
-		Rectangle()
-			.opacity(0.5)
-			.colorEffect(ShaderLibrary.noise(.float(startDate.timeIntervalSinceNow)))
 	}
 }

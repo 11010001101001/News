@@ -8,21 +8,11 @@
 import SwiftUI
 
 struct LinkCell: View, ImageProvider {
-	@ObservedObject private var viewModel: SettingsViewModel
-	@Environment(\.openURL) private var openURL
-
-	private let id: String
-	private let link: URL
-
-	init(
-		viewModel: SettingsViewModel,
-		id: String,
-		link: URL
-	) {
-		self.viewModel = viewModel
-		self.id = id
-		self.link = link
-	}
+	@ObservedObject var viewModel: SettingsViewModel
+	let id: String
+	let link: URL
+    
+    @Environment(\.openURL) private var openURL
 
 	var body: some View {
 		HorStack(spacing: Constants.padding) {
@@ -42,12 +32,4 @@ struct LinkCell: View, ImageProvider {
 			)
 		)
 	}
-}
-
-#Preview {
-	LinkCell(
-		viewModel: SettingsViewModel(),
-		id: Texts.App.contactUs(),
-		link: URL(string: "https://www.google.com")!
-	)
 }

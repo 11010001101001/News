@@ -12,7 +12,9 @@ import SwiftData
 struct MainView: View {
     @Environment(\.scenePhase) var phase
     @Environment(\.modelContext) var modelContext
-    @StateObject var viewModel = MainViewModel()
+
+    @StateObject var viewModel: MainViewModel
+
     @State private var imageWrapper: ContentWrapper?
     @State private var needOpenSettings = false
     @Query private var savedSettings: [SettingsModel]
@@ -22,6 +24,7 @@ struct MainView: View {
     }
 }
 
+// MARK: - Content
 private extension MainView {
     @ViewBuilder
     var content: some View {
@@ -29,23 +32,7 @@ private extension MainView {
             .padding()
         NavigationStack {
             TopicsList(viewModel: viewModel)
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        NavButton(type: .settings(isDefault: viewModel.isDefaultSettings))
-                    }
-
-                    ToolbarItem(placement: .principal) {
-                        DesignedText(text: Texts.Screen.Main.title())
-                            .font(.title)
-                    }
-
-                    ToolbarItem(placement: .topBarTrailing) {
-                        NavButton(
-                            type: .markAsRead(isAllRead: viewModel.isAllRead),
-                            action: viewModel.markAsReadOrUnread
-                        )
-                    }
-                }
+                .navbar()
                 .navigationBarTitleDisplayMode(.inline)
                 .sheet(
                     item: $imageWrapper,
@@ -69,29 +56,16 @@ private extension MainView {
             needOpenSettings.toggle()
         }
         .task {
-            try? Tips.configure(
-                [
-                    .displayFrequency(.immediate),
-                    .datastoreLocation(.applicationDefault)
-                ]
-            )
+            configureTips()
         }
         .onChange(of: phase) { _, phase in
-            switch phase {
-            case .active:
-                if let itemName = ShortcutItem.selectedAction?.userInfo?["name"] as? String {
-                    viewModel.handleShortcutItemTap(itemName)
-                }
-            case .background:
-                viewModel.addShortcutItems()
-            case .inactive:
-                break
-            @unknown default:
-                assertionFailure("Unknown default phase: \(phase)")
-            }
+            handleScenePhase(phase)
         }
     }
+}
 
+// MARK: - Private
+private extension MainView {
     func onAppear() {
         loadSettings()
         viewModel.loadNews()
@@ -103,11 +77,58 @@ private extension MainView {
             let defaultModel = SettingsModel()
             modelContext.insert(defaultModel)
             try? modelContext.save()
-            viewModel.savedSettings = [defaultModel]
+            viewModel.loadSettings([defaultModel])
         } else {
-            viewModel.savedSettings = savedSettings
+            viewModel.loadSettings(savedSettings)
         }
 
         viewModel.redrawContentViewLoader()
+    }
+
+    func handleScenePhase(_ phase: ScenePhase) {
+        switch phase {
+        case .active:
+            if let itemName = ShortcutItem.selectedAction?.userInfo?["name"] as? String {
+                viewModel.handleShortcutItemTap(itemName)
+            }
+        case .background:
+            viewModel.addShortcutItems()
+        case .inactive:
+            break
+        @unknown default:
+            assertionFailure("Unknown default phase: \(phase)")
+        }
+    }
+
+    func configureTips() {
+        try? Tips.configure(
+            [
+                .displayFrequency(.immediate),
+                .datastoreLocation(.applicationDefault)
+            ]
+        )
+    }
+}
+
+// MARK: - Navigation bar
+private extension TopicsList {
+    func navbar() -> some View {
+        self.toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                NavButton(type: .settings(isDefault: viewModel.isDefaultSettings), action: nil)
+            }
+
+            ToolbarItem(placement: .principal) {
+                DesignedText(text: Texts.Screen.Main.title())
+                    .font(.title)
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                NavButton(
+                    type: .markAsRead(isAllRead: viewModel.isAllRead),
+                    action: viewModel.markAsReadOrUnread
+                )
+            }
+        }
     }
 }

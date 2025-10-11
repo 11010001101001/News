@@ -9,17 +9,12 @@ import SwiftUI
 import Lottie
 
 struct LoaderSettingsCell: View {
-    @ObservedObject private var viewModel: SettingsViewModel
-    private let id: String
+    @ObservedObject var viewModel: SettingsViewModel
+    let id: String
 
     private var isEnabled: Bool {
         viewModel.checkIsEnabled(id)
     }
-
-	init(viewModel: SettingsViewModel, id: String) {
-		self.viewModel = viewModel
-		self.id = id
-	}
 
     var body: some View {
         ZStack {

@@ -8,13 +8,8 @@
 import SwiftUI
 
 struct SettingsCell: View, ImageProvider {
-	@ObservedObject private var viewModel: SettingsViewModel
-	private let id: String
-
-	init(viewModel: SettingsViewModel, id: String) {
-		self.viewModel = viewModel
-		self.id = id
-	}
+	@ObservedObject var viewModel: SettingsViewModel
+	let id: String
 
 	var body: some View {
 		HorStack(spacing: Constants.padding) {

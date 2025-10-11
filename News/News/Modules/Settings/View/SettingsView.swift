@@ -9,13 +9,14 @@ import Foundation
 import SwiftUI
 
 struct SettingsView: View {
-    @StateObject var viewModel = SettingsViewModel()
+    @StateObject var viewModel: SettingsViewModel
 
     var body: some View {
         content
     }
 }
 
+// MARK: - Content
 private extension SettingsView {
     var content: some View {
         SettingsList(viewModel: viewModel)

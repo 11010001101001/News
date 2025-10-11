@@ -29,7 +29,7 @@ struct NewsApp: App {
     var body: some Scene {
         WindowGroup {
             ModuleBuilder.shared.build(.main)
+                .modelContainer(sharedModelContainer)
         }
-        .modelContainer(sharedModelContainer)
     }
 }

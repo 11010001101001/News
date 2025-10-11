@@ -1,5 +1,5 @@
 import Foundation
 
-final class FavoritesViewModel: Observable, ObservableObject {
+final class FavoritesViewModel: ObservableObject {
 
 }

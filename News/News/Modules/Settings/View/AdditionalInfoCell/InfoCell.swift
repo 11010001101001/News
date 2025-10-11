@@ -8,11 +8,7 @@
 import SwiftUI
 
 struct InfoCell: View, ImageProvider {
-	private let id: String
-
-	init(id: String) {
-		self.id = id
-	}
+	let id: String
 
 	var body: some View {
 		HorStack(spacing: Constants.padding) {
@@ -26,8 +22,4 @@ struct InfoCell: View, ImageProvider {
 		.glassCard()
 		.frame(height: 70)
 	}
-}
-
-#Preview {
-	InfoCell(id: DeveloperInfo.currentAppVersion)
 }

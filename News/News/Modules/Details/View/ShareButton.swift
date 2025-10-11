@@ -9,20 +9,14 @@ import Foundation
 import SwiftUI
 
 struct ShareButton: View {
-	@State private var imageWrapper: ContentWrapper?
-	private let data: ButtonMetaData
-
-	init(
-		imageWrapper: ContentWrapper? = nil,
-		data: ButtonMetaData
-	) {
-		self.imageWrapper = imageWrapper
-		self.data = data
-	}
+	@State var imageWrapper: ContentWrapper?
+	let data: ButtonMetaData
+    let viewModel: DetailsViewModel
 
 	var body: some View {
 		CustomButton(
 			action: {
+                viewModel.impactOccured(.light)
 				self.imageWrapper = ContentWrapper(
 					link: URL(string: data.article.url ?? .empty)?.absoluteString ?? .empty,
 					description: DeveloperInfo.shareInfo)

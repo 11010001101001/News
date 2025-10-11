@@ -40,7 +40,7 @@ struct TopicDetail: View {
 	}
 }
 
-// MARK: - Private
+// MARK: - Content
 private extension TopicDetail {
 	var otherContent: some View {
         VerStack(alignment: .leading, spacing: Constants.padding) {
@@ -55,7 +55,7 @@ private extension TopicDetail {
 
 	var description: some View {
         Group {
-            DesignedText(text: article.description.orEmpty(Texts.State.noDescription()))
+            DesignedText(text: article.description.or(Texts.State.noDescription()))
                 .padding(.all, Constants.padding)
         }
         .glassEffect(.clear.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
@@ -77,13 +77,15 @@ private extension TopicDetail {
 				article: article,
 				title: nil,
 				iconName: "square.and.arrow.up"
-			)
+            ),
+            viewModel: viewModel
 		)
 	}
 
 	var linkButton: some View {
 		CustomButton(
 			action: {
+                viewModel.impactOccured(.light)
 				webViewPresented.toggle()
 			},
 			title: nil,

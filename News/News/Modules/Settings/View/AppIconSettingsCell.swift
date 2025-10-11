@@ -9,8 +9,8 @@ import SwiftUI
 import Lottie
 
 struct AppIconSettingsCell: View {
-    @ObservedObject private var viewModel: SettingsViewModel
-    private let id: String
+    @ObservedObject var viewModel: SettingsViewModel
+    let id: String
 
 	private var shadowColor: Color {
 		AppIconConfiguration(rawValue: id)?.shadowColor ?? .shadowHighlight
@@ -19,11 +19,6 @@ struct AppIconSettingsCell: View {
     private var isEnabled: Bool {
         viewModel.checkIsEnabled(id.lowercased())
     }
-
-	init(viewModel: SettingsViewModel, id: String) {
-		self.viewModel = viewModel
-		self.id = id
-	}
 
     var body: some View {
         ZStack {
@@ -54,8 +49,4 @@ struct AppIconSettingsCell: View {
             viewModel.applySettings(id.lowercased())
         }
     }
-}
-
-#Preview {
-	AppIconSettingsCell(viewModel: SettingsViewModel(), id: AppIconConfiguration.globe.rawValue)
 }

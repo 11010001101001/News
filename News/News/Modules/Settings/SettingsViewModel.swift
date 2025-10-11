@@ -3,61 +3,178 @@ import Combine
 import SwiftUI
 import UIKit
 
-final class SettingsViewModel: Observable, ObservableObject {
-    @Published var feedBackType: UINotificationFeedbackGenerator.FeedbackType?
-    @Published var notificationSound = String.empty
-    @Published var id: Int?
-    @Published var feedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle?
+final class SettingsViewModel: ObservableObject {
+    // MARK: Internal variables
     @Published var loadingFailed = false
-    @Published var loadingSucceed = false
-    @Published var keyWord: String?
-    @Published var cancellables = Set<AnyCancellable>()
-    @Published var failureReason = String.empty
-    @Published var errorSound = String.empty
+    @Published var loadingSucceeded = false
+    @Published var errorMessage = String.empty
     @Published var newsArray = [Article]()
 
-    var savedSettings: [SettingsModel]?
+    @Published var notificationSound = String.empty
+    @Published var errorSound = String.empty
 
-    private(set) var loader: String {
-        get { savedSettings?.first?.loader ?? LoaderConfiguration.hourGlass.rawValue }
-        set { savedSettings?.first?.loader = newValue }
+    @Published var id: Int?
+
+    @Published var feedBackType: UINotificationFeedbackGenerator.FeedbackType?
+    @Published var feedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle?
+
+    var loader: String {
+        get { settingsManager.loader }
+        set { settingsManager.save(loader: newValue) }
     }
 
-    private(set) var category: String {
-        get { savedSettings?.first?.category ?? Category.technology.rawValue }
-        set { savedSettings?.first?.category = newValue }
-    }
-
-    private(set) var soundTheme: String {
-        get { savedSettings?.first?.soundTheme ?? SoundTheme.silentMode.rawValue }
+    var soundTheme: String {
+        get { settingsManager.soundTheme }
         set {
-            savedSettings?.first?.soundTheme = newValue
+            settingsManager.save(soundTheme: newValue)
             configureNotifications()
         }
     }
 
-    private(set) var appIcon: String {
-        get { savedSettings?.first?.appIcon ?? AppIconConfiguration.globe.rawValue }
-        set {
-            savedSettings?.first?.appIcon = newValue
+    var category: String {
+        get { settingsManager.category }
+        set { settingsManager.save(category: newValue) }
+    }
 
-            let iconName = AppIconConfiguration.init(rawValue: newValue)?.iconName ?? .empty
-
-            UIApplication.shared.setAlternateIconName(iconName) { error in
-                if let error {
-                    fatalError("File \(newValue): \(error.localizedDescription)")
-                }
-            }
-        }
+    var appIcon: String {
+        get { settingsManager.appIcon }
+        set { settingsManager.save(appIcon: newValue) }
     }
 
     var watchedTopics: [String] {
-        get { savedSettings?.first?.watchedTopics ?? [] }
-        set { savedSettings?.first?.watchedTopics = newValue }
+        get { settingsManager.watchedTopics }
+        set { settingsManager.save(watchedTopics: newValue) }
     }
 
     var loaderShadowColor: Color {
-        LoaderConfiguration(rawValue: loader)?.shadowColor ?? .clear
+        settingsManager.loaderShadowColor
+    }
+
+    // MARK: Private variables
+    private let soundManager: SoundManagerProtocol
+    private let vibrateManager: VibrateManagerProtocol
+    private let notificationManager: NotificationManagerProtocol
+    private let settingsManager: SettingsManagerProtocol
+    private let networkManager: NetworkManagerProtocol
+    private var cancellables = Set<AnyCancellable>()
+
+    // MARK: Init
+    init(
+        soundManager: SoundManagerProtocol,
+        vibrateManager: VibrateManagerProtocol,
+        notificationManager: NotificationManagerProtocol,
+        settingsManager: SettingsManagerProtocol,
+        networkManager: NetworkManagerProtocol
+    ) {
+        self.soundManager = soundManager
+        self.vibrateManager = vibrateManager
+        self.notificationManager = notificationManager
+        self.settingsManager = settingsManager
+        self.networkManager = networkManager
+        
+        subscribeNetworkManager()
+
+        bindSoundManager()
+        bindVibrateManager()
+        bindNotificationManager()
+    }
+}
+
+// MARK: - Internal
+extension SettingsViewModel {
+    func impactOccured(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
+        feedbackStyle = style
+    }
+
+    func checkIsEnabled(_ settingName: String) -> Bool {
+        [
+            soundTheme,
+            category,
+            loader,
+            appIcon
+        ].first(where: { $0 == settingName }) != nil
+    }
+
+    func applySettings(_ key: String) {
+        switch key {
+        case let name where Category.allCases.contains(where: { $0.rawValue == name }):
+            guard name != category else {
+                notificationOccurred(.error)
+                return
+            }
+            category = name
+            networkManager.loadNews(category: category, isRefresh: false, completion: nil)
+
+        case let name where SoundTheme.allCases.contains(where: { $0.rawValue == name }):
+            guard name != soundTheme else {
+                notificationOccurred(.error)
+                return
+            }
+            soundTheme = name
+            notificationOccurred(.success)
+
+        case let name where LoaderConfiguration.allCases.contains(where: { $0.rawValue == name }):
+            guard name != loader else {
+                notificationOccurred(.error)
+                return
+            }
+            loader = name
+            redrawContentViewLoader()
+            notificationOccurred(.success)
+
+        case let name where AppIconConfiguration.allCases.contains(where: { $0.rawValue == name }):
+            guard name != appIcon else {
+                notificationOccurred(.error)
+                return
+            }
+            appIcon = name
+            notificationOccurred(.success)
+
+        default:
+            break
+        }
+    }
+}
+
+// MARK: - Private
+private extension SettingsViewModel {
+    func subscribeNetworkManager() {
+        networkManager.loadingFailed
+            .sink { [weak self] in self?.loadingFailed = $0 }
+            .store(in: &cancellables)
+        networkManager.loadingSucceeded
+            .removeDuplicates()
+            .sink { [weak self] in
+                self?.loadingSucceeded = $0
+                if $0 {
+                    self?.notificationOccurred(.success)
+                }
+            }
+            .store(in: &cancellables)
+        networkManager.errorMessage
+            .removeDuplicates()
+            .sink { [weak self] in
+                self?.errorMessage = $0
+                self?.notificationOccurred(.error)
+                self?.playError()
+            }
+            .store(in: &cancellables)
+        networkManager.newsArray
+            .sink { [weak self] in self?.newsArray = (self?.sortIsRead($0)).orEmpty }
+            .store(in: &cancellables)
+    }
+
+    func bindSoundManager() {
+        soundManager.bind(to: $errorSound.eraseToAnyPublisher())
+    }
+
+    func bindVibrateManager() {
+        vibrateManager.bind(to: $feedbackStyle.eraseToAnyPublisher())
+        vibrateManager.bind(to: $feedBackType.eraseToAnyPublisher())
+    }
+
+    func bindNotificationManager() {
+        notificationManager.bind(to: $notificationSound.eraseToAnyPublisher())
     }
 
     /// sound theme can change - do it during every app launch and sound changing
@@ -76,159 +193,8 @@ final class SettingsViewModel: Observable, ObservableObject {
         self.feedBackType = feedBackType
     }
 
-    func applySettings(_ name: String) {
-        switch name {
-        case let name where Category.allCases.contains(where: { $0.rawValue == name }):
-            guard name != category else {
-                notificationOccurred(.error)
-                return
-            }
-            category = name
-            loadNews()
-        case let name where SoundTheme.allCases.contains(where: { $0.rawValue == name }):
-            guard name != soundTheme else {
-                notificationOccurred(.error)
-                return
-            }
-            soundTheme = name
-            notificationOccurred(.success)
-        case let name where LoaderConfiguration.allCases.contains(where: { $0.rawValue == name }):
-            guard name != loader else {
-                notificationOccurred(.error)
-                return
-            }
-            loader = name
-            redrawContentViewLoader()
-            notificationOccurred(.success)
-        case let name where AppIconConfiguration.allCases.contains(where: { $0.rawValue == name }):
-            guard name != appIcon else {
-                notificationOccurred(.error)
-                return
-            }
-            appIcon = name
-            notificationOccurred(.success)
-        default:
-            break
-        }
-    }
-
-    func checkIsEnabled(_ settingName: String) -> Bool {
-        [
-            soundTheme,
-            category,
-            loader,
-            appIcon
-        ].first(where: { $0 == settingName }) != nil
-    }
-
     func redrawContentViewLoader() {
         id = Int.random(in: .zero...Int.max)
-    }
-
-    func impactOccured(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
-        feedbackStyle = style
-    }
-
-    // swiftlint:disable line_length
-    var newsPublisher: AnyPublisher<(data: Data, response: URLResponse), ApiError> {
-        var urlString: String {
-            let mode: Mode = keyWord == nil ? .category(category) : .keyword(keyWord ?? .empty)
-            return switch mode {
-            case .keyword(let keyword):
-                "https://newsapi.org/v2/everything?q=\(keyword)&pageSize=\(Constants.newsCount)&language=ru&apiKey=\(DeveloperInfo.apiKey)"
-            case .category(let category):
-                "https://newsapi.org/v2/top-headlines?country=us&category=\(category)&pageSize=\(Constants.newsCount)&apiKey=\(DeveloperInfo.apiKey)"
-            }
-        }
-        // swiftlint:enable line_length
-        guard let url = URL(string: urlString) else {
-            return Fail(error: ApiError.invalidRequest(msg: Errors.invalidUrl))
-                .eraseToAnyPublisher()
-        }
-
-        return URLSession.shared.dataTaskPublisher(for: url)
-            .retry(3)
-            .mapError { [weak self] error in
-                self?.mapError(error) ?? ApiError.mappingError(msg: Errors.mappingError)
-            }
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
-    }
-
-    func loadNews(
-        isRefresh: Bool = false,
-        completion: Action? = nil
-    ) {
-        if !isRefresh {
-            loadingSucceed = false
-            loadingFailed = false
-        }
-
-        newsPublisher
-            .sink { [weak self] result in
-                switch result {
-                case .finished:
-                    break
-                case .failure(let error):
-                    self?.handleError(error)
-                }
-            } receiveValue: { [weak self] value in
-                self?.handleResponse(value, completion)
-            }
-            .store(in: &cancellables)
-    }
-
-    func mapError(_ error: Publishers.Retry<URLSession.DataTaskPublisher>.Failure) -> ApiError {
-        let urlError = error as URLError
-        return switch urlError.errorCode {
-        case -1009:
-            ApiError.noConnection(msg: Errors.noConnection)
-        default:
-            ApiError.mappingError(msg: Errors.mappingError)
-        }
-    }
-
-    func handleError(_ error: ApiError) {
-        let message: String
-
-        switch error {
-        case let .noConnection(msg):
-            message = msg
-        case let .mappingError(msg):
-            message = msg
-        default:
-            message = Texts.Errors.unhandled()
-        }
-        notificationOccurred(.error)
-        playError()
-        loadingFailed = true
-        failureReason = message
-    }
-
-    func handleResponse(
-        _ value: (data: Data, response: URLResponse),
-        _ completion: Action? = nil
-    ) {
-        guard let response = value.response as? HTTPURLResponse,
-              let model = try? JSONDecoder().decode(CommonInfo.self, from: value.data)
-        else { return }
-
-        let statusCode = response.statusCode
-
-        switch statusCode {
-        case 200:
-            notificationOccurred(.success)
-            loadingSucceed = true
-            newsArray = sortIsRead(model.articles)
-
-        default:
-            notificationOccurred(.error)
-            playError()
-            loadingFailed = true
-            failureReason = (HttpStatusCodes(rawValue: statusCode)?.message).orEmpty
-        }
-
-        completion??()
     }
 
     func playError() {

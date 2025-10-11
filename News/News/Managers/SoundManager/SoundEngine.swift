@@ -22,17 +22,25 @@ final class SoundEngine {
         engine.attach(player)
         engine.connect(player, to: engine.mainMixerNode, format: nil)
         try? engine.start()
-        loadSounds()
+        prewarm()
+    }
+}
+
+// MARK: - SoundEngineProtocol
+extension SoundEngine: SoundEngineProtocol {
+    func play(_ name: String) {
+        guard let buffer = buffers[name] else { return }
+        player.play()
+        player.scheduleBuffer(buffer, at: nil, options: .interrupts, completionHandler: nil)
     }
 }
 
 // MARK: - Private
 private extension SoundEngine {
-    func loadSounds() {
-        guard let url = Bundle.main.url(forResource: "Sounds", withExtension: nil) else { return }
-        if let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: nil) {
-            for case let fileURL as URL in enumerator where fileURL.pathExtension == "mp3" {
-                load(name: fileURL.deletingPathExtension().lastPathComponent)
+    func prewarm() {
+        if let urls = Bundle.main.urls(forResourcesWithExtension: "mp3", subdirectory: nil) {
+            for url in urls {
+                load(name: url.deletingPathExtension().lastPathComponent)
             }
         }
     }
@@ -52,14 +60,5 @@ private extension SoundEngine {
         } catch {
             fatalError("Shaize!")
         }
-    }
-}
-
-// MARK: - SoundEngineProtocol
-extension SoundEngine: SoundEngineProtocol {
-    func play(_ name: String) {
-        guard let buffer = buffers[name] else { return }
-        player.play()
-        player.scheduleBuffer(buffer, at: nil, options: .interrupts, completionHandler: nil)
     }
 }

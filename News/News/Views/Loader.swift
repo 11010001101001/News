@@ -10,13 +10,8 @@ import Lottie
 import Combine
 
 struct Loader: View {
-    private let loaderName: String
-    private let shadowColor: Color
-
-    init(loaderName: String, shadowColor: Color) {
-        self.loaderName = loaderName
-        self.shadowColor = shadowColor
-    }
+    let loaderName: String
+    let shadowColor: Color
 
     var body: some View {
         LottieView(animation: .named(loaderName))
@@ -24,8 +19,4 @@ struct Loader: View {
             .scaleEffect(0.30)
 			.gloss(color: shadowColor, numberOfLayers: 1)
     }
-}
-
-#Preview {
-    Loader(loaderName: "astronaut", shadowColor: .red)
 }

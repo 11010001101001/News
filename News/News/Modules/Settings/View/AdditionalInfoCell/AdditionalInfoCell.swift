@@ -9,11 +9,7 @@ import Foundation
 import SwiftUI
 
 struct AdditionalInfoCell: View {
-    @ObservedObject private var viewModel: SettingsViewModel
-    
-    init(viewModel: SettingsViewModel) {
-        self.viewModel = viewModel
-    }
+    @ObservedObject var viewModel: SettingsViewModel
     
     var body: some View {
         Group {

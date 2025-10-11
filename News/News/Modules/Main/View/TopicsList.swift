@@ -13,11 +13,11 @@ struct TopicsList: View {
                     loaderName: viewModel.loader,
                     shadowColor: viewModel.loaderShadowColor
                 )
-                .opacity($viewModel.loadingSucceed.wrappedValue ? .zero : 1.0)
+                .opacity($viewModel.loadingSucceeded.wrappedValue ? .zero : 1.0)
                 .id(viewModel.id)
 
                 ErrorView(
-                    title: $viewModel.failureReason.wrappedValue,
+                    title: $viewModel.errorMessage.wrappedValue,
                     action: {
                         viewModel.impactOccured(.light)
                         viewModel.loadNews()
@@ -44,7 +44,7 @@ private extension TopicsList {
             viewModel.impactOccured(.light)
             viewModel.refresh()
         }
-        .opacity($viewModel.loadingSucceed.wrappedValue ? 1.0 : .zero)
+        .opacity($viewModel.loadingSucceeded.wrappedValue ? 1.0 : .zero)
     }
 
     func buildTopic() -> some View {

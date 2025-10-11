@@ -9,21 +9,28 @@ import Foundation
 import Combine
 import UIKit
 
-final class NotificationManager {
-    private var notificationCancellable: AnyCancellable?
+protocol NotificationManagerProtocol {
+    func bind(to publisher: AnyPublisher<String, Never>)
+}
 
-    init(viewModel: MainViewModel) {
-        notificationCancellable = viewModel.$notificationSound
+final class NotificationManager {
+    private var cancellables = Set<AnyCancellable>()
+}
+
+// MARK: - NotificationManagerProtocol
+extension NotificationManager: NotificationManagerProtocol {
+    func bind(to publisher: AnyPublisher<String, Never>) {
+        publisher
             .sink { [weak self] sound in
                 self?.configureNotifications(with: sound)
             }
+            .store(in: &cancellables)
     }
+}
 
-    deinit {
-        notificationCancellable = nil
-    }
-
-    private func configureNotifications(with sound: String) {
+// MARK: - Private
+private extension NotificationManager {
+    func configureNotifications(with sound: String) {
         let notificationCenter = UNUserNotificationCenter.current()
 
         notificationCenter.removeAllPendingNotificationRequests()
@@ -37,8 +44,8 @@ final class NotificationManager {
                 guard error == nil, granted else { return }
 
                 let content = UNMutableNotificationContent()
-				content.title = Texts.Notification.title()
-				content.body = Texts.Notification.body()
+                content.title = Texts.Notification.title()
+                content.body = Texts.Notification.body()
                 content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "\(sound).mp3"))
 
                 var dateComponents = DateComponents()
@@ -48,9 +55,12 @@ final class NotificationManager {
                 let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
 
                 let uuid = UUID().uuidString
-                let request = UNNotificationRequest(identifier: uuid,
-                                                    content: content,
-                                                    trigger: trigger)
+
+                let request = UNNotificationRequest(
+                    identifier: uuid,
+                    content: content,
+                    trigger: trigger
+                )
 
                 notificationCenter.add(request)
             }

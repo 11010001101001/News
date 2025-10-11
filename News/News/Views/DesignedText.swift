@@ -11,10 +11,6 @@ import SwiftUI
 struct DesignedText: View {
 	let text: String
 
-	init(text: String) {
-		self.text = text
-	}
-
 	var body: some View {
 		Text(text)
 			.fontDesign(.monospaced)

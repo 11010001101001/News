@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct FavoritesView: View {
-    @StateObject var viewModel = FavoritesViewModel()
+    @StateObject var viewModel: FavoritesViewModel
     
     var body: some View {
         content

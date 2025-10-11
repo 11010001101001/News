@@ -13,7 +13,7 @@ struct DeveloperInfo {
 	static let contactLink = URL(string: Texts.App.telegram())!
 	static var currentAppVersion: String {
 		Texts.App.version(
-			Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Error in recognizing appVersion"
+            (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String).or("Error in recognizing appVersion")
 		)
 	}
 }

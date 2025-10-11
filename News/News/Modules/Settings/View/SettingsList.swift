@@ -9,12 +9,8 @@ import SwiftUI
 import Lottie
 
 struct SettingsList: View {
-    @ObservedObject private var viewModel: SettingsViewModel
+    @ObservedObject var viewModel: SettingsViewModel
     @Environment(\.dismiss) var dismiss
-
-    init(viewModel: SettingsViewModel) {
-        self.viewModel = viewModel
-    }
 
     var body: some View {
         TabView {
