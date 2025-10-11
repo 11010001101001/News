@@ -17,9 +17,9 @@ public extension UIImage {
 	}
 
 	enum Images {
+		public static var cat = UIImage(named: "Cat.imageset", in: Bundle(for: BundleToken.self), with: .none)!
+		public static var dart = UIImage(named: "Dart.imageset", in: Bundle(for: BundleToken.self), with: .none)!
 		public static var globe = UIImage(named: "Globe.imageset", in: Bundle(for: BundleToken.self), with: .none)!
-		public static var jinx = UIImage(named: "Jinx.imageset", in: Bundle(for: BundleToken.self), with: .none)!
-		public static var sсull = UIImage(named: "Sсull.imageset", in: Bundle(for: BundleToken.self), with: .none)!
 	}
 
 	enum LaunchScreenImages {

@@ -17,7 +17,7 @@ public enum Constants {
 	static let imageHeight: CGFloat = 300
 
 	enum DefaultSettings {
-		static let category = Category.business.rawValue
+		static let category = NewsCategory.business.rawValue
 		static let soundTheme = SoundTheme.silentMode.rawValue
 		static let loader = LoaderConfiguration.hourGlass.rawValue
 		static let appIcon = AppIconConfiguration.globe.rawValue

@@ -97,7 +97,7 @@ extension SettingsViewModel {
 
     func applySettings(_ key: String) {
         switch key {
-        case let name where Category.allCases.contains(where: { $0.rawValue == name }):
+        case let name where NewsCategory.allCases.contains(where: { $0.rawValue == name }):
             guard name != category else {
                 notificationOccurred(.error)
                 return
