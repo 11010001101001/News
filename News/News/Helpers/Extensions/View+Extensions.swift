@@ -28,12 +28,10 @@ extension View {
 	}
 
 	func markAsReadOrHighlight(
-		_ viewModel: ViewModel,
-		_ article: Article
+        isRead: Bool,
+        isShadowEnabled: Bool
 	) -> some View {
-		let isRead = viewModel.checkIsRead(article.key)
 		let opacity = isRead ? 0.5 : 1.0
-		let isShadowEnabled = (article.title?.lowercased() ?? .empty).contains("apple")
 
 		return switch (isRead, isShadowEnabled) {
 		case (false, false):
@@ -52,7 +50,7 @@ extension View {
 	}
 
 	func markIsSelected(
-		_ viewModel: ViewModel,
+		_ viewModel: SettingsViewModel,
 		_ id: String
 	) -> some View {
 		let isEnabled = viewModel.checkIsEnabled(id.lowercased())

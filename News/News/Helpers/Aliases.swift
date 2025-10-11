@@ -7,7 +7,4 @@
 
 import Foundation
 
-typealias FunctionClosure = (((() -> Void)?) -> Void)?
 typealias Action = (() -> Void)?
-typealias SettingsTappedAction = (String) -> Void
-typealias BoolClosure = (Bool) -> Void

@@ -1,0 +1,48 @@
+/* 
+  Strings.strings
+  News
+
+  Created by Yaroslav Kupriyanov on 17.11.2024.
+  
+*/
+
+"notification.title" = "Mmmmm, nice-ey";
+"notification.body" = "News carriage arrived, unload please 🦥";
+
+"share.info" = "Link to News app in appStore 🦾: stay informed!👨🏻‍🔧";
+
+"errors.topicLabelNoInfo" = "No description. It's not an error, press button below for more";
+"errors.badRequest" = "Error 400\n\nBad request, please try again later";
+"errors.unauthorized" ="Error 401\n\nRequest autorization failed, please try again later";
+"errors.tooManyRequests" = "Error 429\n\nRequests number per day exceeded, see you tommorow";
+"errors.serverError" = "Error 500\n\nServer error, please try again later";
+"errors.timeout" = "Time - out\nerror\n\nServer problem or internet connection broken";
+"errors.mappingError" = "mappingError";
+"errors.invalidUrl" = "invalidUrl";
+"errors.responseError" = "responseError";
+"errors.undefinedError" = "undefinedError";
+"errors.imageLoadingError" = "Image loading failed";
+"errors.loadingFailed" = "Loading failed";
+"errors.noConnection" = "No connection";
+"errors.unhandled" = "Ups, unhandled error";
+"loading.state.ok" = "ok";
+
+"app.version" = "app version: %@";
+"app.contactUs" = "contact us";
+"app.telegram" = "https://t.me/Yaroslav_Kupriyanov";
+"app.apiKey1" = "8f825354e7354c71829cfb4cb15c4893";
+"app.apiKey2" = "eb4bc5c32bdd40ca937aa8f94ff2673a";
+
+"tip.settings.title" = "Tip";
+"tip.settings.message" = "Don't forget to check settings 🦥";
+
+"screen.details.title" = "Details";
+"screen.main.title" = "News";
+"screen.settings.title" = "Settings";
+"screen.more.title" = "More";
+
+"state.noDescription" = "🌚";
+
+"Actions.share" = "Share";
+"Actions.open" = "Open";
+"Actions.reload" = "Reload";

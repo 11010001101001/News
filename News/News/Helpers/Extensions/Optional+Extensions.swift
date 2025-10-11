@@ -12,10 +12,22 @@ extension Optional where Wrapped == String {
 		self ?? .empty
 	}
 
-	func orEmpty(_ defaultValue: String) -> String {
+	func or(_ defaultValue: String) -> String {
 		if let self, self.isEmpty {
 			return defaultValue
 		}
 		return self ?? defaultValue
 	}
+}
+
+extension Optional where Wrapped == [String] {
+    var orEmpty: [String] {
+        self ?? []
+    }
+}
+
+extension Optional where Wrapped == [Article] {
+    var orEmpty: [Article] {
+        self ?? []
+    }
 }
