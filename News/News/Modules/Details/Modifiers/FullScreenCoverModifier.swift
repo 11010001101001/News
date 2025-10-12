@@ -58,7 +58,7 @@ private extension FullScreenCoverModifier {
 			shadowColor: viewModel.loaderShadowColor
 		)
 		.frame(height: Constants.imageHeight)
-		.opacity(webViewModel.loadingState == .loading ? 1 : 0)
+        .opacity(webViewModel.loadingState.loaderOpacity)
 	}
 
 	var webView: some View {
@@ -68,7 +68,7 @@ private extension FullScreenCoverModifier {
 	var error: some View {
 		ErrorView(title: Errors.loadingFailed, action: nil)
 			.frame(height: Constants.imageHeight)
-			.opacity(webViewModel.loadingState == .error ? 1 : 0)
+            .opacity(webViewModel.loadingState.errorOpacity)
 	}
 
 	var progressView: some View {

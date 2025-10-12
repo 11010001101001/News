@@ -140,8 +140,8 @@ public enum Texts {
     }
   }
   public enum State {
-    /// 🌚
-    public static func noDescription() -> String { Texts.tr("Strings", "state.noDescription", fallback: "🌚")
+    /// No description 👀
+    public static func noDescription() -> String { Texts.tr("Strings", "state.noDescription", fallback: "No description 👀")
     }
   }
   public enum Tip {

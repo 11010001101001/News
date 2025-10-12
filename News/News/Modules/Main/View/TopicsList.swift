@@ -13,18 +13,18 @@ struct TopicsList: View {
                     loaderName: viewModel.loader,
                     shadowColor: viewModel.loaderShadowColor
                 )
-                .opacity($viewModel.loadingSucceeded.wrappedValue ? .zero : 1.0)
-                .id(viewModel.id)
+                .opacity(viewModel.loadingState.loaderOpacity)
+                .id(viewModel.loaderId)
 
                 ErrorView(
-                    title: $viewModel.errorMessage.wrappedValue,
+                    title: viewModel.loadingState.errorMessage,
                     action: {
                         viewModel.impactOccured(.light)
                         viewModel.loadNews()
                     }
                 )
                 .padding(.horizontal, CGFloat.sideInsets)
-                .opacity($viewModel.loadingFailed.wrappedValue ? 1.0 : .zero)
+                .opacity(viewModel.loadingState.errorOpacity)
             }
         }
     }
@@ -44,11 +44,11 @@ private extension TopicsList {
             viewModel.impactOccured(.light)
             viewModel.refresh()
         }
-        .opacity($viewModel.loadingSucceeded.wrappedValue ? 1.0 : .zero)
+        .opacity(viewModel.loadingState.contentOpacity)
     }
 
     func buildTopic() -> some View {
-        ForEach($viewModel.newsArray) { $article in
+        ForEach(viewModel.newsArray, id: \.self) { article in
             ModuleBuilder.shared.build(.details(article))
         }
     }

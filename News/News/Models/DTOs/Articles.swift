@@ -7,11 +7,7 @@
 
 import Foundation
 
-struct Article: Decodable, Identifiable {
-    var id: UUID? {
-        UUID()
-    }
-
+struct Article: Decodable, Equatable, Hashable {
     var key: String {
         let saltNumber = 7
         return (title ?? .empty) + String(description ?? .empty).prefix(saltNumber)

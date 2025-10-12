@@ -9,44 +9,24 @@ import Foundation
 import Combine
 
 protocol NetworkManagerProtocol {
-    var loadingFailed: AnyPublisher<Bool, Never> { get }
-    var loadingSucceeded: AnyPublisher<Bool, Never> { get }
-    var errorMessage: AnyPublisher<String, Never> { get }
-    var newsArray: AnyPublisher<[Article], Never> { get }
+    var loadingState: AnyPublisher<LoadingState, Never> { get }
 
-    func loadNews(
-        category: String,
-        isRefresh: Bool,
-        completion: Action?
-    )
+    func loadNews(category: String, isRefresh: Bool)
 }
 
 final class NetworkManager: ObservableObject {
-    var loadingFailed: AnyPublisher<Bool, Never> { loadingFailedSubject.eraseToAnyPublisher() }
-    var loadingSucceeded: AnyPublisher<Bool, Never> { loadingSucceededSubject.eraseToAnyPublisher() }
-    var errorMessage: AnyPublisher<String, Never> { errorMessageSubject.eraseToAnyPublisher() }
-    var newsArray: AnyPublisher<[Article], Never> { newsArraySubject.eraseToAnyPublisher() }
+    var loadingState: AnyPublisher<LoadingState, Never> { loadingStateSubject.eraseToAnyPublisher() }
 
-    private let loadingFailedSubject = PassthroughSubject<Bool, Never>()
-    private let loadingSucceededSubject = PassthroughSubject<Bool, Never>()
-    private let errorMessageSubject = PassthroughSubject<String, Never>()
-    private let newsArraySubject = PassthroughSubject<[Article], Never>()
+    private let loadingStateSubject = PassthroughSubject<LoadingState, Never>()
     private var cancellables = Set<AnyCancellable>()
 }
 
 // MARK: - NetworkManagerProtocol
 extension NetworkManager: NetworkManagerProtocol {
-    func loadNews(
-        category: String,
-        isRefresh: Bool,
-        completion: Action?
-    ) {
+    func loadNews(category: String, isRefresh: Bool) {
         guard let url = URL(string: Mode.category(category).urlString) else { return }
 
-        if !isRefresh {
-            loadingSucceededSubject.send(false)
-            loadingFailedSubject.send(false)
-        }
+        if !isRefresh { loadingStateSubject.send(.loading) }
 
         URLSession.shared.dataTaskPublisher(for: url)
             .retry(3)
@@ -63,7 +43,7 @@ extension NetworkManager: NetworkManagerProtocol {
                     self?.handleError(error)
                 }
             } receiveValue: { [weak self] value in
-                self?.handleResponse(value, completion)
+                self?.handleResponse(value)
             }
             .store(in: &cancellables)
     }
@@ -87,14 +67,10 @@ private extension NetworkManager {
         case let .mappingError(msg): msg
         default: Texts.Errors.unhandled()
         }
-        loadingFailedSubject.send(true)
-        errorMessageSubject.send(message)
+        loadingStateSubject.send(.error(message: message))
     }
 
-    func handleResponse(
-        _ value: (data: Data, response: URLResponse),
-        _ completion: Action? = nil
-    ) {
+    func handleResponse(_ value: (data: Data, response: URLResponse)) {
         guard let response = value.response as? HTTPURLResponse,
               let model = try? JSONDecoder().decode(CommonInfo.self, from: value.data)
         else { return }
@@ -103,14 +79,11 @@ private extension NetworkManager {
 
         switch statusCode {
         case HttpStatusCodes.ok.rawValue:
-            newsArraySubject.send(model.articles.orEmpty)
-            loadingSucceededSubject.send(true)
+            loadingStateSubject.send(.loaded(data: model.articles.orEmpty))
 
         default:
-            errorMessageSubject.send((HttpStatusCodes(rawValue: statusCode)?.message).orEmpty)
-            loadingFailedSubject.send(true)
+            let message = (HttpStatusCodes(rawValue: statusCode)?.message).orEmpty
+            loadingStateSubject.send(.error(message: message))
         }
-
-        completion??()
     }
 }

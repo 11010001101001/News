@@ -10,7 +10,6 @@ import Lottie
 
 struct SettingsList: View {
     @ObservedObject var viewModel: SettingsViewModel
-    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         TabView {
@@ -56,20 +55,12 @@ struct SettingsList: View {
         }
         .toolbarRole(.editor)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                NavButton(
-                    type: .back,
-                    action: { dismiss() }
-                )
-            }
-
             ToolbarItem(placement: .principal) {
                 DesignedText(text: Texts.Screen.Settings.title())
                     .font(.title)
             }
         }
         .scrollIndicators(.automatic)
-        .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
     }
 }

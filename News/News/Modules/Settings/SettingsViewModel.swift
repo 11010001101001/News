@@ -5,9 +5,7 @@ import UIKit
 
 final class SettingsViewModel: ObservableObject {
     // MARK: Internal variables
-    @Published var loadingFailed = false
-    @Published var loadingSucceeded = false
-    @Published var errorMessage = String.empty
+    @Published var loadingState = LoadingState.loading
     @Published var newsArray = [Article]()
 
     @Published var notificationSound = String.empty
@@ -103,7 +101,7 @@ extension SettingsViewModel {
                 return
             }
             category = name
-            networkManager.loadNews(category: category, isRefresh: false, completion: nil)
+            networkManager.loadNews(category: category, isRefresh: false)
 
         case let name where SoundTheme.allCases.contains(where: { $0.rawValue == name }):
             guard name != soundTheme else {
@@ -139,28 +137,20 @@ extension SettingsViewModel {
 // MARK: - Private
 private extension SettingsViewModel {
     func subscribeNetworkManager() {
-        networkManager.loadingFailed
-            .sink { [weak self] in self?.loadingFailed = $0 }
-            .store(in: &cancellables)
-        networkManager.loadingSucceeded
-            .removeDuplicates()
+        networkManager.loadingState
             .sink { [weak self] in
-                self?.loadingSucceeded = $0
-                if $0 {
+                self?.loadingState = $0
+                switch $0 {
+                case .loading:
+                    break
+                case let .loaded(data):
+                    self?.newsArray = (self?.sortIsRead(data)).orEmpty
                     self?.notificationOccurred(.success)
+                case .error:
+                    self?.notificationOccurred(.error)
+                    self?.playError()
                 }
             }
-            .store(in: &cancellables)
-        networkManager.errorMessage
-            .removeDuplicates()
-            .sink { [weak self] in
-                self?.errorMessage = $0
-                self?.notificationOccurred(.error)
-                self?.playError()
-            }
-            .store(in: &cancellables)
-        networkManager.newsArray
-            .sink { [weak self] in self?.newsArray = (self?.sortIsRead($0)).orEmpty }
             .store(in: &cancellables)
     }
 

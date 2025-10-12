@@ -69,15 +69,15 @@ extension WebView {
 		}
 
 		func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-			viewModel.loadingState = .loaded
+			viewModel.loadingState = .loaded(data: [])
 		}
 
 		func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-			viewModel.loadingState = .error
+			viewModel.loadingState = .error(message: nil)
 		}
 
 		func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-			viewModel.loadingState = .loaded
+            viewModel.loadingState = .loaded(data: [])
 		}
 
 		func webView(
@@ -85,7 +85,7 @@ extension WebView {
 			didFailProvisionalNavigation navigation: WKNavigation!,
 			withError error: any Error
 		) {
-			viewModel.loadingState = .error
+			viewModel.loadingState = .error(message: nil)
 		}
 	}
 }
