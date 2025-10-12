@@ -23,19 +23,11 @@ struct TopicDetail: View {
 		}
 		.toolbarRole(.editor)
 		.toolbar {
-			ToolbarItem(placement: .topBarLeading) {
-                NavButton(
-                    type: .back,
-                    action: { dismiss() }
-                )
-			}
-
 			ToolbarItem(placement: .principal) {
 				DesignedText(text: Texts.Screen.Details.title())
 					.font(.title)
 			}
 		}
-		.navigationBarBackButtonHidden(true)
 		.navigationBarTitleDisplayMode(.inline)
 	}
 }

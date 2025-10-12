@@ -11,13 +11,11 @@ import Combine
 
 final class MainViewModel: ObservableObject {
     // MARK: Internal variables
-    @Published var loadingFailed = false
-    @Published var loadingSucceeded = false
-    @Published var errorMessage = String.empty
+    @Published var loadingState = LoadingState.loading
     @Published var newsArray = [Article]()
 
     /// For redraw loader on content view after settings loaded: render loader -> settings loaded -> redraw
-    @Published var id: Int?
+    @Published var loaderId: Int?
     @Published var feedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle?
     @Published var feedBackType: UINotificationFeedbackGenerator.FeedbackType?
     @Published var settingsShortcutItemTapped = false
@@ -115,7 +113,7 @@ extension MainViewModel {
     }
 
     func loadNews() {
-        networkManager.loadNews(category: category, isRefresh: false, completion: nil)
+        networkManager.loadNews(category: category, isRefresh: false)
     }
 
     func markAsReadOrUnread() {
@@ -142,7 +140,7 @@ extension MainViewModel {
     }
 
     func redrawContentViewLoader() {
-        id = Int.random(in: .zero...Int.max)
+        loaderId = Int.random(in: .zero...Int.max)
     }
 
     /// sound theme can change - do it during every app launch and sound changing
@@ -161,35 +159,29 @@ extension MainViewModel {
         feedbackStyle = style
     }
 
-    func refresh(completion: Action? = nil) {
+    func refresh() {
         playRefresh()
-        networkManager.loadNews(category: category, isRefresh: true, completion: completion)
+        networkManager.loadNews(category: category, isRefresh: true)
     }
 }
 
 // MARK: - Private
 private extension MainViewModel {
     func subscribeNetworkManager() {
-        networkManager.loadingFailed
-            .sink { [weak self] in self?.loadingFailed = $0 }
-            .store(in: &cancellables)
-        networkManager.loadingSucceeded
+        networkManager.loadingState
             .sink { [weak self] in
-                self?.loadingSucceeded = $0
-                if $0 {
+                self?.loadingState = $0
+                switch $0 {
+                case .loading:
+                    break
+                case let .loaded(data):
+                    self?.newsArray = (self?.sortIsRead(data)).orEmpty
                     self?.notificationOccurred(.success)
+                case .error:
+                    self?.notificationOccurred(.error)
+                    self?.playError()
                 }
             }
-            .store(in: &cancellables)
-        networkManager.errorMessage
-            .sink { [weak self] in
-                self?.errorMessage = $0
-                self?.notificationOccurred(.error)
-                self?.playError()
-            }
-            .store(in: &cancellables)
-        networkManager.newsArray
-            .sink { [weak self] in self?.newsArray = (self?.sortIsRead($0)).orEmpty }
             .store(in: &cancellables)
     }
 
