@@ -93,7 +93,7 @@ private extension TopicCell {
             isGlass: false
         )
 
-        MarkAsReadButton(
+        MarkAsReadContextMenuButton(
             viewModel: viewModel,
             article: article
         )

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct MarkAsReadButton: View {
+struct MarkAsReadContextMenuButton: View {
     let viewModel: DetailsViewModel
     let article: Article
 
