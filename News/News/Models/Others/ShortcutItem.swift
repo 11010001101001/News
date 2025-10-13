@@ -45,8 +45,8 @@ enum ShortcutItem: String {
 
 	var systemImageName: String {
 		switch self {
-		case .settings: "gear"
-		case .share: "square.and.arrow.up"
+        case .settings: SFSymbols.gear.rawValue
+		case .share: SFSymbols.squareAndArrowUp.rawValue
 		}
 	}
 }

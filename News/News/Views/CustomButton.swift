@@ -8,23 +8,31 @@
 import SwiftUI
 
 struct CustomButton: View {
-	let action: Action
-	var title: String?
-	var iconName: String?
+    let action: Action
+    var title: String?
+    var iconName: String?
+    var isGlass = true
 
-	var body: some View {
-        OptionalView(action) { action in
-			Button(
-				action: {
-                    action?()
-				},
-				label: {
-                    label
-				}
-			)
-            .buttonStyle(.glass)
-		}
-	}
+    var body: some View {
+        let button = Button(
+            action: {
+                action?()
+            },
+            label: {
+                label
+            }
+        )
+
+        ConditionalView(isGlass) {
+            OptionalView(action) { action in
+                button
+                    .buttonStyle(.glass)
+            }
+        }
+        ConditionalView(!isGlass) {
+            button
+        }
+    }
 }
 
 // MARK: - Content

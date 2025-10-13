@@ -12,7 +12,7 @@ enum NewsCategory: String, CaseIterable, Identifiable {
 
     static var title: String { "Category" }
 
-    static var image: String { "list.bullet" }
+    static var image: String { SFSymbols.listBullet.rawValue }
 
     static var random: String {
         allCases.randomElement()?.rawValue ?? .empty

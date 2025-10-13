@@ -24,7 +24,6 @@ struct ShareButton: View {
 			title: data.title,
 			iconName: data.iconName
 		)
-
 		.sheet(
 			item: $imageWrapper,
 			content: { content in

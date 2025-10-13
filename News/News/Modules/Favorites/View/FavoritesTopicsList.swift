@@ -22,9 +22,9 @@ struct FavoritesTopicsList: View {
 // MARK: - Private
 private extension FavoritesTopicsList {
     var list: some View {
-        ConditionalView(!viewModel.favorites.isEmpty) {
+        ConditionalView(!viewModel.favoriteTopics.isEmpty) {
             ScrollView(.vertical) {
-                ForEach(viewModel.favorites, id: \.self) { article in
+                ForEach(viewModel.favoriteTopics, id: \.self) { article in
                     ModuleBuilder.shared.build(.details(article.article))
                 }
                 .padding(.top, Constants.padding)
@@ -33,7 +33,7 @@ private extension FavoritesTopicsList {
     }
 
     var emptyView: some View {
-        ConditionalView(viewModel.favorites.isEmpty) {
+        ConditionalView(viewModel.favoriteTopics.isEmpty) {
             FavoritesEmptyView()
             .padding(.horizontal, CGFloat.sideInsets)
         }

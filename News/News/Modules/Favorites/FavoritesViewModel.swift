@@ -2,7 +2,7 @@ import Foundation
 
 final class FavoritesViewModel: ObservableObject {
     // MARK: Internal variables
-    var favorites: [FavoriteArticle] {
+    var favoriteTopics: [FavoriteArticle] {
         get { settingsManager.favoriteTopics }
         set { settingsManager.save(favorites: newValue) }
     }
@@ -18,7 +18,13 @@ final class FavoritesViewModel: ObservableObject {
     }
 }
 
-// MARK: - Private
-private extension FavoritesViewModel {
-    
+// MARK: - Internal
+extension FavoritesViewModel {
+    var hasFavorites: Bool {
+        !settingsManager.favoriteTopics.isEmpty
+    }
+
+    func removeFavorites() {
+        favoriteTopics.removeAll()
+    }
 }

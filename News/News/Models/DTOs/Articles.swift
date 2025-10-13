@@ -23,6 +23,7 @@ struct Article: Decodable, Equatable, Hashable {
     var content: String?
 }
 
+// MARK: - FavoriteArticle
 extension Article {
     var favorite: FavoriteArticle {
         .init(

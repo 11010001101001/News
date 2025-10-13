@@ -15,6 +15,7 @@ public enum Constants {
 	static let padding: CGFloat = 16
 	static let cornerRadius: CGFloat = 26
 	static let imageHeight: CGFloat = 300
+    static let detailsButtonsSpacing: CGFloat = 8
 
 	enum DefaultSettings {
 		static let category = NewsCategory.business.rawValue

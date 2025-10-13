@@ -25,6 +25,13 @@ private extension FavoritesView {
                     DesignedText(text: Texts.Favorites.Screen.title())
                         .font(.title)
                 }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavButton(
+                        type: .removeFavorites(hasFavorites: viewModel.hasFavorites),
+                        action: { viewModel.removeFavorites() }
+                    )
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
     }
