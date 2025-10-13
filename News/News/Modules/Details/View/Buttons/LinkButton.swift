@@ -21,7 +21,7 @@ struct LinkButton: View {
                 webViewPresented.toggle()
             },
             title: nil,
-            iconName: "link"
+            iconName: SFSymbols.link.rawValue
         )
         .modifier(
             FullScreenCoverModifier(

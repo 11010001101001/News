@@ -50,3 +50,9 @@
 "Favorites.screen.title" = "Favorites";
 "Favorites.empty" = "Nothing added yet";
 "Favorites.add" = "Add";
+
+"ContextMenu.addToFavorites" = "Add to favorites";
+"ContextMenu.removeFromFavorites" = "Remove from favorites";
+"ContextMenu.share" = "Share";
+"ContextMenu.markAsRead" = "Mark as read";
+"ContextMenu.markAsUnread" = "Mark as unread";

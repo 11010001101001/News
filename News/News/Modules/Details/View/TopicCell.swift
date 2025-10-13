@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct TopicCell: View {
-	@ObservedObject var viewModel: DetailsViewModel
-	let article: Article
+    @ObservedObject var viewModel: DetailsViewModel
+    @State var imageWrapper: ContentWrapper?
+
+    let article: Article
 
     var isRead: Bool {
         viewModel.checkIsRead(article.key)
@@ -19,19 +21,27 @@ struct TopicCell: View {
         ((article.title?.lowercased()).orEmpty).contains("apple")
     }
 
-	var body: some View {
-		Group {
+    var body: some View {
+        Group {
             ZStack(alignment: .bottomTrailing) {
                 texts
                 favoriteButton
             }
-			.padding(Constants.padding)
-		}
+            .padding(Constants.padding)
+        }
         .frame(maxWidth: .infinity, alignment: .leading)
         .glassCard()
         .markAsReadOrHighlight(isRead: isRead, isShadowEnabled: isShadowEnabled)
-		.padding([.bottom, .horizontal], Constants.padding)
-	}
+        .padding([.bottom, .horizontal], Constants.padding)
+        .contextMenu { contextMenu }
+        .sheet(
+            item: $imageWrapper,
+            content: { content in
+                ActivityViewController(contentWrapper: content)
+                    .presentationDetents([.medium])
+            }
+        )
+    }
 }
 
 // MARK: - Content
@@ -59,13 +69,39 @@ private extension TopicCell {
         FavoritesButton(
             viewModel: viewModel,
             article: article,
+            isGlass: false,
+            title: nil
+        )
+    }
+
+    @ViewBuilder
+    var contextMenu: some View {
+        FavoritesContextMenuButton(
+            viewModel: viewModel,
+            article: article,
             isGlass: false
+        )
+
+        ShareContextMenuButton(
+            imageWrapper: $imageWrapper,
+            data: ButtonMetaData(
+                article: article,
+                title: Texts.ContextMenu.share(),
+                iconName: SFSymbols.squareAndArrowUp.rawValue
+            ),
+            viewModel: viewModel,
+            isGlass: false
+        )
+
+        MarkAsReadButton(
+            viewModel: viewModel,
+            article: article
         )
     }
 }
 
 extension TopicCell: Equatable {
-	static func == (lhs: TopicCell, rhs: TopicCell) -> Bool {
-		lhs.article.key == rhs.article.key
-	}
+    static func == (lhs: TopicCell, rhs: TopicCell) -> Bool {
+        lhs.article.key == rhs.article.key
+    }
 }

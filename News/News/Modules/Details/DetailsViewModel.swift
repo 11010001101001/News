@@ -62,6 +62,11 @@ extension DetailsViewModel {
         clearStorageIfNeeded()
     }
 
+    func markAsUnread(_ key: String) {
+        watchedTopics.removeAll(where: { $0 == key })
+        clearStorageIfNeeded()
+    }
+
     func cache(object: AnyObject, key: AnyObject) {
         imageCacheData = (object, key)
     }

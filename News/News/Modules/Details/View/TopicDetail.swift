@@ -69,9 +69,10 @@ private extension TopicDetail {
 			data: ButtonMetaData(
 				article: article,
 				title: nil,
-				iconName: "square.and.arrow.up"
+                iconName: SFSymbols.squareAndArrowUp.rawValue
             ),
-            viewModel: viewModel
+            viewModel: viewModel,
+            isGlass: true
 		)
 	}
 
@@ -86,7 +87,8 @@ private extension TopicDetail {
         FavoritesButton(
             viewModel: viewModel,
             article: article,
-            isGlass: true
+            isGlass: true,
+            title: nil
         )
     }
 }

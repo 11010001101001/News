@@ -8,14 +8,17 @@
 import Foundation
 import SwiftUI
 
-struct FavoritesButton: View {
+struct FavoritesContextMenuButton: View {
     @ObservedObject var viewModel: DetailsViewModel
     let article: Article
     let isGlass: Bool
-    let title: String?
 
     private var isFavorite: Bool {
         viewModel.checkIsFavorite(article)
+    }
+
+    private var title: String {
+        isFavorite ? Texts.ContextMenu.removeFromFavorites() : Texts.ContextMenu.addToFavorites()
     }
 
     var body: some View {
