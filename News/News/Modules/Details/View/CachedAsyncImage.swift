@@ -13,7 +13,7 @@ struct CachedAsyncImage: View {
     @ObservedObject var viewModel: DetailsViewModel
 
     private var url: String {
-        article.urlToImage ?? .empty
+        article.urlToImage.orEmpty
     }
 
     private var key: AnyObject {

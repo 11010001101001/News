@@ -22,7 +22,7 @@ struct OpenLinkButton: View {
 
 	private var openLinkAction: Action {
 		{
-			if let url = URL(string: data.article.url ?? .empty) {
+            if let url = URL(string: data.article.url.orEmpty) {
 				openURL(url)
 			}
 		}

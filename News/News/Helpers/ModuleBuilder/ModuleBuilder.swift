@@ -43,7 +43,9 @@ struct ModuleBuilder {
             SettingsView(viewModel: viewModel)
             
         case .favorites:
-            let viewModel = FavoritesViewModel()
+            let viewModel = FavoritesViewModel(
+                settingsManager: settingsManager
+            )
             FavoritesView(viewModel: viewModel)
         }
     }

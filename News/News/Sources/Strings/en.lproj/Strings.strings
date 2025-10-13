@@ -46,3 +46,7 @@
 "Actions.share" = "Share";
 "Actions.open" = "Open";
 "Actions.reload" = "Reload";
+
+"Favorites.screen.title" = "Favorites";
+"Favorites.empty" = "Nothing added yet";
+"Favorites.add" = "Add";

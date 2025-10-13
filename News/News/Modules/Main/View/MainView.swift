@@ -124,6 +124,10 @@ private extension TopicsList {
             }
 
             ToolbarItem(placement: .topBarTrailing) {
+                NavButton(type: .favorites(isEmpty: viewModel.hasFavorites), action: nil)
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
                 NavButton(
                     type: .markAsRead(isAllRead: viewModel.isAllRead),
                     action: viewModel.markAsReadOrUnread

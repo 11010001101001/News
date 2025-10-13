@@ -21,6 +21,19 @@ public enum Texts {
     public static func share() -> String { Texts.tr("Strings", "Actions.share", fallback: "Share")
     }
   }
+  public enum Favorites {
+    /// Add
+    public static func add() -> String { Texts.tr("Strings", "Favorites.add", fallback: "Add")
+    }
+    /// Nothing added yet
+    public static func empty() -> String { Texts.tr("Strings", "Favorites.empty", fallback: "Nothing added yet")
+    }
+    public enum Screen {
+      /// Favorites
+      public static func title() -> String { Texts.tr("Strings", "Favorites.screen.title", fallback: "Favorites")
+      }
+    }
+  }
   public enum App {
     /// 8f825354e7354c71829cfb4cb15c4893
     public static func apiKey1() -> String { Texts.tr("Strings", "app.apiKey1", fallback: "8f825354e7354c71829cfb4cb15c4893")

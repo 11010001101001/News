@@ -5,34 +5,32 @@ struct TopicsList: View {
     @State private var enderOpacity: CGFloat = .zero
 
     var body: some View {
-        ScrollViewReader { proxy in
-            ZStack {
-                buildTopicsList(proxy: proxy)
+        ZStack {
+            list
 
-                Loader(
-                    loaderName: viewModel.loader,
-                    shadowColor: viewModel.loaderShadowColor
-                )
-                .opacity(viewModel.loadingState.loaderOpacity)
-                .id(viewModel.loaderId)
+            Loader(
+                loaderName: viewModel.loader,
+                shadowColor: viewModel.loaderShadowColor
+            )
+            .opacity(viewModel.loadingState.loaderOpacity)
+            .id(viewModel.loaderId)
 
-                ErrorView(
-                    title: viewModel.loadingState.errorMessage,
-                    action: {
-                        viewModel.impactOccured(.light)
-                        viewModel.loadNews()
-                    }
-                )
-                .padding(.horizontal, CGFloat.sideInsets)
-                .opacity(viewModel.loadingState.errorOpacity)
-            }
+            ErrorView(
+                title: viewModel.loadingState.errorMessage,
+                action: {
+                    viewModel.impactOccured(.light)
+                    viewModel.loadNews()
+                }
+            )
+            .padding(.horizontal, CGFloat.sideInsets)
+            .opacity(viewModel.loadingState.errorOpacity)
         }
     }
 }
 
 // MARK: - Private
 private extension TopicsList {
-    func buildTopicsList(proxy: ScrollViewProxy) -> some View {
+    var list: some View {
         ScrollView(.vertical) {
             VerStack {
                 buildTopic()
@@ -48,7 +46,7 @@ private extension TopicsList {
     }
 
     func buildTopic() -> some View {
-        ForEach(viewModel.newsArray, id: \.self) { article in
+        ForEach(viewModel.news, id: \.self) { article in
             ModuleBuilder.shared.build(.details(article))
         }
     }

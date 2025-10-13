@@ -16,24 +16,15 @@ struct TopicCell: View {
     }
 
     var isShadowEnabled: Bool {
-        (article.title?.lowercased() ?? .empty).contains("apple")
+        ((article.title?.lowercased()).orEmpty).contains("apple")
     }
 
 	var body: some View {
 		Group {
-			VerStack {
-				DesignedText(text: article.title ?? .empty)
-					.multilineTextAlignment(.leading)
-					.padding(.bottom)
-					.font(.headline)
-					.foregroundStyle(Color.primary)
-				DesignedText(text: article.publishedAt?.toReadableDate() ?? .empty)
-					.font(.subheadline)
-					.foregroundStyle(Color.secondary)
-				DesignedText(text: article.source?.name ?? .empty)
-					.font(.subheadline)
-					.foregroundStyle(Color.secondary)
-			}
+            ZStack(alignment: .bottomTrailing) {
+                texts
+                favoriteIcon
+            }
 			.padding(Constants.padding)
 		}
 		.frame(maxWidth: .infinity, alignment: .leading)
@@ -41,6 +32,40 @@ struct TopicCell: View {
         .markAsReadOrHighlight(isRead: isRead, isShadowEnabled: isShadowEnabled)
 		.padding([.bottom, .horizontal], Constants.padding)
 	}
+}
+
+// MARK: - Content
+private extension TopicCell {
+    var texts: some View {
+        VerStack {
+            DesignedText(text: article.title.orEmpty)
+                .multilineTextAlignment(.leading)
+                .padding(.bottom)
+                .font(.headline)
+                .foregroundStyle(Color.primary)
+            DesignedText(text: (article.publishedAt?.toReadableDate()).orEmpty)
+                .font(.subheadline)
+                .foregroundStyle(Color.secondary)
+            DesignedText(text: (article.source?.name).orEmpty)
+                .font(.subheadline)
+                .foregroundStyle(Color.secondary)
+        }
+    }
+
+    @ViewBuilder
+    var favoriteIcon: some View {
+        let isFavorite = viewModel.checkIsFavorite(article)
+
+        Button {
+            if isFavorite {
+                viewModel.favoriteTopics.removeAll(where: { $0 == article.favorite })
+            } else {
+                viewModel.favoriteTopics.append(article.favorite)
+            }
+        } label: {
+            isFavorite ? SFSymbols.starFill.image : SFSymbols.star.image
+        }
+    }
 }
 
 extension TopicCell: Equatable {

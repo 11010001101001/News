@@ -31,3 +31,9 @@ extension Optional where Wrapped == [Article] {
         self ?? []
     }
 }
+
+extension Optional where Wrapped == [FavoriteArticle] {
+    var orEmpty: [FavoriteArticle] {
+        self ?? []
+    }
+}

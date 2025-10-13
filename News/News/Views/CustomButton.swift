@@ -13,7 +13,7 @@ struct CustomButton: View {
 	var iconName: String?
 
 	var body: some View {
-		ConditionalView(action != nil) {
+        OptionalView(action) { action in
 			Button(
 				action: {
                     action?()
@@ -27,7 +27,7 @@ struct CustomButton: View {
 	}
 }
 
-// MARK: - Contents
+// MARK: - Content
 private extension CustomButton {
     var label: some View {
         Label(
@@ -37,15 +37,15 @@ private extension CustomButton {
     }
 
     var titleView: some View {
-        ConditionalView(title != nil) {
-            DesignedText(text: title ?? .empty)
+        OptionalView(title) {
+            DesignedText(text: $0)
                 .foregroundStyle(.white)
         }
     }
 
     var iconView: some View {
-        ConditionalView(iconName != nil) {
-            Image(systemName: iconName!)
+        OptionalView(iconName) {
+            Image(systemName: $0)
                 .foregroundStyle(.white)
         }
     }

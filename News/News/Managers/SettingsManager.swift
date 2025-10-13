@@ -14,6 +14,7 @@ protocol SettingsManagerProtocol {
     var loader: String { get }
     var appIcon: String { get }
     var watchedTopics: [String] { get }
+    var favoriteTopics: [FavoriteArticle] { get }
     var loaderShadowColor: Color { get }
 
     func save(soundTheme: String)
@@ -21,6 +22,7 @@ protocol SettingsManagerProtocol {
     func save(loader: String)
     func save(appIcon: String)
     func save(watchedTopics: [String])
+    func save(favorites: [FavoriteArticle])
 
     func loadSettings(_ settings: [SettingsModel])
 }
@@ -50,6 +52,10 @@ extension SettingsManager: SettingsManagerProtocol {
 
     var watchedTopics: [String] {
         (settings?.watchedTopics).orEmpty
+    }
+
+    var favoriteTopics: [FavoriteArticle] {
+        (settings?.favoriteTopics).orEmpty
     }
 
     var loaderShadowColor: Color {
@@ -82,6 +88,10 @@ extension SettingsManager: SettingsManagerProtocol {
 
     func save(watchedTopics: [String]) {
         savedSettings?.first?.watchedTopics = watchedTopics
+    }
+
+    func save(favorites: [FavoriteArticle]) {
+        savedSettings?.first?.favoriteTopics = favorites
     }
 
     func loadSettings(_ settings: [SettingsModel]) {

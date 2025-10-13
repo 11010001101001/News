@@ -16,8 +16,16 @@ struct FavoritesView: View {
     }
 }
 
+// MARK: - Content
 private extension FavoritesView {
     var content: some View {
-        Text("Empty")
+        FavoritesTopicsList(viewModel: viewModel)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    DesignedText(text: Texts.Favorites.Screen.title())
+                        .font(.title)
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
     }
 }
