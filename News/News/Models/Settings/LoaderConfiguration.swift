@@ -13,7 +13,7 @@ enum LoaderConfiguration: String, CaseIterable, Identifiable {
 
 	static var title: String { "Loader" }
 
-    static var image: String { "hourglass" }
+    static var image: String { SFSymbols.hourglass.rawValue }
 
 	case rocket
 	case hourGlass = "hourglass"

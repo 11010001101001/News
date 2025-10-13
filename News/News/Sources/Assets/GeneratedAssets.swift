@@ -14,6 +14,7 @@ public extension UIImage {
 
 	enum Errors {
 		public static var errorCat = UIImage(named: "ErrorCat.imageset", in: Bundle(for: BundleToken.self), with: .none)!
+		public static var favoritesEmptyCat = UIImage(named: "FavoritesEmptyCat.imageset", in: Bundle(for: BundleToken.self), with: .none)!
 	}
 
 	enum Images {

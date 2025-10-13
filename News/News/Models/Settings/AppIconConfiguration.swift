@@ -13,7 +13,7 @@ enum AppIconConfiguration: String, CaseIterable, Identifiable {
 
     static var title: String { "App icon" }
 
-    static var image: String { "photo" }
+    static var image: String { SFSymbols.photo.rawValue }
 
     case globe
     case cat

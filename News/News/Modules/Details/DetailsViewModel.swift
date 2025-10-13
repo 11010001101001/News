@@ -18,6 +18,11 @@ final class DetailsViewModel: ObservableObject {
         set { settingsManager.save(watchedTopics: newValue) }
     }
 
+    var favoriteTopics: [FavoriteArticle] {
+        get { settingsManager.favoriteTopics }
+        set { settingsManager.save(favorites: newValue) }
+    }
+
     var loaderShadowColor: Color {
         settingsManager.loaderShadowColor
     }
@@ -71,6 +76,10 @@ extension DetailsViewModel {
 
     func notificationOccurred(_ feedBackType: UINotificationFeedbackGenerator.FeedbackType) {
         self.feedBackType = feedBackType
+    }
+
+    func checkIsFavorite(_ article: Article) -> Bool {
+        favoriteTopics.contains(article.favorite)
     }
 }
 

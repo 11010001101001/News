@@ -12,8 +12,6 @@ struct TopicDetail: View {
 	@ObservedObject var viewModel: DetailsViewModel
 	@Environment(\.dismiss) var dismiss
 
-	@State private var webViewPresented = false
-
 	let article: Article
 
 	var body: some View {
@@ -55,10 +53,13 @@ private extension TopicDetail {
 
 	var buttons: some View {
         GlassEffectContainer {
-            HorStack(spacing: Constants.padding / 2) {
-                shareButton
-                linkButton
-                Spacer()
+            VerStack(alignment: .leading, spacing: Constants.detailsButtonsSpacing) {
+                HorStack(spacing: Constants.detailsButtonsSpacing) {
+                    shareButton
+                    linkButton
+                    Spacer()
+                }
+                favoriteButton
             }
         }
     }
@@ -75,20 +76,17 @@ private extension TopicDetail {
 	}
 
 	var linkButton: some View {
-		CustomButton(
-			action: {
-                viewModel.impactOccured(.light)
-				webViewPresented.toggle()
-			},
-			title: nil,
-			iconName: "link"
-		)
-		.modifier(
-			FullScreenCoverModifier(
-				viewModel: viewModel,
-				webViewPresented: $webViewPresented,
-				url: article.url.orEmpty
-			)
-		)
+        LinkButton(
+            viewModel: viewModel,
+            article: article
+        )
 	}
+
+    var favoriteButton: some View {
+        FavoritesButton(
+            viewModel: viewModel,
+            article: article,
+            isGlass: true
+        )
+    }
 }

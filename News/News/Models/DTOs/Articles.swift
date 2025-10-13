@@ -22,3 +22,19 @@ struct Article: Decodable, Equatable, Hashable {
     var publishedAt: String?
     var content: String?
 }
+
+// MARK: - FavoriteArticle
+extension Article {
+    var favorite: FavoriteArticle {
+        .init(
+            source: .init(id: source?.id, name: source?.name),
+            author: author,
+            title: title,
+            articleDescription: description,
+            url: url,
+            urlToImage: urlToImage,
+            publishedAt: publishedAt,
+            content: content
+        )
+    }
+}

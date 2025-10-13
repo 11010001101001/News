@@ -9,11 +9,11 @@ import Foundation
 import SwiftUI
 
 struct OptionalView<T, Content: View>: View {
-	let optional: Optional<T>
+	let optional: T?
 	let content: (T) -> Content
 
 	init(
-		_ optional: T,
+		_ optional: T?,
 		@ViewBuilder content: @escaping (T) -> Content
 	) {
         self.optional = optional
@@ -21,10 +21,8 @@ struct OptionalView<T, Content: View>: View {
 	}
 
 	var body: some View {
-		Group {
-			if let optional {
-				content(optional)
-			}
-		}
+        if let optional {
+            content(optional)
+        }
 	}
 }

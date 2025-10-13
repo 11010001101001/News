@@ -12,7 +12,7 @@ import Combine
 final class MainViewModel: ObservableObject {
     // MARK: Internal variables
     @Published var loadingState = LoadingState.loading
-    @Published var newsArray = [Article]()
+    @Published var news = [Article]()
 
     /// For redraw loader on content view after settings loaded: render loader -> settings loaded -> redraw
     @Published var loaderId: Int?
@@ -64,16 +64,20 @@ final class MainViewModel: ObservableObject {
     }
 
     var starwarsRefresh: String {
-        Set(["starwars_refresh", "starwars_refresh1"]).randomElement() ?? .empty
+        Set(["starwars_refresh", "starwars_refresh1"]).randomElement().orEmpty
     }
 
     var catsRefresh: String {
-        Set(["cats_refresh", "cats_refresh1"]).randomElement() ?? .empty
+        Set(["cats_refresh", "cats_refresh1"]).randomElement().orEmpty
     }
 
     var isAllRead: Bool {
-        guard !newsArray.isEmpty else { return false }
-        return newsArray.allSatisfy { checkIsRead($0.key) }
+        guard !news.isEmpty else { return false }
+        return news.allSatisfy { checkIsRead($0.key) }
+    }
+
+    var hasFavorites: Bool {
+        !settingsManager.favoriteTopics.isEmpty
     }
 
     // MARK: Private variables
@@ -118,9 +122,9 @@ extension MainViewModel {
 
     func markAsReadOrUnread() {
         if isAllRead {
-            newsArray.forEach { markAsUnread($0.key) }
+            news.forEach { markAsUnread($0.key) }
         } else {
-            newsArray.forEach { markAsRead($0.key) }
+            news.forEach { markAsRead($0.key) }
         }
     }
 
@@ -175,7 +179,7 @@ private extension MainViewModel {
                 case .loading:
                     break
                 case let .loaded(data):
-                    self?.newsArray = (self?.sortIsRead(data)).orEmpty
+                    self?.news = (self?.sortIsRead(data)).orEmpty
                     self?.notificationOccurred(.success)
                 case .error:
                     self?.notificationOccurred(.error)

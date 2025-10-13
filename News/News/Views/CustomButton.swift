@@ -8,26 +8,34 @@
 import SwiftUI
 
 struct CustomButton: View {
-	let action: Action
-	var title: String?
-	var iconName: String?
+    let action: Action
+    var title: String?
+    var iconName: String?
+    var isGlass = true
 
-	var body: some View {
-		ConditionalView(action != nil) {
-			Button(
-				action: {
-                    action?()
-				},
-				label: {
-                    label
-				}
-			)
-            .buttonStyle(.glass)
-		}
-	}
+    var body: some View {
+        let button = Button(
+            action: {
+                action?()
+            },
+            label: {
+                label
+            }
+        )
+
+        ConditionalView(isGlass) {
+            OptionalView(action) { action in
+                button
+                    .buttonStyle(.glass)
+            }
+        }
+        ConditionalView(!isGlass) {
+            button
+        }
+    }
 }
 
-// MARK: - Contents
+// MARK: - Content
 private extension CustomButton {
     var label: some View {
         Label(
@@ -37,15 +45,15 @@ private extension CustomButton {
     }
 
     var titleView: some View {
-        ConditionalView(title != nil) {
-            DesignedText(text: title ?? .empty)
+        OptionalView(title) {
+            DesignedText(text: $0)
                 .foregroundStyle(.white)
         }
     }
 
     var iconView: some View {
-        ConditionalView(iconName != nil) {
-            Image(systemName: iconName!)
+        OptionalView(iconName) {
+            Image(systemName: $0)
                 .foregroundStyle(.white)
         }
     }

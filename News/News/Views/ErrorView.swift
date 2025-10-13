@@ -11,7 +11,6 @@ import Lottie
 struct ErrorView: View {
 	var title: String?
 	let action: Action
-	let startDate = Date()
 
     var body: some View {
         VerStack(alignment: .center) {
@@ -26,11 +25,11 @@ struct ErrorView: View {
     }
 }
 
-// MARK: - Private
+// MARK: - Content
 private extension ErrorView {
 	var errorTitle: some View {
-		ConditionalView(title != nil) {
-			DesignedText(text: title ?? .empty)
+        OptionalView(title) {
+            DesignedText(text: $0)
 				.labelStyle(.titleOnly)
 				.foregroundStyle(.white)
 				.multilineTextAlignment(.center)
@@ -50,9 +49,11 @@ private extension ErrorView {
 	}
 
 	var reloadButton: some View {
-		CustomButton(
-			action: action,
-			title: Texts.Actions.reload()
-		)
+        OptionalView(action) {
+            CustomButton(
+                action: $0,
+                title: Texts.Actions.reload()
+            )
+        }
 	}
 }

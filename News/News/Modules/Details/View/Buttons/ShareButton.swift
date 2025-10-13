@@ -18,13 +18,12 @@ struct ShareButton: View {
 			action: {
                 viewModel.impactOccured(.light)
 				self.imageWrapper = ContentWrapper(
-					link: URL(string: data.article.url ?? .empty)?.absoluteString ?? .empty,
+                    link: (URL(string: data.article.url.orEmpty)?.absoluteString).orEmpty,
 					description: DeveloperInfo.shareInfo)
 			},
 			title: data.title,
 			iconName: data.iconName
 		)
-
 		.sheet(
 			item: $imageWrapper,
 			content: { content in

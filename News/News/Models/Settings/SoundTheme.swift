@@ -12,7 +12,7 @@ enum SoundTheme: String, CaseIterable, Identifiable {
 
     static var title: String { "Sound" }
 
-    static var image: String { "music.note" }
+    static var image: String { SFSymbols.musicNote.rawValue }
 
     case starwars = "star wars"
     case cats = "cats meow"
