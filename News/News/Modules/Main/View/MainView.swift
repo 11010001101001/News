@@ -119,7 +119,7 @@ private extension TopicsList {
             }
 
             ToolbarItem(placement: .principal) {
-                DesignedText(text: Texts.Screen.Main.title())
+                DesignedText(text: ">> \(viewModel.category)")
                     .font(.title)
             }
 
