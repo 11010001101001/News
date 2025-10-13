@@ -17,7 +17,7 @@ final class SoundEngine {
     private var buffers: [String: AVAudioPCMBuffer] = [:]
 
     init() {
-        try? AVAudioSession.sharedInstance().setCategory(.ambient, options: .mixWithOthers)
+        try? AVAudioSession.sharedInstance().setCategory(.playback, options: .mixWithOthers)
         try? AVAudioSession.sharedInstance().setActive(true)
         engine.attach(player)
         engine.connect(player, to: engine.mainMixerNode, format: nil)

@@ -53,11 +53,17 @@ extension NetworkManager: NetworkManagerProtocol {
 private extension NetworkManager {
     func mapError(_ error: Publishers.Retry<URLSession.DataTaskPublisher>.Failure) -> ApiError {
         let urlError = error as URLError
+        let errorCode = urlError.errorCode
+        let code = urlError.code
+        let description = urlError.localizedDescription
+
         return switch urlError.errorCode {
         case -1009:
             ApiError.noConnection(msg: Errors.noConnection)
         default:
-            ApiError.mappingError(msg: Errors.mappingError)
+            ApiError.mappingError(
+                msg: "\(Errors.mappingError)/ errorCode:\(errorCode)/ code:\(code)/ loc.description:\(description)"
+            )
         }
     }
 

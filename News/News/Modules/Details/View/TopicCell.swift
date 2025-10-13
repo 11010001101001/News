@@ -28,6 +28,7 @@ struct TopicCell: View {
                 favoriteButton
             }
             .padding(Constants.padding)
+            .contentShape(.rect)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .glassCard()

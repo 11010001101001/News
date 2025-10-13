@@ -2,11 +2,11 @@ import SwiftUI
 
 struct TopicsList: View {
     @ObservedObject var viewModel: MainViewModel
-    @State private var enderOpacity: CGFloat = .zero
 
     var body: some View {
         ZStack {
             list
+            gradient
 
             Loader(
                 loaderName: viewModel.loader,
@@ -33,8 +33,9 @@ private extension TopicsList {
     var list: some View {
         ScrollView(.vertical) {
             VerStack {
-                buildTopic()
-                buildScrollEnder()
+                ForEach(viewModel.news, id: \.self) {
+                    ModuleBuilder.shared.build(.details($0))
+                }
             }
             .padding(.top, Constants.padding)
         }
@@ -45,27 +46,18 @@ private extension TopicsList {
         .opacity(viewModel.loadingState.contentOpacity)
     }
 
-    func buildTopic() -> some View {
-        ForEach(viewModel.news, id: \.self) { article in
-            ModuleBuilder.shared.build(.details(article))
-        }
-    }
-
-    func buildScrollEnder() -> some View {
-        HorStack {
+    var gradient: some View {
+        VerStack {
             Spacer()
-            viewModel.loaderShadowColor
-                .clipShape(.rect(cornerRadius: Constants.cornerRadius))
-                .gloss(color: viewModel.loaderShadowColor)
-                .frame(width: 150, height: 1)
-                .opacity(enderOpacity)
-                .padding(.top, -Constants.padding)
-                .onAppear {
-                    withAnimation(.bouncy(duration: 2.0).repeatForever(autoreverses: true)) {
-                        enderOpacity = 1
-                    }
-                }
-            Spacer()
+            LinearGradient(
+                gradient: Gradient(colors: [.clear, .black]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: Constants.gradientHeight)
+            .opacity(viewModel.loadingState.contentOpacity)
         }
+        .ignoresSafeArea()
+        .allowsHitTesting(false)
     }
 }
