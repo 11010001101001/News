@@ -8,8 +8,9 @@
 import Foundation
 import SwiftUI
 
-struct ShareButton: View {
-	@State var imageWrapper: ContentWrapper?
+struct ShareContextMenuButton: View {
+    @Binding var imageWrapper: ContentWrapper?
+
 	let data: ButtonMetaData
     let viewModel: DetailsViewModel
     let isGlass: Bool
@@ -19,21 +20,14 @@ struct ShareButton: View {
 			action: {
                 viewModel.impactOccured(.light)
                 
-				self.imageWrapper = ContentWrapper(
+                imageWrapper = ContentWrapper(
                     link: (URL(string: data.article.url.orEmpty)?.absoluteString).orEmpty,
-					description: DeveloperInfo.shareInfo
+                    description: DeveloperInfo.shareInfo
                 )
 			},
 			title: data.title,
             iconName: data.iconName,
             isGlass: isGlass
-		)
-		.sheet(
-			item: $imageWrapper,
-			content: { content in
-				ActivityViewController(contentWrapper: content)
-					.presentationDetents([.medium])
-			}
 		)
 	}
 }

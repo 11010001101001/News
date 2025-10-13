@@ -20,7 +20,7 @@ extension ImageProvider {
         case NewsCategory.general.rawValue: SFSymbols.listClipboard
         case NewsCategory.entertainment.rawValue: SFSymbols.play
         case NewsCategory.business.rawValue: SFSymbols.brainFilledHeadProfile
-        case SoundTheme.starwars.rawValue: SFSymbols.starCircleFill
+        case SoundTheme.starwars.rawValue: SFSymbols.heartCircleFill
         case SoundTheme.silentMode.rawValue: SFSymbols.powersleep
         case SoundTheme.cats.rawValue: SFSymbols.catFill
         case Texts.App.contactUs(): SFSymbols.paperplaneFill

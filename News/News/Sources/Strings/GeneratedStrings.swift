@@ -21,6 +21,23 @@ public enum Texts {
     public static func share() -> String { Texts.tr("Strings", "Actions.share", fallback: "Share")
     }
   }
+  public enum ContextMenu {
+    /// Add to favorites
+    public static func addToFavorites() -> String { Texts.tr("Strings", "ContextMenu.addToFavorites", fallback: "Add to favorites")
+    }
+    /// Mark as read
+    public static func markAsRead() -> String { Texts.tr("Strings", "ContextMenu.markAsRead", fallback: "Mark as read")
+    }
+    /// Mark as unread
+    public static func markAsUnread() -> String { Texts.tr("Strings", "ContextMenu.markAsUnread", fallback: "Mark as unread")
+    }
+    /// Remove from favorites
+    public static func removeFromFavorites() -> String { Texts.tr("Strings", "ContextMenu.removeFromFavorites", fallback: "Remove from favorites")
+    }
+    /// Share
+    public static func share() -> String { Texts.tr("Strings", "ContextMenu.share", fallback: "Share")
+    }
+  }
   public enum Favorites {
     /// Add
     public static func add() -> String { Texts.tr("Strings", "Favorites.add", fallback: "Add")
