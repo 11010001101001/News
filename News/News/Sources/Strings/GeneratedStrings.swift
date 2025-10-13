@@ -148,11 +148,6 @@ public enum Texts {
       public static func title() -> String { Texts.tr("Strings", "screen.details.title", fallback: "Details")
       }
     }
-    public enum Main {
-      /// News
-      public static func title() -> String { Texts.tr("Strings", "screen.main.title", fallback: "News")
-      }
-    }
     public enum More {
       /// More
       public static func title() -> String { Texts.tr("Strings", "screen.more.title", fallback: "More")
