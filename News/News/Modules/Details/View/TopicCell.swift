@@ -28,12 +28,12 @@ struct TopicCell: View {
                 favoriteButton
             }
             .padding(Constants.padding)
-            .contentShape(.rect)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .glassCard()
         .markAsReadOrHighlight(isRead: isRead, isShadowEnabled: isShadowEnabled)
         .padding([.bottom, .horizontal], Constants.padding)
+        .contentShape(.rect)
         .contextMenu { contextMenu }
         .sheet(
             item: $imageWrapper,
