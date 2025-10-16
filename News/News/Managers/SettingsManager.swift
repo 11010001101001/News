@@ -13,7 +13,7 @@ protocol SettingsManagerProtocol {
     var category: String { get }
     var loader: String { get }
     var appIcon: String { get }
-    var watchedTopics: [String] { get }
+    var watchedTopics: Set<String> { get }
     var favoriteTopics: [FavoriteArticle] { get }
     var loaderShadowColor: Color { get }
 
@@ -21,7 +21,7 @@ protocol SettingsManagerProtocol {
     func save(category: String)
     func save(loader: String)
     func save(appIcon: String)
-    func save(watchedTopics: [String])
+    func save(watchedTopics: Set<String>)
     func save(favorites: [FavoriteArticle])
 
     func loadSettings(_ settings: [SettingsModel])
@@ -50,7 +50,7 @@ extension SettingsManager: SettingsManagerProtocol {
         (settings?.appIcon).or(AppIconConfiguration.globe.rawValue)
     }
 
-    var watchedTopics: [String] {
+    var watchedTopics: Set<String> {
         (settings?.watchedTopics).orEmpty
     }
 
@@ -86,7 +86,7 @@ extension SettingsManager: SettingsManagerProtocol {
         savedSettings?.first?.loader = loader
     }
 
-    func save(watchedTopics: [String]) {
+    func save(watchedTopics: Set<String>) {
         savedSettings?.first?.watchedTopics = watchedTopics
     }
 

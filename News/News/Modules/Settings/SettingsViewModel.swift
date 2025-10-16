@@ -39,7 +39,7 @@ final class SettingsViewModel: ObservableObject {
         set { settingsManager.save(appIcon: newValue) }
     }
 
-    var watchedTopics: [String] {
+    var watchedTopics: Set<String> {
         get { settingsManager.watchedTopics }
         set { settingsManager.save(watchedTopics: newValue) }
     }

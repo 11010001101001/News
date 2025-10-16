@@ -9,8 +9,12 @@ import Foundation
 
 struct Article: Decodable, Equatable, Hashable {
     var key: String {
-        let saltNumber = 7
-        return (title ?? .empty) + String(description ?? .empty).prefix(saltNumber)
+        let saltNumber = 10
+        let title = self.title.orEmpty.prefix(saltNumber)
+        let description = self.description.orEmpty.prefix(saltNumber)
+        let url = self.url.orEmpty.prefix(saltNumber)
+        let date = self.publishedAt.orEmpty.prefix(saltNumber)
+        return String(title + description + url + date)
     }
 
     var source: Source?

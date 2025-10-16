@@ -10,8 +10,6 @@ import SwiftUI
 
 public enum Constants {
 	static let newsCount = "100"
-	static let storageCapacity = 500
-	static let needDropCount = 250
 	static let padding: CGFloat = 16
 	static let cornerRadius: CGFloat = 26
 	static let imageHeight: CGFloat = 300

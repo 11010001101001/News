@@ -47,7 +47,7 @@ final class MainViewModel: ObservableObject {
         set { settingsManager.save(appIcon: newValue) }
     }
 
-    var watchedTopics: [String] {
+    var watchedTopics: Set<String> {
         get { settingsManager.watchedTopics }
         set { settingsManager.save(watchedTopics: newValue) }
     }
@@ -203,11 +203,6 @@ private extension MainViewModel {
         notificationManager.bind(to: $notificationSound.eraseToAnyPublisher())
     }
 
-    func clearStorageIfNeeded() {
-        guard watchedTopics.count >= Constants.storageCapacity else { return }
-        watchedTopics = Array(watchedTopics.dropFirst(Constants.needDropCount))
-    }
-
     func sortIsRead(_ articles: [Article]?) -> [Article] {
         var read = [Article]()
         var notRead = [Article]()
@@ -230,8 +225,7 @@ private extension MainViewModel {
     }
 
     func markAsUnread(_ key: String) {
-        watchedTopics.removeAll(where: { $0 == key })
-        clearStorageIfNeeded()
+        watchedTopics.remove(key)
     }
 
     func markAsRead(_ key: String) {
@@ -239,8 +233,7 @@ private extension MainViewModel {
 
         guard !isViewed else { return }
 
-        watchedTopics.append(key)
-        clearStorageIfNeeded()
+        watchedTopics.insert(key)
     }
 
     func notificationOccurred(_ feedBackType: UINotificationFeedbackGenerator.FeedbackType) {

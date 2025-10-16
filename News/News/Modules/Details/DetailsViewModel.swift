@@ -13,7 +13,7 @@ final class DetailsViewModel: ObservableObject {
         set { settingsManager.save(loader: newValue) }
     }
 
-    var watchedTopics: [String] {
+    var watchedTopics: Set<String> {
         get { settingsManager.watchedTopics }
         set { settingsManager.save(watchedTopics: newValue) }
     }
@@ -58,13 +58,11 @@ extension DetailsViewModel {
 
         guard !isViewed else { return }
 
-        watchedTopics.append(key)
-        clearStorageIfNeeded()
+        watchedTopics.insert(key)
     }
 
     func markAsUnread(_ key: String) {
-        watchedTopics.removeAll(where: { $0 == key })
-        clearStorageIfNeeded()
+        watchedTopics.remove(key)
     }
 
     func cache(object: AnyObject, key: AnyObject) {
@@ -97,10 +95,5 @@ private extension DetailsViewModel {
     func bindVibrateManager() {
         vibrateManager.bind(to: $feedbackStyle.eraseToAnyPublisher())
         vibrateManager.bind(to: $feedBackType.eraseToAnyPublisher())
-    }
-
-    func clearStorageIfNeeded() {
-        guard watchedTopics.count >= Constants.storageCapacity else { return }
-        watchedTopics = Array(watchedTopics.dropFirst(Constants.needDropCount))
     }
 }

@@ -20,8 +20,8 @@ extension Optional where Wrapped == String {
 	}
 }
 
-extension Optional where Wrapped == [String] {
-    var orEmpty: [String] {
+extension Optional where Wrapped == Set<String> {
+    var orEmpty: Set<String> {
         self ?? []
     }
 }
