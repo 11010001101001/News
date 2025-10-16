@@ -6,7 +6,6 @@ import UIKit
 final class SettingsViewModel: ObservableObject {
     // MARK: Internal variables
     @Published var loadingState = LoadingState.loading
-    @Published var newsArray = [Article]()
 
     @Published var notificationSound = String.empty
     @Published var errorSound = String.empty
@@ -143,8 +142,7 @@ private extension SettingsViewModel {
                 switch $0 {
                 case .loading:
                     break
-                case let .loaded(data):
-                    self?.newsArray = (self?.sortIsRead(data)).orEmpty
+                case .loaded:
                     self?.notificationOccurred(.success)
                 case .error:
                     self?.notificationOccurred(.error)
@@ -198,26 +196,5 @@ private extension SettingsViewModel {
         default:
             String.empty
         }
-    }
-
-    func sortIsRead(_ articles: [Article]?) -> [Article] {
-        var read = [Article]()
-        var notRead = [Article]()
-
-        articles?.forEach {
-            guard !$0.title.orEmpty.contains("Removed") else { return }
-            let isRead = checkIsRead($0.key)
-            if isRead {
-                read.append($0)
-            } else {
-                notRead.append($0)
-            }
-        }
-
-        return notRead + read
-    }
-
-    func checkIsRead(_ key: String) -> Bool {
-        watchedTopics.contains(where: { $0 == key })
     }
 }

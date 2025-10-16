@@ -55,7 +55,7 @@ extension SettingsManager: SettingsManagerProtocol {
     }
 
     var favoriteTopics: [FavoriteArticle] {
-        (settings?.favoriteTopics).orEmpty
+        sortIsRead((settings?.favoriteTopics).orEmpty)
     }
 
     var loaderShadowColor: Color {
@@ -96,5 +96,29 @@ extension SettingsManager: SettingsManagerProtocol {
 
     func loadSettings(_ settings: [SettingsModel]) {
         savedSettings = settings
+    }
+}
+
+// MARK: - Private
+private extension SettingsManager {
+    func sortIsRead(_ articles: [FavoriteArticle]?) -> [FavoriteArticle] {
+        var read = [FavoriteArticle]()
+        var notRead = [FavoriteArticle]()
+
+        articles?.forEach {
+            guard !$0.title.orEmpty.contains("Removed") else { return }
+            let isRead = checkIsRead($0.article.key)
+            if isRead {
+                read.append($0)
+            } else {
+                notRead.append($0)
+            }
+        }
+
+        return notRead + read
+    }
+
+    func checkIsRead(_ key: String) -> Bool {
+        watchedTopics.contains(where: { $0 == key })
     }
 }
