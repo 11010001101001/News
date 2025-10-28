@@ -73,10 +73,9 @@ extension WebView {
             viewModel.loadingState = .error(message: error.localizedDescription)
         }
 
-//        func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-//            viewModel.loadingState = .loading
-//                .loaded(data: [])
-//        }
+        func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            viewModel.loadingState = .loaded(data: [])
+        }
 
         func webView(
             _ webView: WKWebView,
