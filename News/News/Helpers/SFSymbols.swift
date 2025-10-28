@@ -10,8 +10,7 @@ import SwiftUI
 enum SFSymbols: String {
     case heart
     case heartFill = "heart.fill"
-    case heartCircle = "heart.circle"
-    case heartCircleFill = "heart.circle.fill"
+    case starFill = "star.fill"
     case trash
     case trashFill = "trash.fill"
     case lightbulbMax = "lightbulb.max"

@@ -28,7 +28,7 @@ enum NavButtonType {
         case let .settings(isDefault): isDefault ? SFSymbols.gearshape.rawValue : SFSymbols.gearshapeFill.rawValue
         case let .markAsRead(isAllRead): isAllRead ? SFSymbols.checkmarkSealFill.rawValue : SFSymbols.checkmarkSeal.rawValue
         case .close: SFSymbols.chevronDown.rawValue
-        case let .favorites(hasFavorites): hasFavorites ? SFSymbols.heartCircleFill.rawValue : SFSymbols.heartCircle.rawValue
+        case let .favorites(hasFavorites): hasFavorites ? SFSymbols.heartFill.rawValue : SFSymbols.heart.rawValue
         case let .removeFavorites(hasFavorites): hasFavorites ? SFSymbols.trashFill.rawValue : SFSymbols.trash.rawValue
         }
     }

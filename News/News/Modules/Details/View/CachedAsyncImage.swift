@@ -32,7 +32,7 @@ struct CachedAsyncImage: View {
 }
 
 // MARK: Content
-extension CachedAsyncImage {
+private extension CachedAsyncImage {
     @ViewBuilder
     private func buildCachedAsyncImage() -> some View {
         if let cachedImage {
@@ -59,16 +59,11 @@ extension CachedAsyncImage {
                     .resizable()
                     .onAppear { cache(image) }
             } else if phase.error != nil {
-                error
+                buildError(title: (phase.error?.localizedDescription).or(Errors.imageLoadingError))
             } else {
                 loader
             }
         }
-    }
-
-    var error: some View {
-        ErrorView(title: Errors.imageLoadingError, action: nil)
-            .frame(height: Constants.imageHeight)
     }
 
     var loader: some View {
@@ -77,6 +72,11 @@ extension CachedAsyncImage {
             shadowColor: viewModel.loaderShadowColor
         )
         .frame(height: Constants.imageHeight)
+    }
+
+    func buildError(title: String) -> some View {
+        ErrorView(title: title, action: nil)
+            .frame(height: Constants.imageHeight)
     }
 }
 

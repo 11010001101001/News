@@ -24,7 +24,7 @@ struct LinkButton: View {
             iconName: SFSymbols.link.rawValue
         )
         .modifier(
-            FullScreenCoverModifier(
+            WebViewSheetModifier(
                 viewModel: viewModel,
                 webViewPresented: $webViewPresented,
                 url: article.url.orEmpty

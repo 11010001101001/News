@@ -1,5 +1,5 @@
 //
-//  FullScreenCover.swift
+//  SheetNavigationContainer.swift
 //  News
 //
 //  Created by Yaroslav Kupriyanov on 10.02.2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FullScreenCover<Content: View>: View {
+struct SheetNavigationContainer<Content: View>: View {
 	@Environment(\.dismiss) var dismiss
 
 	let title: String
@@ -16,7 +16,7 @@ struct FullScreenCover<Content: View>: View {
 	var body: some View {
 		NavigationStack {
 			content()
-				.ignoresSafeArea(.container, edges: .bottom)
+				.ignoresSafeArea(.all, edges: .bottom)
 				.toolbar {
 					ToolbarItem(placement: .principal) {
 						DesignedText(text: title)
