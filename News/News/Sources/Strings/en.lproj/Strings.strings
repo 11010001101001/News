@@ -57,6 +57,6 @@
 "ContextMenu.markAsRead" = "Mark as read";
 "ContextMenu.markAsUnread" = "Mark as unread";
 
-"Widgets.levels" = "Widgets levels";
+"Widgets.levels" = "App widget levels";
 "Widgets.instuction" = "Add app widgets and try to become a tech ninja!\nRead more topics to level up";
 "Widgets.range" = "Range: %@";

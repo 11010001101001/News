@@ -59,8 +59,8 @@ public enum Texts {
     /// Read more topics to level up
     public static func instuction() -> String { Texts.tr("Strings", "Widgets.instuction", fallback: "Add app widgets and try to become a tech ninja!\nRead more topics to level up")
     }
-    /// Widgets levels
-    public static func levels() -> String { Texts.tr("Strings", "Widgets.levels", fallback: "Widgets levels")
+    /// App widget levels
+    public static func levels() -> String { Texts.tr("Strings", "Widgets.levels", fallback: "App widget levels")
     }
     /// Range: %@
     public static func range(_ p1: Any) -> String {

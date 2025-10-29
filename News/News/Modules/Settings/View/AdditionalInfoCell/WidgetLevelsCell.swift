@@ -1,5 +1,5 @@
 //
-//  InfoCell.swift
+//  WidgetLevelsCell.swift
 //  News
 //
 //  Created by Ярослав Куприянов on 02.04.2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WidgetsLevelsCell: View, ImageProvider {
+struct WidgetLevelsCell: View, ImageProvider {
     let id: String
 
     var body: some View {
@@ -18,12 +18,12 @@ struct WidgetsLevelsCell: View, ImageProvider {
             Spacer()
         }
         .glassRegularCard()
-        .frame(height: 70)
+        .frame(minHeight: 70)
     }
 }
 
 // MARK: - Private
-private extension WidgetsLevelsCell {
+private extension WidgetLevelsCell {
     var title: some View {
         DesignedText(text: id.capitalizingFirstLetter())
             .font(.headline)

@@ -13,13 +13,13 @@ struct AdditionalInfoCell: View {
 
     var body: some View {
         Group {
+            WidgetLevelsCell(id: Texts.Widgets.levels())
             InfoCell(id: DeveloperInfo.currentAppVersion)
             LinkCell(
                 viewModel: viewModel,
                 id: Texts.App.contactUs(),
                 link: DeveloperInfo.contactLink
             )
-            WidgetsLevelsCell(id: Texts.Widgets.levels())
         }
     }
 }
