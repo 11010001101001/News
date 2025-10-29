@@ -31,20 +31,26 @@ struct Provider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
         Task {
-            let category = NewsCategory.technology.rawValue
-            guard let level = try? await getUserLevel(category: category) else { return }
-            let entry = Entry(category: category, level: level)
+            guard
+                let settings = try? await loadSettings(),
+                let level = try? await getUserLevel(settings)
+            else { return }
+
+            let entry = Entry(category: settings.category, level: level)
+
             guard let nextUpdate = Calendar.current.date(byAdding: DateComponents(minute: 180), to: Date()) else { return }
+
             let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
             completion(timeline)
         }
     }
 
-    func getUserLevel(category: String) async throws -> Level? {
+    func getUserLevel(_ settings: SettingsModel?) async throws -> Level? {
+        guard let category = settings?.category else { return .error }
+
         // swiftlint:disable line_length
         let link = "https://newsapi.org/v2/top-headlines?country=us&category=\(category)&pageSize=100&apiKey=8f825354e7354c71829cfb4cb15c4893"
         // swiftlint:enable line_length
-        let settings = try? await loadSettings()
 
         guard let url = URL(string: link),
               let watchedTopics = settings?.watchedTopics
@@ -68,7 +74,7 @@ struct Provider: TimelineProvider {
         case (0..<25): .newbie
         case (25..<50): .curiousObserver
         case (50..<75): .loopMaster
-        case (75..<100): .techNinja
+        case (75...100): .techNinja
         default: .unrecognized
         }
     }
