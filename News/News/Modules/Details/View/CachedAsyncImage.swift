@@ -60,7 +60,7 @@ private extension CachedAsyncImage {
                     .resizable()
                     .onAppear { cache(image) }
             } else if phase.error != nil {
-                let error = String(phase.error?.localizedDescription.prefix(10) ?? "")
+                let error = String(phase.error?.localizedDescription.prefix(40) ?? "") + "..."
                 buildError(title: error)
             } else {
                 loader
