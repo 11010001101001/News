@@ -21,10 +21,11 @@ struct AccessoryRectangularView: View {
             Divider()
                 .frame(width: 70)
 
-            Text(entry.date, style: .time)
+            Text(entry.level.image + .spacer + entry.level.rawValue)
                 .fontDesign(.monospaced)
                 .font(.system(size: 16))
                 .lineLimit(1)
+                .shadow(color: entry.level.color, radius: 7)
         }
         .padding(.vertical)
     }

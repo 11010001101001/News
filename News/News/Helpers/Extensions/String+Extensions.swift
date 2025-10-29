@@ -10,6 +10,7 @@ import Foundation
 extension String {
     static let empty = ""
     static let spacer = " "
+    static let dash = " / "
 
     func toReadableDate() -> String {
         let dateFormatter = DateFormatter()

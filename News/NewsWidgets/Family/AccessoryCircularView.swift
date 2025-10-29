@@ -27,9 +27,10 @@ struct AccessoryCircularView: View {
                 Divider()
                     .frame(width: 40)
 
-                Text(entry.date, style: .time)
+                Text(entry.level.image)
                     .fontDesign(.monospaced)
-                    .font(.system(size: 11))
+                    .font(.system(size: 15))
+                    .shadow(color: entry.level.color, radius: 7)
                     .padding(EdgeInsets(top: -3,
                                         leading: 7,
                                         bottom: .zero,

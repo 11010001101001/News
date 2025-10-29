@@ -12,6 +12,10 @@ struct AccessoryInlineView: View {
     let entry: Provider.Entry
 
     var body: some View {
-        Text(entry.category + .spacer + entry.date.getTime())
+        HStack(spacing: .zero) {
+//            Text(entry.category)
+            Text(entry.level.image + .spacer + entry.level.rawValue)
+                .shadow(color: entry.level.color, radius: 7)
+        }
     }
 }
