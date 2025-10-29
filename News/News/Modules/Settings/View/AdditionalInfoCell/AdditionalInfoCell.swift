@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AdditionalInfoCell: View {
     @ObservedObject var viewModel: SettingsViewModel
-    
+
     var body: some View {
         Group {
             InfoCell(id: DeveloperInfo.currentAppVersion)
@@ -19,6 +19,7 @@ struct AdditionalInfoCell: View {
                 id: Texts.App.contactUs(),
                 link: DeveloperInfo.contactLink
             )
+            WidgetsLevelsCell(id: Texts.Widgets.levels())
         }
     }
 }

@@ -14,6 +14,11 @@ extension View {
             .glassEffect(.clear.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
 	}
 
+    func glassRegularCard() -> some View {
+        self
+            .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
+    }
+
 	func any() -> AnyView {
 		AnyView(self)
 	}

@@ -11,8 +11,8 @@ import SwiftUI
 protocol ImageProvider {}
 
 extension ImageProvider {
-    func getImage(for settingName: String) -> some View {
-        let imageName = switch settingName {
+    func getImage(for id: String) -> some View {
+        let imageName = switch id {
         case NewsCategory.technology.rawValue: SFSymbols.iphoneGen1RadiowavesLeftAndRight
         case NewsCategory.sports.rawValue: SFSymbols.figureOutdoorCycle
         case NewsCategory.science.rawValue: SFSymbols.atom
@@ -24,6 +24,7 @@ extension ImageProvider {
         case SoundTheme.silentMode.rawValue: SFSymbols.powersleep
         case SoundTheme.cats.rawValue: SFSymbols.catFill
         case Texts.App.contactUs(): SFSymbols.paperplaneFill
+        case Texts.Widgets.levels(): SFSymbols.gamecontrollerFill
         default: SFSymbols.infoCircleFill
         }
 

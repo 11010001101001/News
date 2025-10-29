@@ -29,6 +29,7 @@ enum SFSymbols: String {
     case iphoneGen1RadiowavesLeftAndRight = "iphone.gen1.radiowaves.left.and.right"
     case figureOutdoorCycle = "figure.outdoor.cycle"
     case atom
+    case gamecontrollerFill = "gamecontroller.fill"
     case boltHeart = "bolt.heart"
     case listClipboard = "list.clipboard"
     case play

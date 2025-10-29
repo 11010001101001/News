@@ -54,6 +54,19 @@ public enum Texts {
       }
     }
   }
+  public enum Widgets {
+    /// Add app widgets and try to become a tech ninja!
+    /// Read more topics to level up
+    public static func instuction() -> String { Texts.tr("Strings", "Widgets.instuction", fallback: "Add app widgets and try to become a tech ninja!\nRead more topics to level up")
+    }
+    /// Widgets levels
+    public static func levels() -> String { Texts.tr("Strings", "Widgets.levels", fallback: "Widgets levels")
+    }
+    /// Range: %@
+    public static func range(_ p1: Any) -> String {
+      return Texts.tr("Strings", "Widgets.range", String(describing: p1), fallback: "Range: %@")
+    }
+  }
   public enum App {
     /// 8f825354e7354c71829cfb4cb15c4893
     public static func apiKey1() -> String { Texts.tr("Strings", "app.apiKey1", fallback: "8f825354e7354c71829cfb4cb15c4893")

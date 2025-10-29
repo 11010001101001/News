@@ -37,4 +37,15 @@ enum Level: String {
         case .unrecognized: "⁉️"
         }
     }
+
+    var range: String {
+        switch self {
+        case .techNinja: "75% - 100%"
+        case .loopMaster: "50% - 75%"
+        case .curiousObserver: "25% - 50%"
+        case .newbie: "0% - 25%"
+        case .error: .empty
+        case .unrecognized: .empty
+        }
+    }
 }
