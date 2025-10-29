@@ -15,8 +15,8 @@ final class SettingsModel {
     var soundTheme: String
     var loader: String
 	var appIcon: String
-    var watchedTopics: Set<String>?
-    var favoriteTopics: [FavoriteArticle]?
+    var watchedTopics: Set<String> = []
+    var favoriteTopics: [FavoriteArticle] = []
 
     init(
 		category: String = Constants.DefaultSettings.category,
