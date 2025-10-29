@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct CachedAsyncImage: View {
     let article: Article
@@ -59,7 +60,8 @@ private extension CachedAsyncImage {
                     .resizable()
                     .onAppear { cache(image) }
             } else if phase.error != nil {
-                buildError(title: (phase.error?.localizedDescription).or(Errors.imageLoadingError))
+                let error = String(phase.error?.localizedDescription.prefix(10) ?? "")
+                buildError(title: error)
             } else {
                 loader
             }

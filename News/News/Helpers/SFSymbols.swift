@@ -38,4 +38,5 @@ enum SFSymbols: String {
     case paperplaneFill = "paperplane.fill"
     case infoCircleFill = "info.circle.fill"
     case link
+    case documentOnDocument = "document.on.document"
 }

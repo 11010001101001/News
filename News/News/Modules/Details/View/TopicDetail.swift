@@ -49,6 +49,7 @@ private extension TopicDetail {
                 .padding(.all, Constants.padding)
         }
         .glassEffect(.clear.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
+        .contextMenu { contextMenu }
 	}
 
 	var buttons: some View {
@@ -90,5 +91,9 @@ private extension TopicDetail {
             isGlass: true,
             title: nil
         )
+    }
+
+    var contextMenu: some View {
+        CopyContextMenuButton(text: article.description.or(Texts.State.noDescription()))
     }
 }

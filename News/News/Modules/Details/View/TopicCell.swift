@@ -79,8 +79,7 @@ private extension TopicCell {
     var contextMenu: some View {
         FavoritesContextMenuButton(
             viewModel: viewModel,
-            article: article,
-            isGlass: false
+            article: article
         )
 
         ShareContextMenuButton(
@@ -90,14 +89,15 @@ private extension TopicCell {
                 title: Texts.ContextMenu.share(),
                 iconName: SFSymbols.squareAndArrowUp.rawValue
             ),
-            viewModel: viewModel,
-            isGlass: false
+            viewModel: viewModel
         )
 
         MarkAsReadContextMenuButton(
             viewModel: viewModel,
             article: article
         )
+
+        CopyContextMenuButton(text: article.title.orEmpty)
     }
 }
 

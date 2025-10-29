@@ -11,7 +11,6 @@ import SwiftUI
 struct FavoritesContextMenuButton: View {
     @ObservedObject var viewModel: DetailsViewModel
     let article: Article
-    let isGlass: Bool
 
     private var isFavorite: Bool {
         viewModel.checkIsFavorite(article)
@@ -34,7 +33,7 @@ struct FavoritesContextMenuButton: View {
             },
             title: title,
             iconName: isFavorite ? SFSymbols.heartFill.rawValue : SFSymbols.heart.rawValue,
-            isGlass: isGlass
+            isGlass: false
         )
     }
 }

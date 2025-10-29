@@ -13,7 +13,6 @@ struct ShareContextMenuButton: View {
 
 	let data: ButtonMetaData
     let viewModel: DetailsViewModel
-    let isGlass: Bool
 
 	var body: some View {
 		CustomButton(
@@ -27,7 +26,7 @@ struct ShareContextMenuButton: View {
 			},
 			title: data.title,
             iconName: data.iconName,
-            isGlass: isGlass
+            isGlass: false
 		)
 	}
 }

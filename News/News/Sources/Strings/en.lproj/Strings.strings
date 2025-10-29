@@ -53,5 +53,6 @@
 "ContextMenu.addToFavorites" = "Add to favorites";
 "ContextMenu.removeFromFavorites" = "Remove from favorites";
 "ContextMenu.share" = "Share";
+"ContextMenu.copy" = "Copy";
 "ContextMenu.markAsRead" = "Mark as read";
 "ContextMenu.markAsUnread" = "Mark as unread";

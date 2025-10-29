@@ -25,6 +25,9 @@ public enum Texts {
     /// Add to favorites
     public static func addToFavorites() -> String { Texts.tr("Strings", "ContextMenu.addToFavorites", fallback: "Add to favorites")
     }
+    /// Copy
+    public static func copy() -> String { Texts.tr("Strings", "ContextMenu.copy", fallback: "Copy")
+    }
     /// Mark as read
     public static func markAsRead() -> String { Texts.tr("Strings", "ContextMenu.markAsRead", fallback: "Mark as read")
     }
