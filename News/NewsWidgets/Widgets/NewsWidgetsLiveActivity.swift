@@ -12,18 +12,19 @@ import SwiftUI
 struct NewsWidgetsAttributes: ActivityAttributes {
     struct ContentState: Codable & Hashable {
         let level: Level
+        let procents: Int
     }
 }
 
 struct NewsWidgetsLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: NewsWidgetsAttributes.self) { context in
-            blockOrExpandedView(lvl: context.state.level)
+            blockOrExpandedView(lvl: context.state.level, procents: context.state.procents)
         } dynamicIsland: { context in
             DynamicIsland(
                 expanded: {
                     DynamicIslandExpandedRegion(.center) {
-                        blockOrExpandedView(lvl: context.state.level)
+                        blockOrExpandedView(lvl: context.state.level, procents: context.state.procents)
                     }
                 },
                 compactLeading: {
@@ -43,30 +44,40 @@ struct NewsWidgetsLiveActivity: Widget {
 // MARK: - Content
 private extension NewsWidgetsLiveActivity {
     @ViewBuilder
-    func blockOrExpandedView(lvl: Level) -> some View {
+    func blockOrExpandedView(lvl: Level, procents: Int) -> some View {
         let lvls = [Level.newbie, Level.curiousObserver, Level.loopMaster, Level.techNinja]
 
-        HStack(alignment: .center) {
-            ForEach(lvls, id: \.self) { level in
-                let isActive = level == lvl
+        ZStack {
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.2))
+                LinearGradient(
+                    colors: lvls.map { $0.color },
+                    startPoint: .leading, endPoint: .trailing
+                )
+                .mask(
+                    ProgressView(value: Float(procents) / 100)
+                        .progressViewStyle(.linear)
+                )
+            }
+            .frame(height: 8)
 
-                if level != Level.newbie {
-                    Spacer()
-                }
+            HStack(alignment: .center) {
+                ForEach(lvls, id: \.self) { level in
+                    let isActive = level == lvl
 
-                Circle()
-                    .fill(isActive ? lvl.color : .gray)
-                    .frame(width: 30, height: 30)
-                    .shadow(color: isActive ? lvl.color : .clear, radius: 7)
-                    .overlay(alignment: .center) {
-                        Text(level.image)
-                            .grayscale(isActive ? 0 : 1)
+                    if level != Level.newbie {
+                        Spacer()
                     }
 
-                if level != Level.techNinja {
-                    Rectangle()
-                        .fill(.gray)
-                        .frame(height: 2)
+                    Circle()
+                        .fill(isActive ? lvl.color : .gray)
+                        .frame(width: 30, height: 30)
+                        .shadow(color: isActive ? lvl.color : .clear, radius: 7)
+                        .overlay(alignment: .center) {
+                            Text(level.image)
+                                .grayscale(isActive ? 0 : 1)
+                        }
                 }
             }
         }
@@ -82,5 +93,5 @@ private extension NewsWidgetsLiveActivity {
 #Preview("test", as: .content, using: NewsWidgetsAttributes()) {
     NewsWidgetsLiveActivity()
 } contentStates: {
-    NewsWidgetsAttributes.ContentState(level: .loopMaster)
+    NewsWidgetsAttributes.ContentState(level: .loopMaster, procents: 20)
 }

@@ -34,7 +34,7 @@ final class WidgetsManager {
         let attributes = NewsWidgetsAttributes()
         let level = getLevel(for: procents)
         currentLevel = level
-        let contentState = NewsWidgetsAttributes.ContentState(level: level)
+        let contentState = NewsWidgetsAttributes.ContentState(level: level, procents: procents)
 
         do {
             let activity = try Activity<NewsWidgetsAttributes>.request(
@@ -64,7 +64,7 @@ final class WidgetsManager {
 
         currentLevel = level
 
-        let newState = NewsWidgetsAttributes.ContentState(level: level)
+        let newState = NewsWidgetsAttributes.ContentState(level: level, procents: procents)
 
         Task {
             await currentActivity?.update(.init(state: newState, staleDate: .distantFuture))
