@@ -24,7 +24,7 @@ struct SystemExtraLargeView: View {
 
     var category: some View {
         VStack(alignment: .center, spacing: 8) {
-            Text("* Category *")
+            Text("Category:")
                 .fontDesign(.monospaced)
                 .font(.subheadline)
                 .foregroundStyle(.gray)
@@ -37,7 +37,7 @@ struct SystemExtraLargeView: View {
 
     var level: some View {
         VStack(alignment: .center, spacing: 8) {
-            Text("* Your lvl *")
+            Text("Your lvl:")
                 .fontDesign(.monospaced)
                 .font(.subheadline)
                 .foregroundStyle(.gray)

@@ -24,27 +24,23 @@ struct SmallView: View {
 
     var category: some View {
         VStack(alignment: .center, spacing: 8) {
-            Text("* Category *")
-                .fontDesign(.monospaced)
-                .font(.subheadline)
+            Text("Category:")
+                .font(.system(size: 15, design: .monospaced))
                 .foregroundStyle(.gray)
             Text(entry.category)
-                .fontDesign(.monospaced)
-                .font(.subheadline)
+                .font(.system(size: 15, design: .monospaced))
                 .foregroundStyle(.gray)
         }
     }
 
     var level: some View {
         VStack(alignment: .center, spacing: 8) {
-            Text("* Your lvl *")
-                .fontDesign(.monospaced)
-                .font(.subheadline)
+            Text("Your lvl:")
+                .font(.system(size: 15, design: .monospaced))
                 .foregroundStyle(.gray)
             HStack(alignment: .bottom) {
                 Text(entry.level.image + " " + entry.level.rawValue)
-                    .fontDesign(.monospaced)
-                    .font(.subheadline)
+                    .font(.system(size: 15, design: .monospaced))
                     .foregroundStyle(.gray)
                     .shadow(color: entry.level.color, radius: 7)
             }

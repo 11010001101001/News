@@ -18,7 +18,7 @@ final class FavoritesViewModel: ObservableObject {
     }
 }
 
-// MARK: - Internal
+// MARK: - Public
 extension FavoritesViewModel {
     var hasFavorites: Bool {
         !settingsManager.favoriteTopics.isEmpty

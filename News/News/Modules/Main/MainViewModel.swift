@@ -110,7 +110,7 @@ final class MainViewModel: ObservableObject {
     }
 }
 
-// MARK: - Internal
+// MARK: - Public
 extension MainViewModel {
     func loadSettings(_ settings: [SettingsModel]) {
         settingsManager.loadSettings(settings)
@@ -179,7 +179,10 @@ private extension MainViewModel {
                 case .loading:
                     break
                 case let .loaded(data):
-                    self?.news = (self?.sortIsRead(data)).orEmpty
+                    let news = (self?.sortIsRead(data)).orEmpty
+                    self?.news = news
+                    WidgetsManager.shared.updateArticles(news)
+                    WidgetsManager.shared.start(articles: news, watchedTopics: (self?.watchedTopics).orEmpty)
                     self?.notificationOccurred(.success)
                 case .error:
                     self?.notificationOccurred(.error)
@@ -226,6 +229,7 @@ private extension MainViewModel {
 
     func markAsUnread(_ key: String) {
         watchedTopics.remove(key)
+        WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
     }
 
     func markAsRead(_ key: String) {
@@ -234,6 +238,7 @@ private extension MainViewModel {
         guard !isViewed else { return }
 
         watchedTopics.insert(key)
+        WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
     }
 
     func notificationOccurred(_ feedBackType: UINotificationFeedbackGenerator.FeedbackType) {

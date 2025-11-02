@@ -49,3 +49,5 @@ enum Level: String {
         }
     }
 }
+
+extension Level: Codable {}

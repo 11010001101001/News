@@ -13,7 +13,6 @@ struct AccessoryInlineView: View {
 
     var body: some View {
         HStack(spacing: .zero) {
-//            Text(entry.category)
             Text(entry.level.image + .spacer + entry.level.rawValue)
                 .shadow(color: entry.level.color, radius: 7)
         }

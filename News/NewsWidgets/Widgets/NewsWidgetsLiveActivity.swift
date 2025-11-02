@@ -10,71 +10,77 @@ import WidgetKit
 import SwiftUI
 
 struct NewsWidgetsAttributes: ActivityAttributes {
-    public struct ContentState: Codable, Hashable {
-        // Dynamic stateful properties about your activity go here!
-        var emoji: String
+    struct ContentState: Codable & Hashable {
+        let level: Level
     }
-
-    // Fixed non-changing properties about your activity go here!
-    var name: String
 }
 
 struct NewsWidgetsLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: NewsWidgetsAttributes.self) { context in
-            // Lock screen/banner UI goes here
-            VStack {
-                Text("Hello \(context.state.emoji)")
-            }
-            .activityBackgroundTint(Color.cyan)
-            .activitySystemActionForegroundColor(Color.black)
-
+            blockOrExpandedView(lvl: context.state.level)
         } dynamicIsland: { context in
-            DynamicIsland {
-                // Expanded UI goes here.  Compose the expanded UI through
-                // various regions, like leading/trailing/center/bottom
-                DynamicIslandExpandedRegion(.leading) {
-                    Text("Leading")
+            DynamicIsland(
+                expanded: {
+                    DynamicIslandExpandedRegion(.center) {
+                        blockOrExpandedView(lvl: context.state.level)
+                    }
+                },
+                compactLeading: {
+                    Text("lvl:")
+                },
+                compactTrailing: {
+                    buildTrailingOrMinimal(lvl: context.state.level)
+                },
+                minimal: {
+                    buildTrailingOrMinimal(lvl: context.state.level)
                 }
-                DynamicIslandExpandedRegion(.trailing) {
-                    Text("Trailing")
-                }
-                DynamicIslandExpandedRegion(.bottom) {
-                    Text("Bottom \(context.state.emoji)")
-                    // more content
-                }
-            } compactLeading: {
-                Text("L")
-            } compactTrailing: {
-                Text("T \(context.state.emoji)")
-            } minimal: {
-                Text(context.state.emoji)
-            }
-            .widgetURL(URL(string: "http://www.apple.com"))
-            .keylineTint(Color.red)
+            )
         }
     }
 }
 
-extension NewsWidgetsAttributes {
-    fileprivate static var preview: NewsWidgetsAttributes {
-        NewsWidgetsAttributes(name: "World")
+// MARK: - Content
+private extension NewsWidgetsLiveActivity {
+    @ViewBuilder
+    func blockOrExpandedView(lvl: Level) -> some View {
+        let lvls = [Level.newbie, Level.curiousObserver, Level.loopMaster, Level.techNinja]
+
+        HStack(alignment: .center) {
+            ForEach(lvls, id: \.self) { level in
+                let isActive = level == lvl
+
+                if level != Level.newbie {
+                    Spacer()
+                }
+
+                Circle()
+                    .fill(isActive ? lvl.color : .gray)
+                    .frame(width: 30, height: 30)
+                    .shadow(color: isActive ? lvl.color : .clear, radius: 7)
+                    .overlay(alignment: .center) {
+                        Text(level.image)
+                            .grayscale(isActive ? 0 : 1)
+                    }
+
+                if level != Level.techNinja {
+                    Rectangle()
+                        .fill(.gray)
+                        .frame(height: 2)
+                }
+            }
+        }
+        .padding(.horizontal, 40)
+    }
+
+    func buildTrailingOrMinimal(lvl: Level) -> some View {
+        Text(lvl.image)
+            .shadow(color: lvl.color, radius: 7)
     }
 }
 
-extension NewsWidgetsAttributes.ContentState {
-    fileprivate static var smiley: NewsWidgetsAttributes.ContentState {
-        NewsWidgetsAttributes.ContentState(emoji: "😀")
-     }
-
-     fileprivate static var starEyes: NewsWidgetsAttributes.ContentState {
-         NewsWidgetsAttributes.ContentState(emoji: "🤩")
-     }
-}
-
-#Preview("Notification", as: .content, using: NewsWidgetsAttributes.preview) {
-   NewsWidgetsLiveActivity()
+#Preview("test", as: .content, using: NewsWidgetsAttributes()) {
+    NewsWidgetsLiveActivity()
 } contentStates: {
-    NewsWidgetsAttributes.ContentState.smiley
-    NewsWidgetsAttributes.ContentState.starEyes
+    NewsWidgetsAttributes.ContentState(level: .loopMaster)
 }

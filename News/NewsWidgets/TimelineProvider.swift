@@ -66,17 +66,7 @@ struct Provider: TimelineProvider {
         }
 
         let procents = watched.count * 100 / articles.count
-        return getLevel(for: procents)
-    }
-
-    func getLevel(for procents: Int) -> Level {
-        switch procents {
-        case (0..<25): .newbie
-        case (25..<50): .curiousObserver
-        case (50..<75): .loopMaster
-        case (75...100): .techNinja
-        default: .unrecognized
-        }
+        return WidgetsManager.shared.getLevel(for: procents)
     }
 
     @MainActor

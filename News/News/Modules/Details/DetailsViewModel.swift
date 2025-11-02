@@ -47,7 +47,7 @@ final class DetailsViewModel: ObservableObject {
     }
 }
 
-// MARK: - Internal
+// MARK: - Public
 extension DetailsViewModel {
     func getCachedImage(key: AnyObject) -> Image? {
         cacheManager.getCachedImage(key: key)
@@ -59,10 +59,12 @@ extension DetailsViewModel {
         guard !isViewed else { return }
 
         watchedTopics.insert(key)
+        WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
     }
 
     func markAsUnread(_ key: String) {
         watchedTopics.remove(key)
+        WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
     }
 
     func cache(object: AnyObject, key: AnyObject) {

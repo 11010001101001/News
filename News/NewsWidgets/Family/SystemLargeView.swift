@@ -24,7 +24,7 @@ struct SystemLargeView: View {
 
     var category: some View {
         VStack(alignment: .center, spacing: 8) {
-            Text("* Category *")
+            Text("Category:")
                 .font(.system(size: 30, design: .monospaced))
                 .foregroundStyle(.gray)
             Text(entry.category)
@@ -35,7 +35,7 @@ struct SystemLargeView: View {
 
     var level: some View {
         VStack(alignment: .center, spacing: 8) {
-            Text("* Your lvl *")
+            Text("Your lvl:")
                 .font(.system(size: 30, design: .monospaced))
                 .foregroundStyle(.gray)
             HStack(alignment: .bottom) {

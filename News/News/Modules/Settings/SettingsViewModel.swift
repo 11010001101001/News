@@ -77,7 +77,7 @@ final class SettingsViewModel: ObservableObject {
     }
 }
 
-// MARK: - Internal
+// MARK: - Public
 extension SettingsViewModel {
     func impactOccured(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
         feedbackStyle = style
