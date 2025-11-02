@@ -31,6 +31,8 @@ extension NotificationManager: NotificationManagerProtocol {
 // MARK: - Private
 private extension NotificationManager {
     func configureNotifications(with sound: String) {
+        guard SoundTheme.allCases.map({ $0.notificationSound }).contains(sound) else { return }
+
         let notificationCenter = UNUserNotificationCenter.current()
 
         notificationCenter.removeAllPendingNotificationRequests()

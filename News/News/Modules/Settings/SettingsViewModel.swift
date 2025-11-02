@@ -167,14 +167,7 @@ private extension SettingsViewModel {
 
     /// sound theme can change - do it during every app launch and sound changing
     func configureNotifications() {
-        notificationSound = switch SoundTheme(rawValue: soundTheme) {
-        case .starwars:
-            "starwars_notification"
-        case .cats:
-            "cats_notification"
-        default:
-            String.empty
-        }
+        notificationSound = (SoundTheme(rawValue: soundTheme)?.notificationSound).orEmpty
     }
 
     func notificationOccurred(_ feedBackType: UINotificationFeedbackGenerator.FeedbackType) {

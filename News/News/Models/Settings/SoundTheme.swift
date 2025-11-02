@@ -17,4 +17,15 @@ enum SoundTheme: String, CaseIterable, Identifiable {
     case starwars = "star wars"
     case cats = "cats meow"
     case silentMode = "silent mode"
+
+    var notificationSound: String {
+        switch self {
+        case .starwars:
+            "starwars_notification"
+        case .cats:
+            "cats_notification"
+        case .silentMode:
+            "empty"
+        }
+    }
 }
