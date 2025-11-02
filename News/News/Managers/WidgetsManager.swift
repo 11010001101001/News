@@ -15,24 +15,15 @@ final class WidgetsManager {
     private var currentLevel: Level = .newbie
     private var currentActivity: Activity<NewsWidgetsAttributes>?
     private var articles = [Article]()
+    private var oldActivitiesEnded = false
 
-    func start(articles: [Article], watchedTopics: Set<String>) {
+    func start() {
         guard ActivityAuthorizationInfo().areActivitiesEnabled, currentActivity == nil else { return }
 
-        Task {
-            for activity in Activity<NewsWidgetsAttributes>.activities {
-                await activity.end(nil, dismissalPolicy: .immediate)
-            }
-        }
+        endOldActivities()
 
-        let watched = articles.filter { article in
-            watchedTopics.contains(where: { $0 == article.key })
-        }
-        let procents = watched.count * 100 / articles.count
         let attributes = NewsWidgetsAttributes()
-        let level = getLevel(for: procents)
-        currentLevel = level
-        let contentState = NewsWidgetsAttributes.ContentState(level: level, procents: procents)
+        let contentState = NewsWidgetsAttributes.ContentState(level: currentLevel, procents: .zero)
 
         do {
             let activity = try Activity<NewsWidgetsAttributes>.request(
@@ -86,6 +77,17 @@ final class WidgetsManager {
 
     func updateStaticWidget() {
         WidgetCenter.shared.reloadTimelines(ofKind: "NewsWidget")
+    }
+
+    func endOldActivities() {
+        guard !oldActivitiesEnded else { return }
+        oldActivitiesEnded = true
+
+        Task {
+            for activity in Activity<NewsWidgetsAttributes>.activities {
+                await activity.end(nil, dismissalPolicy: .immediate)
+            }
+        }
     }
 
     func getLevel(for procents: Int) -> Level {

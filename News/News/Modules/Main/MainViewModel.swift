@@ -107,6 +107,8 @@ final class MainViewModel: ObservableObject {
         bindSoundManager()
         bindVibrateManager()
         bindNotificationManager()
+
+        WidgetsManager.shared.start()
     }
 }
 
@@ -182,7 +184,7 @@ private extension MainViewModel {
                     let news = (self?.sortIsRead(data)).orEmpty
                     self?.news = news
                     WidgetsManager.shared.updateArticles(news)
-                    WidgetsManager.shared.start(articles: news, watchedTopics: (self?.watchedTopics).orEmpty)
+                    WidgetsManager.shared.updateLevel(watchedTopics: (self?.watchedTopics).orEmpty)
                     self?.notificationOccurred(.success)
                 case .error:
                     self?.notificationOccurred(.error)

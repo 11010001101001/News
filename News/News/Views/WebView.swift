@@ -8,6 +8,7 @@
 import Foundation
 import WebKit
 import SwiftUI
+import Combine
 
 final class WebViewModel: ObservableObject {
     @Published var url: URL?
@@ -15,22 +16,35 @@ final class WebViewModel: ObservableObject {
     @Published var estimatedProgress: Double = .zero
     @Published var scrollProgress: Double = .zero
 
+    private var cancellables = Set<AnyCancellable>()
+
     init(url: URL? = nil) {
         self.url = url
+    }
+
+    func bind(to webView: WKWebView) {
+        cancellables.removeAll()
+
+        webView.publisher(for: \.estimatedProgress)
+            .receive(on: RunLoop.main)
+            .assign(to: &$estimatedProgress)
     }
 }
 
 struct WebView: UIViewRepresentable {
     @ObservedObject var viewModel: WebViewModel
 
-    private let webView = WKWebView()
-
     func makeUIView(context: Context) -> some WKWebView {
+        let webView = WKWebView()
         webView.navigationDelegate = context.coordinator
+        webView.scrollView.delegate = context.coordinator
+
         if let url = viewModel.url {
             let request = URLRequest(url: url)
             webView.load(request)
         }
+
+        viewModel.bind(to: webView)
         return webView
     }
 
@@ -39,7 +53,7 @@ struct WebView: UIViewRepresentable {
     }
 
     func makeCoordinator() -> WKWebViewCoordinator {
-        WKWebViewCoordinator(viewModel: viewModel, parent: self)
+        WKWebViewCoordinator(viewModel: viewModel)
     }
 }
 
@@ -47,33 +61,10 @@ struct WebView: UIViewRepresentable {
 extension WebView {
     final class WKWebViewCoordinator: NSObject, WKNavigationDelegate, ObservableObject, UIScrollViewDelegate {
         private var viewModel: WebViewModel
-        private let parent: WebView
-        private var estimatedProgressObserver: NSKeyValueObservation?
-        private var scrollObserver: NSKeyValueObservation?
 
-        init(viewModel: WebViewModel, parent: WebView) {
+        init(viewModel: WebViewModel) {
             self.viewModel = viewModel
-            self.parent = parent
             super.init()
-
-            estimatedProgressObserver = self.parent.webView.observe(\.estimatedProgress) { webView, _ in
-                DispatchQueue.main.async {
-                    viewModel.estimatedProgress = webView.estimatedProgress
-                }
-            }
-
-            scrollObserver = parent.webView.scrollView.observe(\.contentOffset) { scrollView, _ in
-                let progress = scrollView.contentOffset.y /
-                (scrollView.contentSize.height - scrollView.frame.height)
-                DispatchQueue.main.async {
-                    viewModel.scrollProgress = max(0, min(1, progress))
-                }
-            }
-        }
-
-        deinit {
-            estimatedProgressObserver = nil
-            scrollObserver = nil
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -112,6 +103,16 @@ extension WebView {
                 }
             }
             decisionHandler(.allow)
+        }
+
+        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            let height = scrollView.contentSize.height - scrollView.frame.height
+            guard height > 0 else {
+                viewModel.scrollProgress = 0
+                return
+            }
+            let ratio = scrollView.contentOffset.y / height
+            viewModel.scrollProgress = max(0, min(1, ratio))
         }
     }
 }
