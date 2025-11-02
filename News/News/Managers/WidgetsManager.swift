@@ -60,15 +60,15 @@ final class WidgetsManager {
         let procents = watched.count * 100 / articles.count
         let level = getLevel(for: procents)
 
-        guard level != currentLevel else { return }
-
-        currentLevel = level
-
         let newState = NewsWidgetsAttributes.ContentState(level: level, procents: procents)
 
         Task {
             await currentActivity?.update(.init(state: newState, staleDate: .distantFuture))
         }
+
+        guard level != currentLevel else { return }
+
+        currentLevel = level
 
         updateStaticWidget()
     }
@@ -93,9 +93,9 @@ final class WidgetsManager {
     func getLevel(for procents: Int) -> Level {
         switch procents {
         case (0..<25): .newbie
-        case (25..<50): .curiousObserver
-        case (50..<75): .loopMaster
-        case (75...100): .techNinja
+        case (25..<75): .curiousObserver
+        case (75..<100): .loopMaster
+        case (100...): .techNinja
         default: .unrecognized
         }
     }

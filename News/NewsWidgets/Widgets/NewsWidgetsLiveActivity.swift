@@ -19,12 +19,12 @@ struct NewsWidgetsAttributes: ActivityAttributes {
 struct NewsWidgetsLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: NewsWidgetsAttributes.self) { context in
-            blockOrExpandedView(lvl: context.state.level, procents: context.state.procents)
+            blockOrExpandedView(procents: context.state.procents)
         } dynamicIsland: { context in
             DynamicIsland(
                 expanded: {
                     DynamicIslandExpandedRegion(.center) {
-                        blockOrExpandedView(lvl: context.state.level, procents: context.state.procents)
+                        blockOrExpandedView(procents: context.state.procents)
                     }
                 },
                 compactLeading: {
@@ -44,8 +44,12 @@ struct NewsWidgetsLiveActivity: Widget {
 // MARK: - Content
 private extension NewsWidgetsLiveActivity {
     @ViewBuilder
-    func blockOrExpandedView(lvl: Level, procents: Int) -> some View {
+    func blockOrExpandedView(procents: Int) -> some View {
         let lvls = [Level.newbie, Level.curiousObserver, Level.loopMaster, Level.techNinja]
+        let isNewbieActive = procents >= 0
+        let isObserverActive = procents >= 25
+        let isLooperActive = procents >= 75
+        let isNinjaActive = procents >= 100
 
         ZStack {
             ZStack(alignment: .leading) {
@@ -61,24 +65,50 @@ private extension NewsWidgetsLiveActivity {
                 )
             }
             .frame(height: 8)
+            .padding(.horizontal, 30)
 
             HStack(alignment: .center) {
-                ForEach(lvls, id: \.self) { level in
-                    let isActive = level == lvl
-
-                    if level != Level.newbie {
-                        Spacer()
+                Circle()
+                    .fill(isNewbieActive ? Level.newbie.color : .gray)
+                    .frame(width: 30, height: 30)
+                    .shadow(color: isNewbieActive ? Level.newbie.color : .clear, radius: 7)
+                    .overlay(alignment: .center) {
+                        Text(Level.newbie.image)
+                            .grayscale(isNewbieActive ? 0 : 1)
                     }
 
-                    Circle()
-                        .fill(isActive ? lvl.color : .gray)
-                        .frame(width: 30, height: 30)
-                        .shadow(color: isActive ? lvl.color : .clear, radius: 7)
-                        .overlay(alignment: .center) {
-                            Text(level.image)
-                                .grayscale(isActive ? 0 : 1)
-                        }
-                }
+                Spacer()
+
+                Circle()
+                    .fill(isObserverActive ? Level.curiousObserver.color : .gray)
+                    .frame(width: 30, height: 30)
+                    .shadow(color: isObserverActive ? Level.curiousObserver.color : .clear, radius: 7)
+                    .overlay(alignment: .center) {
+                        Text(Level.curiousObserver.image)
+                            .grayscale(isObserverActive ? 0 : 1)
+                    }
+
+                Spacer()
+
+                Circle()
+                    .fill(isLooperActive ? Level.loopMaster.color : .gray)
+                    .frame(width: 30, height: 30)
+                    .shadow(color: isLooperActive ? Level.loopMaster.color : .clear, radius: 7)
+                    .overlay(alignment: .center) {
+                        Text(Level.loopMaster.image)
+                            .grayscale(isLooperActive ? 0 : 1)
+                    }
+
+                Spacer()
+
+                Circle()
+                    .fill(isNinjaActive ? Level.techNinja.color : .gray)
+                    .frame(width: 30, height: 30)
+                    .shadow(color: isNinjaActive ? Level.techNinja.color : .clear, radius: 7)
+                    .overlay(alignment: .center) {
+                        Text(Level.techNinja.image)
+                            .grayscale(isNinjaActive ? 0 : 1)
+                    }
             }
         }
         .padding(.horizontal, 40)
@@ -93,5 +123,5 @@ private extension NewsWidgetsLiveActivity {
 #Preview("test", as: .content, using: NewsWidgetsAttributes()) {
     NewsWidgetsLiveActivity()
 } contentStates: {
-    NewsWidgetsAttributes.ContentState(level: .loopMaster, procents: 20)
+    NewsWidgetsAttributes.ContentState(level: .loopMaster, procents: 60)
 }
