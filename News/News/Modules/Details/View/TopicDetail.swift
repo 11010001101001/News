@@ -94,6 +94,9 @@ private extension TopicDetail {
     }
 
     var contextMenu: some View {
-        CopyContextMenuButton(text: article.description.or(Texts.State.noDescription()))
+        CopyContextMenuButton(
+            text: article.description.or(Texts.State.noDescription()),
+            viewModel: viewModel
+        )
     }
 }

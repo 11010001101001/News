@@ -122,10 +122,17 @@ extension MainViewModel {
 
     func markAsReadOrUnread() {
         if isAllRead {
-            news.forEach { markAsUnread($0.key) }
+            news.forEach {
+                watchedTopics.remove($0.key)
+            }
         } else {
-            news.forEach { markAsRead($0.key) }
+            news.forEach {
+                let isViewed = checkIsRead($0.key)
+                guard !isViewed else { return }
+                watchedTopics.insert($0.key)
+            }
         }
+        WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
     }
 
     func handleShortcutItemTap(_ name: String) {

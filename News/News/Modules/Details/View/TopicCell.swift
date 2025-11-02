@@ -97,7 +97,10 @@ private extension TopicCell {
             article: article
         )
 
-        CopyContextMenuButton(text: article.title.orEmpty)
+        CopyContextMenuButton(
+            text: article.title.orEmpty,
+            viewModel: viewModel
+        )
     }
 }
 

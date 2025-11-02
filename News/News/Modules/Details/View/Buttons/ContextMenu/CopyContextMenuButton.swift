@@ -10,11 +10,13 @@ import SwiftUI
 
 struct CopyContextMenuButton: View {
     let text: String
+    let viewModel: DetailsViewModel
 
 	var body: some View {
 		CustomButton(
 			action: {
                 UIPasteboard.general.string = text
+                viewModel.impactOccured(.medium)
 			},
 			title: Texts.ContextMenu.copy(),
             iconName: SFSymbols.documentOnDocument.rawValue,

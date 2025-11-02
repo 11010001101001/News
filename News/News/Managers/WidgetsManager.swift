@@ -17,15 +17,13 @@ final class WidgetsManager {
     private var articles = [Article]()
 
     func start(articles: [Article], watchedTopics: Set<String>) {
-        guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
+        guard ActivityAuthorizationInfo().areActivitiesEnabled, currentActivity == nil else { return }
 
         Task {
             for activity in Activity<NewsWidgetsAttributes>.activities {
                 await activity.end(nil, dismissalPolicy: .immediate)
             }
         }
-
-        guard currentActivity == nil else { return }
 
         let watched = articles.filter { article in
             watchedTopics.contains(where: { $0 == article.key })
