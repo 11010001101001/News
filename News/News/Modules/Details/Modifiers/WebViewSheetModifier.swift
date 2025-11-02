@@ -31,8 +31,11 @@ struct WebViewSheetModifier: ViewModifier {
                     title: Texts.Screen.More.title()
                 ) {
                     VerStack {
-                        progressView
+                        estimatedProgressView
                         buildCoverContents()
+                    }
+                    .overlay(alignment: .top) {
+                        scrollProgressView
                     }
                 }
             }
@@ -72,14 +75,14 @@ private extension WebViewSheetModifier {
             .opacity(webViewModel.loadingState.errorOpacity)
     }
 
-    var progressView: some View {
-        ProgressView(value: webViewModel.progress)
+    var estimatedProgressView: some View {
+        ProgressView(value: webViewModel.estimatedProgress)
             .scaleEffect(.init(width: 1.0, height: 0.3))
             .tint(.white)
             .offset(y: 1)
             .gloss(color: .white)
-            .animation(.smooth, value: webViewModel.progress)
-            .onChange(of: webViewModel.progress) { _, progress in
+            .animation(.smooth, value: webViewModel.estimatedProgress)
+            .onChange(of: webViewModel.estimatedProgress) { _, progress in
                 guard progress == 1.0 else { return }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                     withAnimation {
@@ -88,5 +91,13 @@ private extension WebViewSheetModifier {
                 }
             }
             .opacity(opacity)
+    }
+
+    var scrollProgressView: some View {
+        ProgressView(value: webViewModel.scrollProgress)
+            .scaleEffect(.init(width: 1.0, height: 20))
+            .tint(Color.gray.opacity(0.5))
+            .offset(y: -40)
+            .animation(.smooth, value: webViewModel.scrollProgress)
     }
 }

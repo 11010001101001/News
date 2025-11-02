@@ -12,7 +12,8 @@ import SwiftUI
 final class WebViewModel: ObservableObject {
     @Published var url: URL?
     @Published var loadingState: LoadingState = .loading
-    @Published var progress: Double = 0.0
+    @Published var estimatedProgress: Double = .zero
+    @Published var scrollProgress: Double = .zero
 
     init(url: URL? = nil) {
         self.url = url
@@ -44,25 +45,35 @@ struct WebView: UIViewRepresentable {
 
 // MARK: Coordinator
 extension WebView {
-    final class WKWebViewCoordinator: NSObject, WKNavigationDelegate, ObservableObject {
+    final class WKWebViewCoordinator: NSObject, WKNavigationDelegate, ObservableObject, UIScrollViewDelegate {
         private var viewModel: WebViewModel
         private let parent: WebView
-        private var observer: NSKeyValueObservation?
+        private var estimatedProgressObserver: NSKeyValueObservation?
+        private var scrollObserver: NSKeyValueObservation?
 
         init(viewModel: WebViewModel, parent: WebView) {
             self.viewModel = viewModel
             self.parent = parent
             super.init()
 
-            observer = self.parent.webView.observe(\.estimatedProgress) { webView, _ in
+            estimatedProgressObserver = self.parent.webView.observe(\.estimatedProgress) { webView, _ in
                 DispatchQueue.main.async {
-                    viewModel.progress = webView.estimatedProgress
+                    viewModel.estimatedProgress = webView.estimatedProgress
+                }
+            }
+
+            scrollObserver = parent.webView.scrollView.observe(\.contentOffset) { scrollView, _ in
+                let progress = scrollView.contentOffset.y /
+                (scrollView.contentSize.height - scrollView.frame.height)
+                DispatchQueue.main.async {
+                    viewModel.scrollProgress = max(0, min(1, progress))
                 }
             }
         }
 
         deinit {
-            observer = nil
+            estimatedProgressObserver = nil
+            scrollObserver = nil
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -93,8 +104,8 @@ extension WebView {
             if navigationResponse.isForMainFrame,
                let httpResponse = navigationResponse.response as? HTTPURLResponse {
                 if httpResponse.statusCode == 403 {
-                    DispatchQueue.main.async {
-                        self.viewModel.loadingState = .error(message: "Access denied")
+                    DispatchQueue.main.async { [weak self] in
+                        self?.viewModel.loadingState = .error(message: "Access denied")
                     }
                     decisionHandler(.cancel)
                     return
