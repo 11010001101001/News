@@ -23,6 +23,10 @@ final class DetailsViewModel: ObservableObject {
         set { settingsManager.save(favorites: newValue) }
     }
 
+    var keyword: String {
+        settingsManager.keyword
+    }
+
     var loaderShadowColor: Color {
         settingsManager.loaderShadowColor
     }

@@ -14,6 +14,7 @@ protocol SettingsManagerProtocol {
     var loader: String { get }
     var appIcon: String { get }
     var watchedTopics: Set<String> { get }
+    var keyword: String { get }
     var favoriteTopics: [FavoriteArticle] { get }
     var loaderShadowColor: Color { get }
 
@@ -23,6 +24,7 @@ protocol SettingsManagerProtocol {
     func save(appIcon: String)
     func save(watchedTopics: Set<String>)
     func save(favorites: [FavoriteArticle])
+    func save(keyword: String)
 
     func loadSettings(_ settings: [SettingsModel])
 }
@@ -48,6 +50,10 @@ extension SettingsManager: SettingsManagerProtocol {
 
     var appIcon: String {
         (settings?.appIcon).or(AppIconConfiguration.globe.rawValue)
+    }
+
+    var keyword: String {
+        (settings?.keyword).or("")
     }
 
     var watchedTopics: Set<String> {
@@ -92,6 +98,10 @@ extension SettingsManager: SettingsManagerProtocol {
 
     func save(favorites: [FavoriteArticle]) {
         savedSettings?.first?.favoriteTopics = favorites
+    }
+
+    func save(keyword: String) {
+        savedSettings?.first?.keyword = keyword
     }
 
     func loadSettings(_ settings: [SettingsModel]) {

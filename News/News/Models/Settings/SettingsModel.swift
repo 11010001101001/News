@@ -17,6 +17,7 @@ final class SettingsModel {
 	var appIcon: String
     var watchedTopics: Set<String> = []
     var favoriteTopics: [FavoriteArticle] = []
+    var keyword: String = ""
 
     init(
 		category: String = Constants.DefaultSettings.category,

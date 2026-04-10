@@ -40,4 +40,5 @@ enum SFSymbols: String {
     case infoCircleFill = "info.circle.fill"
     case link
     case documentOnDocument = "document.on.document"
+    case lightMax = "light.max"
 }

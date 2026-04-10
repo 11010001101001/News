@@ -9,6 +9,7 @@ final class SettingsViewModel: ObservableObject {
 
     @Published var notificationSound = String.empty
     @Published var errorSound = String.empty
+    @Published var bubbleSound = String.empty
 
     @Published var id: Int?
 
@@ -41,6 +42,11 @@ final class SettingsViewModel: ObservableObject {
     var watchedTopics: Set<String> {
         get { settingsManager.watchedTopics }
         set { settingsManager.save(watchedTopics: newValue) }
+    }
+
+    var keyword: String {
+        get { settingsManager.keyword }
+        set { settingsManager.save(keyword: newValue) }
     }
 
     var loaderShadowColor: Color {
@@ -131,6 +137,12 @@ extension SettingsViewModel {
             break
         }
     }
+
+    func applyKeyword(_ value: String) {
+        playBubble()
+        keyword = value
+        notificationOccurred(.success)
+    }
 }
 
 // MARK: - Private
@@ -154,6 +166,7 @@ private extension SettingsViewModel {
 
     func bindSoundManager() {
         soundManager.bind(to: $errorSound.eraseToAnyPublisher())
+        soundManager.bind(to: $bubbleSound.eraseToAnyPublisher())
     }
 
     func bindVibrateManager() {
@@ -189,5 +202,10 @@ private extension SettingsViewModel {
         default:
             String.empty
         }
+    }
+
+    func playBubble() {
+        guard soundTheme != SoundTheme.silentMode.rawValue else { return }
+        bubbleSound = "bubble"
     }
 }

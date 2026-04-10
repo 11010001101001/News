@@ -18,7 +18,7 @@ struct TopicCell: View {
     }
 
     var isShadowEnabled: Bool {
-        ((article.title?.lowercased()).orEmpty).contains("apple")
+        ((article.title?.lowercased()).orEmpty).contains(viewModel.keyword.lowercased())
     }
 
     var body: some View {

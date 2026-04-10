@@ -23,8 +23,11 @@ struct SettingsList: View {
 
             Tab(NewsCategory.title, systemImage: NewsCategory.image) {
                 buildContentScroll {
-                    ForEach(NewsCategory.allCases) { category in
-                        SettingsCell(viewModel: viewModel, id: category.rawValue)
+                    VerStack(spacing: Constants.padding) {
+                        ForEach(NewsCategory.allCases) { category in
+                            SettingsCell(viewModel: viewModel, id: category.rawValue)
+                        }
+                        KeywordCell(viewModel: viewModel, keyword: viewModel.keyword)
                     }
                 }
             }
