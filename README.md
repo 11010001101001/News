@@ -19,7 +19,7 @@
 - ios 26 liquid glass 🫠✅
 - Context menu ✅
 - Favorites ✅
-- Live activities ✅
+- Live activities game ✅
 - Read & unread states, haptics, settings, lottie animations and other cool stuff ⭐️
 
 ## ☕️
