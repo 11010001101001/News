@@ -19,50 +19,52 @@ extension View {
             .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
     }
 
-	func any() -> AnyView {
-		AnyView(self)
-	}
-
+	@ViewBuilder
 	func applyOrNotSettingsModifier(
 		isEnabled: Bool,
 		execute: Action
 	) -> some View {
-		isEnabled ?
-		self.modifier(AnswerNegative(execute: execute)).any() :
-		self.modifier(OnTap(execute: nil, completion: execute)).any()
+		if isEnabled {
+			self.modifier(AnswerNegative(execute: execute))
+		} else {
+			self.modifier(OnTap(execute: nil, completion: execute))
+		}
 	}
 
+	@ViewBuilder
 	func markAsReadOrHighlight(
         isRead: Bool,
         isShadowEnabled: Bool
 	) -> some View {
 		let opacity = isRead ? 0.5 : 1.0
 
-		return switch (isRead, isShadowEnabled) {
+		switch (isRead, isShadowEnabled) {
 		case (false, false):
-			self.any()
-		case (true, false):
-			self.opacity(opacity).any()
-		case (true, true):
-			self.opacity(opacity).any()
+			self
+		case (true, false), (true, true):
+			self.opacity(opacity)
 		case (false, true):
 			if isShadowEnabled {
-				self.modifier(InnerShadowProvider()).any()
+				self.modifier(InnerShadowProvider())
 			} else {
-				self.any()
+				self
 			}
 		}
 	}
 
+	@ViewBuilder
 	func markIsSelected(
 		_ viewModel: SettingsViewModel,
 		_ id: String
 	) -> some View {
-		let isEnabled = viewModel.checkIsEnabled(id.lowercased())
-		guard isEnabled else { return self.any() }
-		return self.modifier(InnerShadowProvider()).any()
+		if viewModel.checkIsEnabled(id.lowercased()) {
+			self.modifier(InnerShadowProvider())
+		} else {
+			self
+		}
 	}
 
+	@ViewBuilder
 	func gloss(
 		isEnabled: Bool = true,
 		color: Color = .shadowHighlight,
@@ -70,30 +72,31 @@ extension View {
 		numberOfLayers: Int = 4,
 		isBorderHighlighted: Bool = false
 	) -> some View {
-		guard isEnabled else { return self.any() }
-
-		return self
-			.overlay {
-				ZStack {
-					ForEach(0..<numberOfLayers) { _ in
-						self
-							.shadow(
-								color: color,
-								radius: radius
-							)
-					}
-
-					ConditionalView(isBorderHighlighted) {
-						ForEach(0..<5) { _ in
+		if isEnabled {
+			self
+				.overlay {
+					ZStack {
+						ForEach(0..<numberOfLayers, id: \.self) { _ in
 							self
 								.shadow(
-									color: .white,
-									radius: 2
+									color: color,
+									radius: radius
 								)
+						}
+
+						ConditionalView(isBorderHighlighted) {
+							ForEach(0..<5) { _ in
+								self
+									.shadow(
+										color: .white,
+										radius: 2
+									)
+							}
 						}
 					}
 				}
-			}
-			.any()
+		} else {
+			self
+		}
 	}
 }
