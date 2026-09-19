@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import WidgetKit
 
 struct NewsWidgetEntryView: View {
     @Environment(\.widgetFamily) var family
