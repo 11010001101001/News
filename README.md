@@ -8,8 +8,8 @@
 [![Metal](https://img.shields.io/badge/Metal-Shaders-black.svg?style=for-the-badge&logo=apple)](https://developer.apple.com/metal/)
 [![Tests](https://img.shields.io/badge/Tests-Unit%20%2B%20UI%20Coverage-success.svg?style=for-the-badge&logo=xcode)](https://developer.apple.com/documentation/testing)
 
-![demo](https://github.com/user-attachments/assets/2c49978c-5a3d-4d62-9ad9-496ac7ac7283)
-![Unknown](https://github.com/user-attachments/assets/91e94154-1d0d-4e24-9b3b-de734e2a23b0)
+![demo](.github/assets/demo1.jpg)
+![Unknown](.github/assets/demo2.jpg)
 
 **News** is a full-featured, high-performance iOS news application built with modern SwiftUI, SwiftData, Combine, Metal Shaders, and ActivityKit. Designed with a custom glassmorphism design system, instant runtime multi-language localization, and comprehensive Unit and UI test coverage.
 
