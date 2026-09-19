@@ -58,7 +58,7 @@ private extension SoundEngine {
             try file.read(into: buffer)
             buffers[name] = buffer
         } catch {
-            fatalError("Shaize!")
+            print("Failed to read audio buffer for \(name): \(error)")
         }
     }
 }

@@ -42,6 +42,19 @@ final class FavoriteArticle {
 
 // MARK: - Article
 extension FavoriteArticle {
+    convenience init(article: Article) {
+        self.init(
+            source: .init(id: article.source?.id, name: article.source?.name),
+            author: article.author,
+            title: article.title,
+            articleDescription: article.description,
+            url: article.url,
+            urlToImage: article.urlToImage,
+            publishedAt: article.publishedAt,
+            content: article.content
+        )
+    }
+
     var article: Article {
         .init(
             source: .init(id: source?.id, name: source?.name),

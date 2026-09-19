@@ -2,7 +2,7 @@
 //  AdditionalInfoCell.swift
 //  News
 //
-//  Created by Yaroslav Kupriyanov on 16.11.2024.
+//  Created by Ярослав Куприянов on 16.11.2024.
 //
 
 import Foundation
@@ -14,6 +14,7 @@ struct AdditionalInfoCell: View {
     var body: some View {
         Group {
             WidgetLevelsCell(id: Texts.Widgets.levels())
+            LanguageCell(viewModel: viewModel)
             InfoCell(id: DeveloperInfo.currentAppVersion)
             LinkCell(
                 viewModel: viewModel,

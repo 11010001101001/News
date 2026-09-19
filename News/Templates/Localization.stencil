@@ -76,29 +76,23 @@ import Foundation
 // MARK: - Implementation Details
 
 extension {{enumName}} {
-  private static func tr(_ table: String, _ key: String, _ args: CVarArg..., fallback value: String) -> String {
-    {% if param.lookupFunction %}
-    let format = {{ param.lookupFunction }}(key, table, value)
-    {% else %}
-    let format = {{param.bundle|default:"BundleToken.bundle"}}.localizedString(forKey: key, value: value, table: table)
-    {% endif %}
-    return String(format: format, locale: Locale.current, arguments: args)
+  public static var currentLanguage: String = Constants.DefaultSettings.language
+
+  public static func tr(_ table: String, _ key: String, _ args: CVarArg..., fallback value: String) -> String {
+    let language = currentLanguage
+    let bundle: Bundle
+    if let path = Bundle.main.path(forResource: language, ofType: "lproj"),
+       let langBundle = Bundle(path: path) {
+      bundle = langBundle
+    } else {
+      bundle = Bundle.main
+    }
+
+    let localized = bundle.localizedString(forKey: key, value: value, table: table)
+    let format = (localized != key && !localized.isEmpty) ? localized : value
+    return String(format: format, locale: Locale(identifier: language), arguments: args)
   }
 }
-{% if not param.bundle and not param.lookupFunction %}
-
-// swiftlint:disable convenience_type
-private final class BundleToken {
-  static let bundle: Bundle = {
-    #if SWIFT_PACKAGE
-    return Bundle.module
-    #else
-    return Bundle.main
-    #endif
-  }()
-}
-// swiftlint:enable convenience_type
-{% endif %}
 {% else %}
 // No string found
 {% endif %}

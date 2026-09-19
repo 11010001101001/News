@@ -41,4 +41,5 @@ enum SFSymbols: String {
     case link
     case documentOnDocument = "document.on.document"
     case lightMax = "light.max"
+    case globe
 }

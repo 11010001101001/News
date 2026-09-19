@@ -1,0 +1,88 @@
+/* Indonesian Strings */
+
+"Actions.open" = "Buka";
+"Actions.reload" = "Muat Ulang";
+"Actions.share" = "Bagikan";
+
+"AppIcon.cat" = "Kucing";
+"AppIcon.dart" = "Dart";
+"AppIcon.globe" = "Globe";
+"AppIcon.title" = "Ikon Aplikasi";
+
+"Category.business" = "Bisnis";
+"Category.entertainment" = "Hiburan";
+"Category.general" = "Umum";
+"Category.health" = "Kesehatan";
+"Category.science" = "Sains";
+"Category.sports" = "Olahraga";
+"Category.technology" = "Teknologi";
+"Category.title" = "Kategori";
+
+"ContextMenu.addToFavorites" = "Tambahkan ke favorit";
+"ContextMenu.copy" = "Salin";
+"ContextMenu.markAsRead" = "Tandai telah dibaca";
+"ContextMenu.markAsUnread" = "Tandai belum dibaca";
+"ContextMenu.removeFromFavorites" = "Hapus dari favorit";
+"ContextMenu.share" = "Bagikan";
+
+"Favorites.add" = "Tambah";
+"Favorites.empty" = "Belum ada yang ditambahkan";
+"Favorites.screen.title" = "Favorit";
+
+"Info.title" = "Info";
+
+"Loader.astronaut" = "Astronot";
+"Loader.hamster" = "Hamster";
+"Loader.hourglass" = "Jam Pasir";
+"Loader.kitten" = "Anak Kucing";
+"Loader.rocket" = "Roket";
+"Loader.title" = "Pemuat";
+
+"Settings.language" = "Bahasa";
+"Settings.selectLanguage" = "Pilih bahasa";
+
+"Sound.cats" = "Miau Kucing";
+"Sound.silentMode" = "Mode Hening";
+"Sound.starwars" = "Star Wars";
+"Sound.title" = "Suara";
+
+"Widgets.instuction" = "Tambahkan widget dan jadilah ninja teknologi!\nBaca lebih banyak topik untuk naik tingkat";
+"Widgets.levels" = "Tingkat widget aplikasi";
+"Widgets.range" = "Rentang: %@";
+
+"app.apiKey1" = "8f825354e7354c71829cfb4cb15c4893";
+"app.apiKey2" = "eb4bc5c32bdd40ca937aa8f94ff2673a";
+"app.contactUs" = "hubungi kami";
+"app.telegram" = "https://t.me/Yaroslav_Kupriyanov";
+"app.version" = "versi aplikasi: %@";
+
+"errors.badRequest" = "Kesalahan 400\n\nPermintaan buruk, coba lagi nanti";
+"errors.imageLoadingError" = "Gagal memuat gambar";
+"errors.invalidUrl" = "invalidUrl";
+"errors.loadingFailed" = "Gagal memuat";
+"errors.mappingError" = "mappingError";
+"errors.noConnection" = "Tidak ada koneksi";
+"errors.responseError" = "responseError";
+"errors.serverError" = "Kesalahan 500\n\nKesalahan server, coba lagi nanti";
+"errors.timeout" = "Kesalahan batas waktu\n\nMasalah server atau koneksi terputus";
+"errors.tooManyRequests" = "Kesalahan 429\n\nBatas permintaan harian terlampaui, sampai besok";
+"errors.topicLabelNoInfo" = "Tidak ada deskripsi. Ini bukan kesalahan, tekan tombol di bawah";
+"errors.unauthorized" = "Kesalahan 401\n\nOtorisasi gagal, coba lagi nanti";
+"errors.undefinedError" = "undefinedError";
+"errors.unhandled" = "Ups, kesalahan tidak terduga";
+
+"loading.state.ok" = "ok";
+
+"notification.body" = "Gerobak berita telah tiba, silakan bongkar 🦥";
+"notification.title" = "Mmmmm, lezat";
+
+"screen.details.title" = "Detail";
+"screen.more.title" = "Lainnya";
+"screen.settings.title" = "Pengaturan";
+
+"share.info" = "Tautan ke aplikasi Berita di AppStore 🦾: tetap dapat informasi!👨🏻‍🔧";
+
+"state.noDescription" = "Tidak ada deskripsi 👀";
+
+"tip.settings.message" = "Jangan lupa periksa pengaturan 🦥";
+"tip.settings.title" = "Petunjuk";

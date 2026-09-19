@@ -2,26 +2,28 @@
 //  SettingsManager.swift
 //  News
 //
-//  Created by Ярослав Куприянов on 10.10.2025.
+//  Created by Ярослав Куприянов on 28.03.2024.
 //
 
-import UIKit
+import Foundation
 import SwiftUI
 
 protocol SettingsManagerProtocol {
-    var soundTheme: String { get }
     var category: String { get }
+    var soundTheme: String { get }
     var loader: String { get }
     var appIcon: String { get }
+    var language: String { get }
     var watchedTopics: Set<String> { get }
-    var keyword: String { get }
     var favoriteTopics: [FavoriteArticle] { get }
     var loaderShadowColor: Color { get }
+    var keyword: String { get }
 
-    func save(soundTheme: String)
     func save(category: String)
+    func save(soundTheme: String)
     func save(loader: String)
     func save(appIcon: String)
+    func save(language: String)
     func save(watchedTopics: Set<String>)
     func save(favorites: [FavoriteArticle])
     func save(keyword: String)
@@ -29,27 +31,37 @@ protocol SettingsManagerProtocol {
     func loadSettings(_ settings: [SettingsModel])
 }
 
-final class SettingsManager {
-    private var savedSettings: [SettingsModel]?
-    private var settings: SettingsModel? { savedSettings?.first }
-}
+final class SettingsManager: SettingsManagerProtocol {
+    private var settings: SettingsModel? {
+        savedSettings?.first
+    }
 
-// MARK: - SettingsManagerProtocol
-extension SettingsManager: SettingsManagerProtocol {
-    var soundTheme: String {
-        (settings?.soundTheme).or(SoundTheme.silentMode.rawValue)
+    private var savedSettings: [SettingsModel]?
+
+    func loadSettings(_ settings: [SettingsModel]) {
+        self.savedSettings = settings
+        // Updates active localization bundle in SwiftGen Texts class without app restart
+        Texts.currentLanguage = language
     }
 
     var category: String {
-        (settings?.category).or(NewsCategory.technology.rawValue)
+        (settings?.category).or(Constants.DefaultSettings.category)
+    }
+
+    var soundTheme: String {
+        (settings?.soundTheme).or(Constants.DefaultSettings.soundTheme)
     }
 
     var loader: String {
-        (settings?.loader).or(LoaderConfiguration.hourGlass.rawValue)
+        (settings?.loader).or(Constants.DefaultSettings.loader)
     }
 
     var appIcon: String {
-        (settings?.appIcon).or(AppIconConfiguration.globe.rawValue)
+        (settings?.appIcon).or(Constants.DefaultSettings.appIcon)
+    }
+
+    var language: String {
+        (settings?.language).or(Constants.DefaultSettings.language)
     }
 
     var keyword: String {
@@ -79,7 +91,7 @@ extension SettingsManager: SettingsManagerProtocol {
 
         UIApplication.shared.setAlternateIconName(iconName) { error in
             if let error {
-                fatalError("File \(appIcon): \(error.localizedDescription)")
+                print("App icon change notice (\(appIcon)): \(error.localizedDescription)")
             }
         }
     }
@@ -90,6 +102,12 @@ extension SettingsManager: SettingsManagerProtocol {
 
     func save(loader: String) {
         savedSettings?.first?.loader = loader
+    }
+
+    func save(language: String) {
+        savedSettings?.first?.language = language
+        // Updates active localization bundle in SwiftGen Texts class without app restart
+        Texts.currentLanguage = language
     }
 
     func save(watchedTopics: Set<String>) {
@@ -104,20 +122,13 @@ extension SettingsManager: SettingsManagerProtocol {
         savedSettings?.first?.keyword = keyword
     }
 
-    func loadSettings(_ settings: [SettingsModel]) {
-        savedSettings = settings
-    }
-}
-
-// MARK: - Private
-private extension SettingsManager {
-    func sortIsRead(_ articles: [FavoriteArticle]?) -> [FavoriteArticle] {
+    private func sortIsRead(_ articles: [FavoriteArticle]) -> [FavoriteArticle] {
         var read = [FavoriteArticle]()
         var notRead = [FavoriteArticle]()
 
-        articles?.forEach {
-            guard !$0.title.orEmpty.contains("Removed") else { return }
-            let isRead = checkIsRead($0.article.key)
+        articles.forEach {
+            let key = ($0.url).or(($0.title).orEmpty)
+            let isRead = checkIsRead(key)
             if isRead {
                 read.append($0)
             } else {
@@ -128,7 +139,7 @@ private extension SettingsManager {
         return notRead + read
     }
 
-    func checkIsRead(_ key: String) -> Bool {
+    private func checkIsRead(_ key: String) -> Bool {
         watchedTopics.contains(where: { $0 == key })
     }
 }

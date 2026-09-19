@@ -15,7 +15,7 @@ struct SettingsCell: View, ImageProvider {
 		HorStack(spacing: Constants.padding) {
 			getImage(for: id)
 				.padding(.leading, Constants.padding)
-			DesignedText(text: id.capitalizingFirstLetter())
+			DesignedText(text: viewModel.displayName(for: id))
 				.font(.headline)
 				.frame(maxHeight: .infinity, alignment: .leading)
 			Spacer()

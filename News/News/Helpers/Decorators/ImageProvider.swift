@@ -25,6 +25,7 @@ extension ImageProvider {
         case SoundTheme.cats.rawValue: SFSymbols.catFill
         case Texts.App.contactUs(): SFSymbols.paperplaneFill
         case Texts.Widgets.levels(): SFSymbols.gamecontrollerFill
+        case Texts.Settings.language(): SFSymbols.globe
         case NewsKeyword.title: SFSymbols.lightMax
         default: SFSymbols.infoCircleFill
         }

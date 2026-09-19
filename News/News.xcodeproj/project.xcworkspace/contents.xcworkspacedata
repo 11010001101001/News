@@ -4,4 +4,12 @@
    <FileRef
       location = "self:">
    </FileRef>
+   <Group
+      location = "group:NewsTests"
+      name = "NewsTests">
+   </Group>
+   <Group
+      location = "group:NewsUITests"
+      name = "NewsUITests">
+   </Group>
 </Workspace>

@@ -13,7 +13,7 @@ struct SettingsList: View {
 
     var body: some View {
         TabView {
-            Tab(LoaderConfiguration.title, systemImage: LoaderConfiguration.image) {
+            Tab(Texts.Loader.title(), systemImage: LoaderConfiguration.image) {
                 buildContentScroll {
                     ForEach(LoaderConfiguration.allCases) { loader in
                         LoaderSettingsCell(viewModel: viewModel, id: loader.rawValue)
@@ -21,7 +21,7 @@ struct SettingsList: View {
                 }
             }
 
-            Tab(NewsCategory.title, systemImage: NewsCategory.image) {
+            Tab(Texts.Category.title(), systemImage: NewsCategory.image) {
                 buildContentScroll {
                     VerStack(spacing: Constants.padding) {
                         ForEach(NewsCategory.allCases) { category in
@@ -32,7 +32,7 @@ struct SettingsList: View {
                 }
             }
 
-            Tab(SoundTheme.title, systemImage: SoundTheme.image) {
+            Tab(Texts.Sound.title(), systemImage: SoundTheme.image) {
                 buildContentScroll {
                     ForEach(SoundTheme.allCases) { theme in
                         SettingsCell(viewModel: viewModel, id: theme.rawValue)
@@ -41,7 +41,7 @@ struct SettingsList: View {
             }
 
             if UIApplication.shared.supportsAlternateIcons {
-                Tab(AppIconConfiguration.title, systemImage: AppIconConfiguration.image) {
+                Tab(Texts.AppIcon.title(), systemImage: AppIconConfiguration.image) {
                     buildContentScroll {
                         ForEach(AppIconConfiguration.allCases) { theme in
                             AppIconSettingsCell(viewModel: viewModel, id: theme.rawValue)

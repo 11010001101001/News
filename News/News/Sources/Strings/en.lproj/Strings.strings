@@ -60,3 +60,34 @@
 "Widgets.levels" = "App widget levels";
 "Widgets.instuction" = "Add app widgets and try to become a tech ninja!\nRead more topics to level up";
 "Widgets.range" = "Range: %@";
+
+"Settings.language" = "Language";
+"Settings.selectLanguage" = "Select language";
+
+"Category.title" = "Category";
+"Category.business" = "Business";
+"Category.entertainment" = "Entertainment";
+"Category.general" = "General";
+"Category.health" = "Health";
+"Category.science" = "Science";
+"Category.sports" = "Sports";
+"Category.technology" = "Technology";
+
+"Sound.title" = "Sound";
+"Sound.silentMode" = "Silent mode";
+"Sound.starwars" = "Star Wars";
+"Sound.cats" = "Cats meow";
+
+"Loader.title" = "Loader";
+"Loader.hourglass" = "Hourglass";
+"Loader.rocket" = "Rocket";
+"Loader.astronaut" = "Astronaut";
+"Loader.hamster" = "Hamster";
+"Loader.kitten" = "Kitten";
+
+"AppIcon.title" = "App icon";
+"AppIcon.globe" = "Globe";
+"AppIcon.cat" = "Cat";
+"AppIcon.dart" = "Dart";
+
+"Info.title" = "Info";

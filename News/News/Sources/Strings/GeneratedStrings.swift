@@ -21,6 +21,46 @@ public enum Texts {
     public static func share() -> String { Texts.tr("Strings", "Actions.share", fallback: "Share")
     }
   }
+  public enum AppIcon {
+    /// Cat
+    public static func cat() -> String { Texts.tr("Strings", "AppIcon.cat", fallback: "Cat")
+    }
+    /// Dart
+    public static func dart() -> String { Texts.tr("Strings", "AppIcon.dart", fallback: "Dart")
+    }
+    /// Globe
+    public static func globe() -> String { Texts.tr("Strings", "AppIcon.globe", fallback: "Globe")
+    }
+    /// App icon
+    public static func title() -> String { Texts.tr("Strings", "AppIcon.title", fallback: "App icon")
+    }
+  }
+  public enum Category {
+    /// Business
+    public static func business() -> String { Texts.tr("Strings", "Category.business", fallback: "Business")
+    }
+    /// Entertainment
+    public static func entertainment() -> String { Texts.tr("Strings", "Category.entertainment", fallback: "Entertainment")
+    }
+    /// General
+    public static func general() -> String { Texts.tr("Strings", "Category.general", fallback: "General")
+    }
+    /// Health
+    public static func health() -> String { Texts.tr("Strings", "Category.health", fallback: "Health")
+    }
+    /// Science
+    public static func science() -> String { Texts.tr("Strings", "Category.science", fallback: "Science")
+    }
+    /// Sports
+    public static func sports() -> String { Texts.tr("Strings", "Category.sports", fallback: "Sports")
+    }
+    /// Technology
+    public static func technology() -> String { Texts.tr("Strings", "Category.technology", fallback: "Technology")
+    }
+    /// Category
+    public static func title() -> String { Texts.tr("Strings", "Category.title", fallback: "Category")
+    }
+  }
   public enum ContextMenu {
     /// Add to favorites
     public static func addToFavorites() -> String { Texts.tr("Strings", "ContextMenu.addToFavorites", fallback: "Add to favorites")
@@ -52,6 +92,53 @@ public enum Texts {
       /// Favorites
       public static func title() -> String { Texts.tr("Strings", "Favorites.screen.title", fallback: "Favorites")
       }
+    }
+  }
+  public enum Info {
+    /// Info
+    public static func title() -> String { Texts.tr("Strings", "Info.title", fallback: "Info")
+    }
+  }
+  public enum Loader {
+    /// Astronaut
+    public static func astronaut() -> String { Texts.tr("Strings", "Loader.astronaut", fallback: "Astronaut")
+    }
+    /// Hamster
+    public static func hamster() -> String { Texts.tr("Strings", "Loader.hamster", fallback: "Hamster")
+    }
+    /// Hourglass
+    public static func hourglass() -> String { Texts.tr("Strings", "Loader.hourglass", fallback: "Hourglass")
+    }
+    /// Kitten
+    public static func kitten() -> String { Texts.tr("Strings", "Loader.kitten", fallback: "Kitten")
+    }
+    /// Rocket
+    public static func rocket() -> String { Texts.tr("Strings", "Loader.rocket", fallback: "Rocket")
+    }
+    /// Loader
+    public static func title() -> String { Texts.tr("Strings", "Loader.title", fallback: "Loader")
+    }
+  }
+  public enum Settings {
+    /// Language
+    public static func language() -> String { Texts.tr("Strings", "Settings.language", fallback: "Language")
+    }
+    /// Select language
+    public static func selectLanguage() -> String { Texts.tr("Strings", "Settings.selectLanguage", fallback: "Select language")
+    }
+  }
+  public enum Sound {
+    /// Cats meow
+    public static func cats() -> String { Texts.tr("Strings", "Sound.cats", fallback: "Cats meow")
+    }
+    /// Silent mode
+    public static func silentMode() -> String { Texts.tr("Strings", "Sound.silentMode", fallback: "Silent mode")
+    }
+    /// Star Wars
+    public static func starwars() -> String { Texts.tr("Strings", "Sound.starwars", fallback: "Star Wars")
+    }
+    /// Sound
+    public static func title() -> String { Texts.tr("Strings", "Sound.title", fallback: "Sound")
     }
   }
   public enum Widgets {
@@ -202,21 +289,21 @@ public enum Texts {
 // MARK: - Implementation Details
 
 extension Texts {
-  private static func tr(_ table: String, _ key: String, _ args: CVarArg..., fallback value: String) -> String {
-    let format = BundleToken.bundle.localizedString(forKey: key, value: value, table: table)
-    return String(format: format, locale: Locale.current, arguments: args)
+  public static var currentLanguage: String = Constants.DefaultSettings.language
+
+  public static func tr(_ table: String, _ key: String, _ args: CVarArg..., fallback value: String) -> String {
+    let language = currentLanguage
+    let bundle: Bundle
+    if let path = Bundle.main.path(forResource: language, ofType: "lproj"),
+       let langBundle = Bundle(path: path) {
+      bundle = langBundle
+    } else {
+      bundle = Bundle.main
+    }
+
+    let localized = bundle.localizedString(forKey: key, value: value, table: table)
+    let format = (localized != key && !localized.isEmpty) ? localized : value
+    return String(format: format, locale: Locale(identifier: language), arguments: args)
   }
 }
-
-// swiftlint:disable convenience_type
-private final class BundleToken {
-  static let bundle: Bundle = {
-    #if SWIFT_PACKAGE
-    return Bundle.module
-    #else
-    return Bundle.main
-    #endif
-  }()
-}
-// swiftlint:enable convenience_type
 // swiftlint:enable all

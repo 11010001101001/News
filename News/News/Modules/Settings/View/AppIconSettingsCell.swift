@@ -34,7 +34,7 @@ struct AppIconSettingsCell: View {
             }
 
 			HorStack {
-                DesignedText(text: id.capitalizingFirstLetter())
+                DesignedText(text: viewModel.displayName(for: id))
                     .font(.system(size: 18, weight: .regular))
                     .padding(.leading, 130)
 

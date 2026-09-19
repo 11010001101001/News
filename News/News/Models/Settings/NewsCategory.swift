@@ -10,8 +10,6 @@ import Foundation
 enum NewsCategory: String, CaseIterable, Identifiable {
     var id: Self { return self }
 
-    static var title: String { "Category" }
-
     static var image: String { SFSymbols.listBullet.rawValue }
 
     static var random: String {

@@ -11,8 +11,6 @@ import SwiftUI
 enum LoaderConfiguration: String, CaseIterable, Identifiable {
 	var id: Self { return self }
 
-	static var title: String { "Loader" }
-
     static var image: String { SFSymbols.hourglass.rawValue }
 
 	case rocket

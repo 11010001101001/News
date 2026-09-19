@@ -39,6 +39,19 @@ final class SettingsViewModel: ObservableObject {
         set { settingsManager.save(appIcon: newValue) }
     }
 
+    var language: String {
+        get { settingsManager.language }
+        set { settingsManager.save(language: newValue) }
+    }
+
+    var currentLanguageItem: AppLanguage {
+        AppLanguage(rawValue: language) ?? .english
+    }
+
+    var availableLanguages: [AppLanguage] {
+        AppLanguage.allCases
+    }
+
     var watchedTopics: Set<String> {
         get { settingsManager.watchedTopics }
         set { settingsManager.save(watchedTopics: newValue) }
@@ -94,8 +107,41 @@ extension SettingsViewModel {
             soundTheme,
             category,
             loader,
-            appIcon
+            appIcon,
+            language
         ].first(where: { $0 == settingName }) != nil
+    }
+
+    func displayName(for id: String) -> String {
+        switch id {
+        case NewsCategory.business.rawValue: Texts.Category.business()
+        case NewsCategory.entertainment.rawValue: Texts.Category.entertainment()
+        case NewsCategory.general.rawValue: Texts.Category.general()
+        case NewsCategory.health.rawValue: Texts.Category.health()
+        case NewsCategory.science.rawValue: Texts.Category.science()
+        case NewsCategory.sports.rawValue: Texts.Category.sports()
+        case NewsCategory.technology.rawValue: Texts.Category.technology()
+
+        case SoundTheme.starwars.rawValue: Texts.Sound.starwars()
+        case SoundTheme.cats.rawValue: Texts.Sound.cats()
+        case SoundTheme.silentMode.rawValue: Texts.Sound.silentMode()
+
+        case LoaderConfiguration.rocket.rawValue: Texts.Loader.rocket()
+        case LoaderConfiguration.hourGlass.rawValue: Texts.Loader.hourglass()
+        case LoaderConfiguration.astronaut.rawValue: Texts.Loader.astronaut()
+        case LoaderConfiguration.hamster.rawValue: Texts.Loader.hamster()
+        case LoaderConfiguration.kitten.rawValue: Texts.Loader.kitten()
+
+        case AppIconConfiguration.globe.rawValue: Texts.AppIcon.globe()
+        case AppIconConfiguration.cat.rawValue: Texts.AppIcon.cat()
+        case AppIconConfiguration.dart.rawValue: Texts.AppIcon.dart()
+
+        case AppLanguage.english.rawValue: AppLanguage.english.title
+        case AppLanguage.russian.rawValue: AppLanguage.russian.title
+        case AppLanguage.indonesian.rawValue: AppLanguage.indonesian.title
+
+        default: id.capitalizingFirstLetter()
+        }
     }
 
     func applySettings(_ key: String) {
@@ -132,6 +178,15 @@ extension SettingsViewModel {
             }
             appIcon = name
             notificationOccurred(.success)
+
+        case let name where AppLanguage.allCases.contains(where: { $0.rawValue == name }):
+            guard name != language else {
+                notificationOccurred(.error)
+                return
+            }
+            language = name
+            notificationOccurred(.success)
+            redrawContentViewLoader()
 
         default:
             break
@@ -187,6 +242,7 @@ private extension SettingsViewModel {
         self.feedBackType = feedBackType
     }
 
+    /// Triggers view hierarchy re-evaluation to apply updated localized strings or loader animations
     func redrawContentViewLoader() {
         id = Int.random(in: .zero...Int.max)
     }

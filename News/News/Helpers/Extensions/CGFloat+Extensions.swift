@@ -9,12 +9,21 @@ import Foundation
 import UIKit
 
 extension CGFloat {
+    private static var currentWindowScene: UIWindowScene? {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first { $0.activationState == .foregroundActive }
+            ?? UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first
+    }
+
     static var screenHeight: CGFloat {
-        UIScreen.main.bounds.height
+        currentWindowScene?.screen.bounds.height ?? .zero
     }
 
     static var screenWidth: CGFloat {
-        UIScreen.main.bounds.width
+        currentWindowScene?.screen.bounds.width ?? .zero
     }
 
     static let sideInsets: CGFloat = 32.0

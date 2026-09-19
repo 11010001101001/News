@@ -43,6 +43,8 @@ final class WidgetsManager {
     }
 
     func updateLevel(watchedTopics: Set<String>) {
+        guard !articles.isEmpty else { return }
+        
         let watched = articles.filter { article in
             watchedTopics.contains(where: { $0 == article.key })
         }

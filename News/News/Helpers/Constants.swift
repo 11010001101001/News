@@ -21,5 +21,6 @@ public enum Constants {
 		static let soundTheme = SoundTheme.silentMode.rawValue
 		static let loader = LoaderConfiguration.hourGlass.rawValue
 		static let appIcon = AppIconConfiguration.globe.rawValue
+		static let language = "en"
 	}
 }
