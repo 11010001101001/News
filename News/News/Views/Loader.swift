@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Lottie
-import Combine
 
 struct Loader: View {
     let loaderName: String

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TopicsList: View {
-    @ObservedObject var viewModel: MainViewModel
+    @Bindable var viewModel: MainViewModel
 
     var body: some View {
         ZStack {

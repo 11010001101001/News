@@ -1,5 +1,5 @@
 //
-//  MainView.swift
+//  DetailsView.swift
 //  News
 //
 //  Created by Ярослав Куприянов on 04.10.2025.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DetailsView: View {
-    @StateObject var viewModel: DetailsViewModel
+    @State var viewModel: DetailsViewModel
 
     let article: Article
 

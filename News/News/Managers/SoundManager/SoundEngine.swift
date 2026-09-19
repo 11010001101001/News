@@ -7,11 +7,11 @@
 
 import AVFoundation
 
-protocol SoundEngineProtocol {
+protocol SoundEngineProtocol: Sendable {
     func play(_ name: String)
 }
 
-final class SoundEngine {
+final class SoundEngine: SoundEngineProtocol, @unchecked Sendable {
     private let engine = AVAudioEngine()
     private let player = AVAudioPlayerNode()
     private var buffers: [String: AVAudioPCMBuffer] = [:]
@@ -20,18 +20,22 @@ final class SoundEngine {
         try? AVAudioSession.sharedInstance().setCategory(.playback, options: .mixWithOthers)
         try? AVAudioSession.sharedInstance().setActive(true)
         engine.attach(player)
-        engine.connect(player, to: engine.mainMixerNode, format: nil)
-        try? engine.start()
         prewarm()
     }
 }
 
 // MARK: - SoundEngineProtocol
-extension SoundEngine: SoundEngineProtocol {
+extension SoundEngine {
     func play(_ name: String) {
         guard let buffer = buffers[name] else { return }
-        player.play()
+        if !engine.isRunning {
+            try? engine.start()
+        }
+        player.stop()
         player.scheduleBuffer(buffer, at: nil, options: .interrupts, completionHandler: nil)
+        if !player.isPlaying {
+            try? player.playAudio()
+        }
     }
 }
 
@@ -42,6 +46,11 @@ private extension SoundEngine {
             for url in urls {
                 load(name: url.deletingPathExtension().lastPathComponent)
             }
+        }
+        
+        if let firstBuffer = buffers.values.first {
+            try? engine.connectNode(player, to: engine.mainMixerNode, format: firstBuffer.format)
+            try? engine.start()
         }
     }
 

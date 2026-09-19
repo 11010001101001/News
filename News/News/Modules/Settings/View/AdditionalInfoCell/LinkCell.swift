@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LinkCell: View, ImageProvider {
-	@ObservedObject var viewModel: SettingsViewModel
+	@Bindable var viewModel: SettingsViewModel
 	let id: String
 	let link: URL
     

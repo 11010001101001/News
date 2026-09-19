@@ -1,5 +1,5 @@
 //
-//  Topic.swift
+//  TopicDetail.swift
 //  News
 //
 //  Created by Ярослав Куприянов on 26.03.2024.
@@ -9,7 +9,7 @@ import SwiftUI
 import UIKit
 
 struct TopicDetail: View {
-	@ObservedObject var viewModel: DetailsViewModel
+	@Bindable var viewModel: DetailsViewModel
 	@Environment(\.dismiss) var dismiss
 
 	let article: Article

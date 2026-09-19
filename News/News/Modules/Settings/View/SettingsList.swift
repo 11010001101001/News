@@ -9,7 +9,7 @@ import SwiftUI
 import Lottie
 
 struct SettingsList: View {
-    @ObservedObject var viewModel: SettingsViewModel
+    @Bindable var viewModel: SettingsViewModel
 
     var body: some View {
         TabView {

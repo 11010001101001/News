@@ -1,5 +1,5 @@
 //
-//  FavoritesButton.swift
+//  FavoritesContextMenuButton.swift
 //  News
 //
 //  Created by Ярослав Куприянов on 13.10.2025.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct FavoritesContextMenuButton: View {
-    @ObservedObject var viewModel: DetailsViewModel
+    @Bindable var viewModel: DetailsViewModel
     let article: Article
 
     private var isFavorite: Bool {

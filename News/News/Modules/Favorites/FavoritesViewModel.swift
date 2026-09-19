@@ -1,6 +1,9 @@
 import Foundation
+import SwiftUI
 
-final class FavoritesViewModel: ObservableObject {
+@Observable
+@MainActor
+final class FavoritesViewModel {
     // MARK: Internal variables
     var favoriteTopics: [FavoriteArticle] {
         get { settingsManager.favoriteTopics }

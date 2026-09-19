@@ -6,44 +6,32 @@
 //
 
 import UIKit
-import Combine
 
-protocol VibrateManagerProtocol {
-    func bind(to publisher: AnyPublisher<UIImpactFeedbackGenerator.FeedbackStyle?, Never>)
-    func bind(to publisher: AnyPublisher<UINotificationFeedbackGenerator.FeedbackType?, Never>)
+protocol VibrateManagerProtocol: Sendable {
+    @MainActor func vibrate(_ style: UIImpactFeedbackGenerator.FeedbackStyle)
+    @MainActor func vibrate(_ type: UINotificationFeedbackGenerator.FeedbackType)
 }
 
-final class VibrateManager {
-    private var cancellables = Set<AnyCancellable>()
+@MainActor
+final class VibrateManager: VibrateManagerProtocol {
     private var impactGens: [UIImpactFeedbackGenerator.FeedbackStyle: UIImpactFeedbackGenerator]?
     private var notificationGen: UINotificationFeedbackGenerator?
 
-    init() { prewarm() }
-}
-
-// MARK: - VibrateManagerProtocol
-extension VibrateManager: VibrateManagerProtocol {
-    func bind(to publisher: AnyPublisher<UIImpactFeedbackGenerator.FeedbackStyle?, Never>) {
-        publisher
-            .sink { [weak self] style in
-                guard let style else { return }
-                self?.impactGens?[style]?.impactOccurred(intensity: 0.4)
-            }
-            .store(in: &cancellables)
+    init() {
+        prewarm()
     }
 
-    func bind(to publisher: AnyPublisher<UINotificationFeedbackGenerator.FeedbackType?, Never>) {
-        publisher
-            .sink { [weak self] type in
-                guard let type else { return }
-                self?.notificationGen?.notificationOccurred(type)
-            }
-            .store(in: &cancellables)
+    func vibrate(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
+        impactGens?[style]?.impactOccurred(intensity: 0.4)
+    }
+
+    func vibrate(_ type: UINotificationFeedbackGenerator.FeedbackType) {
+        notificationGen?.notificationOccurred(type)
     }
 }
 
 // MARK: - Private
-extension VibrateManager {
+private extension VibrateManager {
     func prewarm() {
         let notificationGen = UINotificationFeedbackGenerator()
         notificationGen.prepare()

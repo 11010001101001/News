@@ -11,7 +11,9 @@ import Foundation
 struct CachedAsyncImage: View {
     let article: Article
 
-    @ObservedObject var viewModel: DetailsViewModel
+    @Bindable var viewModel: DetailsViewModel
+
+    @State private var cachedImage: Image?
 
     private var url: String {
         article.urlToImage.orEmpty
@@ -21,13 +23,12 @@ struct CachedAsyncImage: View {
         url as AnyObject
     }
 
-    private var cachedImage: Image? {
-        viewModel.getCachedImage(key: key)
-    }
-
     var body: some View {
         buildCachedAsyncImage()
             .padding()
+            .task {
+                cachedImage = await viewModel.getCachedImage(key: key)
+            }
             .onAppear { viewModel.markAsRead(article.key) }
     }
 }

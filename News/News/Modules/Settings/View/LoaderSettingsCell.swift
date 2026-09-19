@@ -9,7 +9,7 @@ import SwiftUI
 import Lottie
 
 struct LoaderSettingsCell: View {
-    @ObservedObject var viewModel: SettingsViewModel
+    @Bindable var viewModel: SettingsViewModel
     let id: String
 
     private var isEnabled: Bool {

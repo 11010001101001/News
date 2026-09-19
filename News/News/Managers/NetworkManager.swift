@@ -6,90 +6,47 @@
 //
 
 import Foundation
-import Combine
 
-protocol NetworkManagerProtocol {
-    var loadingState: AnyPublisher<LoadingState, Never> { get }
-
-    func loadNews(category: String, isRefresh: Bool)
+protocol NetworkManagerProtocol: Sendable {
+    func loadNews(category: String) async throws -> [Article]
 }
 
-final class NetworkManager: ObservableObject {
-    var loadingState: AnyPublisher<LoadingState, Never> { loadingStateSubject.eraseToAnyPublisher() }
-
-    private let loadingStateSubject = PassthroughSubject<LoadingState, Never>()
-    private var cancellables = Set<AnyCancellable>()
-}
-
-// MARK: - NetworkManagerProtocol
-extension NetworkManager: NetworkManagerProtocol {
-    func loadNews(category: String, isRefresh: Bool) {
-        guard let url = URL(string: Mode.category(category).urlString) else { return }
-
-        if !isRefresh { loadingStateSubject.send(.loading) }
-
-        URLSession.shared.dataTaskPublisher(for: url)
-            .retry(3)
-            .mapError { [weak self] error in
-                self?.mapError(error) ?? ApiError.mappingError(msg: Errors.mappingError)
-            }
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
-            .sink { [weak self] result in
-                switch result {
-                case .finished:
-                    break
-                case let .failure(error):
-                    self?.handleError(error)
-                }
-            } receiveValue: { [weak self] value in
-                self?.handleResponse(value)
-            }
-            .store(in: &cancellables)
-    }
-}
-
-// MARK: - Private
-private extension NetworkManager {
-    func mapError(_ error: Publishers.Retry<URLSession.DataTaskPublisher>.Failure) -> ApiError {
-        let urlError = error as URLError
-        let errorCode = urlError.errorCode
-        let code = urlError.code
-        let description = urlError.localizedDescription
-
-        return switch urlError.errorCode {
-        case -1009:
-            ApiError.noConnection(msg: Errors.noConnection)
-        default:
-            ApiError.mappingError(
-                msg: "\(Errors.mappingError)/ errorCode:\(errorCode)/ code:\(code)/ loc.description:\(description)"
-            )
+actor NetworkManager: NetworkManagerProtocol {
+    func loadNews(category: String) async throws -> [Article] {
+        guard let url = URL(string: Mode.category(category).urlString) else {
+            throw ApiError.mappingError(msg: Errors.mappingError)
         }
-    }
 
-    func handleError(_ error: ApiError) {
-        let message: String = switch error {
-        case let .noConnection(msg): msg
-        case let .mappingError(msg): msg
-        default: Texts.Errors.unhandled()
+        let (data, response): (Data, URLResponse)
+        do {
+            (data, response) = try await URLSession.shared.data(from: url)
+        } catch let urlError as URLError {
+            if urlError.code == .notConnectedToInternet {
+                throw ApiError.noConnection(msg: Errors.noConnection)
+            } else {
+                let errStr = "\(Errors.mappingError)/ errorCode:\(urlError.errorCode)/ code:\(urlError.code)"
+                throw ApiError.mappingError(
+                    msg: "\(errStr)/ loc.description:\(urlError.localizedDescription)"
+                )
+            }
+        } catch {
+            throw ApiError.mappingError(msg: error.localizedDescription)
         }
-        loadingStateSubject.send(.error(message: message))
-    }
 
-    func handleResponse(_ value: (data: Data, response: URLResponse)) {
-        guard let response = value.response as? HTTPURLResponse,
-              let model = try? JSONDecoder().decode(CommonInfo.self, from: value.data)
-        else { return }
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw ApiError.mappingError(msg: Errors.mappingError)
+        }
 
-        let statusCode = response.statusCode
-
-        switch statusCode {
-        case HttpStatusCodes.ok.rawValue:
-            loadingStateSubject.send(.loaded(data: model.articles.orEmpty))
-
-        default:
+        let statusCode = httpResponse.statusCode
+        guard statusCode == HttpStatusCodes.ok.rawValue else {
             let message = (HttpStatusCodes(rawValue: statusCode)?.message).orEmpty
-            loadingStateSubject.send(.error(message: message))
+            throw ApiError.mappingError(msg: message)
         }
+
+        guard let model = try? JSONDecoder().decode(CommonInfo.self, from: data) else {
+            throw ApiError.mappingError(msg: Errors.mappingError)
+        }
+
+        return model.articles.orEmpty
     }
 }

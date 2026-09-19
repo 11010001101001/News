@@ -1,20 +1,20 @@
+//
+//  SettingsViewModel.swift
+//  News
+//
+//  Created by Ярослав Куприянов on 10.10.2025.
+//
+
 import Foundation
-import Combine
 import SwiftUI
 import UIKit
 
-final class SettingsViewModel: ObservableObject {
+@Observable
+@MainActor
+final class SettingsViewModel {
     // MARK: Internal variables
-    @Published var loadingState = LoadingState.loading
-
-    @Published var notificationSound = String.empty
-    @Published var errorSound = String.empty
-    @Published var bubbleSound = String.empty
-
-    @Published var id: Int?
-
-    @Published var feedBackType: UINotificationFeedbackGenerator.FeedbackType?
-    @Published var feedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle?
+    var loadingState = LoadingState.loading
+    var id: Int?
 
     var loader: String {
         get { settingsManager.loader }
@@ -72,7 +72,6 @@ final class SettingsViewModel: ObservableObject {
     private let notificationManager: NotificationManagerProtocol
     private let settingsManager: SettingsManagerProtocol
     private let networkManager: NetworkManagerProtocol
-    private var cancellables = Set<AnyCancellable>()
 
     // MARK: Init
     init(
@@ -87,19 +86,13 @@ final class SettingsViewModel: ObservableObject {
         self.notificationManager = notificationManager
         self.settingsManager = settingsManager
         self.networkManager = networkManager
-        
-        subscribeNetworkManager()
-
-        bindSoundManager()
-        bindVibrateManager()
-        bindNotificationManager()
     }
 }
 
 // MARK: - Public
 extension SettingsViewModel {
     func impactOccured(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
-        feedbackStyle = style
+        vibrateManager.vibrate(style)
     }
 
     func checkIsEnabled(_ settingName: String) -> Bool {
@@ -152,7 +145,7 @@ extension SettingsViewModel {
                 return
             }
             category = name
-            networkManager.loadNews(category: category, isRefresh: false)
+            loadNewsForCategory(category)
 
         case let name where SoundTheme.allCases.contains(where: { $0.rawValue == name }):
             guard name != soundTheme else {
@@ -202,44 +195,40 @@ extension SettingsViewModel {
 
 // MARK: - Private
 private extension SettingsViewModel {
-    func subscribeNetworkManager() {
-        networkManager.loadingState
-            .sink { [weak self] in
-                self?.loadingState = $0
-                switch $0 {
-                case .loading:
-                    break
-                case .loaded:
-                    self?.notificationOccurred(.success)
-                case .error:
-                    self?.notificationOccurred(.error)
-                    self?.playError()
+    func loadNewsForCategory(_ category: String) {
+        loadingState = .loading
+        Task {
+            do {
+                _ = try await networkManager.loadNews(category: category)
+                self.loadingState = .loaded(data: [])
+                notificationOccurred(.success)
+            } catch let error as ApiError {
+                let message: String = switch error {
+                case let .noConnection(msg): msg
+                case let .mappingError(msg): msg
+                default: Texts.Errors.unhandled()
                 }
+                self.loadingState = .error(message: message)
+                notificationOccurred(.error)
+                playError()
+            } catch {
+                self.loadingState = .error(message: error.localizedDescription)
+                notificationOccurred(.error)
+                playError()
             }
-            .store(in: &cancellables)
-    }
-
-    func bindSoundManager() {
-        soundManager.bind(to: $errorSound.eraseToAnyPublisher())
-        soundManager.bind(to: $bubbleSound.eraseToAnyPublisher())
-    }
-
-    func bindVibrateManager() {
-        vibrateManager.bind(to: $feedbackStyle.eraseToAnyPublisher())
-        vibrateManager.bind(to: $feedBackType.eraseToAnyPublisher())
-    }
-
-    func bindNotificationManager() {
-        notificationManager.bind(to: $notificationSound.eraseToAnyPublisher())
+        }
     }
 
     /// sound theme can change - do it during every app launch and sound changing
     func configureNotifications() {
-        notificationSound = (SoundTheme(rawValue: soundTheme)?.notificationSound).orEmpty
+        let notificationSound = (SoundTheme(rawValue: soundTheme)?.notificationSound).orEmpty
+        Task {
+            await notificationManager.configureNotifications(with: notificationSound)
+        }
     }
 
     func notificationOccurred(_ feedBackType: UINotificationFeedbackGenerator.FeedbackType) {
-        self.feedBackType = feedBackType
+        vibrateManager.vibrate(feedBackType)
     }
 
     /// Triggers view hierarchy re-evaluation to apply updated localized strings or loader animations
@@ -250,7 +239,7 @@ private extension SettingsViewModel {
     func playError() {
         guard soundTheme != SoundTheme.silentMode.rawValue else { return }
 
-        errorSound = switch SoundTheme(rawValue: soundTheme) {
+        let errorSound = switch SoundTheme(rawValue: soundTheme) {
         case .starwars:
             "starwars_error"
         case .cats:
@@ -258,10 +247,13 @@ private extension SettingsViewModel {
         default:
             String.empty
         }
+        if !errorSound.isEmpty {
+            soundManager.play(errorSound)
+        }
     }
 
     func playBubble() {
         guard soundTheme != SoundTheme.silentMode.rawValue else { return }
-        bubbleSound = "bubble"
+        soundManager.play("bubble")
     }
 }

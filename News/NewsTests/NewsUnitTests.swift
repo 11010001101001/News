@@ -7,39 +7,40 @@
 
 import Testing
 import Foundation
-import Combine
 import SwiftUI
 @testable import News
 
 // MARK: - Mocks
-private final class MockSoundManager: SoundManagerProtocol {
-    var boundPublisher: AnyPublisher<String, Never>?
-    func bind(to publisher: AnyPublisher<String, Never>) {
-        boundPublisher = publisher
+private final class MockSoundManager: SoundManagerProtocol, @unchecked Sendable {
+    var playedSound: String?
+    func play(_ name: String) {
+        playedSound = name
     }
 }
 
-private final class MockVibrateManager: VibrateManagerProtocol {
-    var boundStylePublisher: AnyPublisher<UIImpactFeedbackGenerator.FeedbackStyle?, Never>?
-    var boundTypePublisher: AnyPublisher<UINotificationFeedbackGenerator.FeedbackType?, Never>?
+private final class MockVibrateManager: VibrateManagerProtocol, @unchecked Sendable {
+    var vibratedStyle: UIImpactFeedbackGenerator.FeedbackStyle?
+    var vibratedType: UINotificationFeedbackGenerator.FeedbackType?
 
-    func bind(to publisher: AnyPublisher<UIImpactFeedbackGenerator.FeedbackStyle?, Never>) {
-        boundStylePublisher = publisher
+    @MainActor
+    func vibrate(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
+        vibratedStyle = style
     }
 
-    func bind(to publisher: AnyPublisher<UINotificationFeedbackGenerator.FeedbackType?, Never>) {
-        boundTypePublisher = publisher
-    }
-}
-
-private final class MockNotificationManager: NotificationManagerProtocol {
-    var boundPublisher: AnyPublisher<String, Never>?
-    func bind(to publisher: AnyPublisher<String, Never>) {
-        boundPublisher = publisher
+    @MainActor
+    func vibrate(_ type: UINotificationFeedbackGenerator.FeedbackType) {
+        vibratedType = type
     }
 }
 
-private final class MockSettingsManager: SettingsManagerProtocol {
+private final class MockNotificationManager: NotificationManagerProtocol, @unchecked Sendable {
+    var configuredSound: String?
+    func configureNotifications(with sound: String) async {
+        configuredSound = sound
+    }
+}
+
+private final class MockSettingsManager: SettingsManagerProtocol, @unchecked Sendable {
     var category: String = Constants.DefaultSettings.category
     var soundTheme: String = Constants.DefaultSettings.soundTheme
     var loader: String = Constants.DefaultSettings.loader
@@ -61,19 +62,22 @@ private final class MockSettingsManager: SettingsManagerProtocol {
     func loadSettings(_ settings: [SettingsModel]) {}
 }
 
-private final class MockNetworkManager: NetworkManagerProtocol {
-    let loadingStateSubject = CurrentValueSubject<LoadingState, Never>(.loading)
-    var loadingState: AnyPublisher<LoadingState, Never> { loadingStateSubject.eraseToAnyPublisher() }
+private final class MockNetworkManager: NetworkManagerProtocol, @unchecked Sendable {
     var loadedCategory: String?
-    var isRefreshCalled = false
+    var articlesToReturn: [Article] = []
+    var shouldFail = false
 
-    func loadNews(category: String, isRefresh: Bool) {
+    func loadNews(category: String) async throws -> [Article] {
         loadedCategory = category
-        isRefreshCalled = isRefresh
+        if shouldFail {
+            throw ApiError.noConnection(msg: Errors.noConnection)
+        }
+        return articlesToReturn
     }
 }
 
 // MARK: - Tests
+@MainActor
 struct NewsUnitTests {
     // MARK: 1. MainViewModel Tests
     @Test("MainViewModel initializes with default state and binds managers")
@@ -94,14 +98,10 @@ struct NewsUnitTests {
 
         #expect(viewModel.loadingState == .loading)
         #expect(viewModel.news.isEmpty)
-        #expect(soundManager.boundPublisher != nil)
-        #expect(vibrateManager.boundStylePublisher != nil)
-        #expect(vibrateManager.boundTypePublisher != nil)
-        #expect(notificationManager.boundPublisher != nil)
     }
 
     @Test("MainViewModel loadNews invokes network manager with correct category")
-    func testMainViewModelLoadNews() {
+    func testMainViewModelLoadNews() async {
         let networkManager = MockNetworkManager()
         let viewModel = MainViewModel(
             soundManager: MockSoundManager(),
@@ -112,9 +112,9 @@ struct NewsUnitTests {
         )
 
         viewModel.loadNews()
+        try? await Task.sleep(for: .milliseconds(100))
 
         #expect(networkManager.loadedCategory == Constants.DefaultSettings.category)
-        #expect(networkManager.isRefreshCalled == false)
     }
 
     @Test("MainViewModel shortcut handling toggles appropriate states")

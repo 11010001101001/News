@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LanguageCell: View, ImageProvider {
-    @ObservedObject var viewModel: SettingsViewModel
+    @Bindable var viewModel: SettingsViewModel
 
     var body: some View {
         HorStack(spacing: Constants.padding) {

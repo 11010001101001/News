@@ -7,22 +7,18 @@
 
 import Foundation
 import SwiftUI
-import Combine
 
-final class MainViewModel: ObservableObject {
+@Observable
+@MainActor
+final class MainViewModel {
     // MARK: Internal variables
-    @Published var loadingState = LoadingState.loading
-    @Published var news = [Article]()
+    var loadingState = LoadingState.loading
+    var news = [Article]()
 
     /// For redraw loader on content view after settings loaded: render loader -> settings loaded -> redraw
-    @Published var loaderId: Int?
-    @Published var feedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle?
-    @Published var feedBackType: UINotificationFeedbackGenerator.FeedbackType?
-    @Published var settingsShortcutItemTapped = false
-    @Published var shareShortcutItemTapped = false
-    @Published var notificationSound = String.empty
-    @Published var errorSound = String.empty
-    @Published var refreshSound = String.empty
+    var loaderId: Int?
+    var settingsShortcutItemTapped = false
+    var shareShortcutItemTapped = false
 
     var loader: String {
         get { settingsManager.loader }
@@ -86,7 +82,6 @@ final class MainViewModel: ObservableObject {
     private let notificationManager: NotificationManagerProtocol
     private let settingsManager: SettingsManagerProtocol
     private let networkManager: NetworkManagerProtocol
-    private var cancellables = Set<AnyCancellable>()
 
     // MARK: Init
     init(
@@ -102,12 +97,6 @@ final class MainViewModel: ObservableObject {
         self.settingsManager = settingsManager
         self.networkManager = networkManager
 
-        subscribeNetworkManager()
-
-        bindSoundManager()
-        bindVibrateManager()
-        bindNotificationManager()
-
         WidgetsManager.shared.start()
     }
 }
@@ -118,8 +107,35 @@ extension MainViewModel {
         settingsManager.loadSettings(settings)
     }
 
-    func loadNews() {
-        networkManager.loadNews(category: category, isRefresh: false)
+    func loadNews(isRefresh: Bool = false) {
+        if !isRefresh {
+            loadingState = .loading
+        }
+
+        Task {
+            do {
+                let loadedArticles = try await networkManager.loadNews(category: category)
+                let sortedNews = sortIsRead(loadedArticles)
+                self.news = sortedNews
+                self.loadingState = .loaded(data: sortedNews)
+                WidgetsManager.shared.updateArticles(sortedNews)
+                WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
+                notificationOccurred(.success)
+            } catch let error as ApiError {
+                let message: String = switch error {
+                case let .noConnection(msg): msg
+                case let .mappingError(msg): msg
+                default: Texts.Errors.unhandled()
+                }
+                self.loadingState = .error(message: message)
+                notificationOccurred(.error)
+                playError()
+            } catch {
+                self.loadingState = .error(message: error.localizedDescription)
+                notificationOccurred(.error)
+                playError()
+            }
+        }
     }
 
     func markAsReadOrUnread() {
@@ -158,56 +174,24 @@ extension MainViewModel {
 
     /// sound theme can change - do it during every app launch and sound changing
     func configureNotifications() {
-        notificationSound = (SoundTheme(rawValue: soundTheme)?.notificationSound).orEmpty
+        let notificationSound = (SoundTheme(rawValue: soundTheme)?.notificationSound).orEmpty
+        Task {
+            await notificationManager.configureNotifications(with: notificationSound)
+        }
     }
 
     func impactOccured(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
-        feedbackStyle = style
+        vibrateManager.vibrate(style)
     }
 
     func refresh() {
         playRefresh()
-        networkManager.loadNews(category: category, isRefresh: true)
+        loadNews(isRefresh: true)
     }
 }
 
 // MARK: - Private
 private extension MainViewModel {
-    func subscribeNetworkManager() {
-        networkManager.loadingState
-            .sink { [weak self] in
-                self?.loadingState = $0
-                switch $0 {
-                case .loading:
-                    break
-                case let .loaded(data):
-                    let news = (self?.sortIsRead(data)).orEmpty
-                    self?.news = news
-                    WidgetsManager.shared.updateArticles(news)
-                    WidgetsManager.shared.updateLevel(watchedTopics: (self?.watchedTopics).orEmpty)
-                    self?.notificationOccurred(.success)
-                case .error:
-                    self?.notificationOccurred(.error)
-                    self?.playError()
-                }
-            }
-            .store(in: &cancellables)
-    }
-
-    func bindSoundManager() {
-        soundManager.bind(to: $errorSound.eraseToAnyPublisher())
-        soundManager.bind(to: $refreshSound.eraseToAnyPublisher())
-    }
-
-    func bindVibrateManager() {
-        vibrateManager.bind(to: $feedbackStyle.eraseToAnyPublisher())
-        vibrateManager.bind(to: $feedBackType.eraseToAnyPublisher())
-    }
-
-    func bindNotificationManager() {
-        notificationManager.bind(to: $notificationSound.eraseToAnyPublisher())
-    }
-
     func sortIsRead(_ articles: [Article]?) -> [Article] {
         var read = [Article]()
         var notRead = [Article]()
@@ -244,13 +228,13 @@ private extension MainViewModel {
     }
 
     func notificationOccurred(_ feedBackType: UINotificationFeedbackGenerator.FeedbackType) {
-        self.feedBackType = feedBackType
+        vibrateManager.vibrate(feedBackType)
     }
 
     func playRefresh() {
         guard soundTheme != SoundTheme.silentMode.rawValue else { return }
 
-        refreshSound = switch SoundTheme(rawValue: soundTheme) {
+        let refreshSound = switch SoundTheme(rawValue: soundTheme) {
         case .starwars:
             starwarsRefresh
         case .cats:
@@ -258,18 +242,24 @@ private extension MainViewModel {
         default:
             String.empty
         }
+        if !refreshSound.isEmpty {
+            soundManager.play(refreshSound)
+        }
     }
 
     func playError() {
         guard soundTheme != SoundTheme.silentMode.rawValue else { return }
 
-        errorSound = switch SoundTheme(rawValue: soundTheme) {
+        let errorSound = switch SoundTheme(rawValue: soundTheme) {
         case .starwars:
             "starwars_error"
         case .cats:
             "cats_error"
         default:
             String.empty
+        }
+        if !errorSound.isEmpty {
+            soundManager.play(errorSound)
         }
     }
 }

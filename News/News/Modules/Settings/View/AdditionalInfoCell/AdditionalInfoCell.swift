@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct AdditionalInfoCell: View {
-    @ObservedObject var viewModel: SettingsViewModel
+    @Bindable var viewModel: SettingsViewModel
 
     var body: some View {
         Group {

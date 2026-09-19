@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct FavoritesTopicsList: View {
-    @ObservedObject var viewModel: FavoritesViewModel
+    @Bindable var viewModel: FavoritesViewModel
 
     var body: some View {
         ZStack {

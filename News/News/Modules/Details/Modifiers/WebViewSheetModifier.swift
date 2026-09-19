@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct WebViewSheetModifier: ViewModifier {
-    @ObservedObject private var viewModel: DetailsViewModel
-    @ObservedObject var webViewModel = WebViewModel()
+    @Bindable private var viewModel: DetailsViewModel
+    @State var webViewModel = WebViewModel()
 
     @Binding private var webViewPresented: Bool
     @State private var opacity = 1.0
@@ -84,7 +84,8 @@ private extension WebViewSheetModifier {
             .animation(.smooth, value: webViewModel.estimatedProgress)
             .onChange(of: webViewModel.estimatedProgress) { _, progress in
                 guard progress == 1.0 else { return }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                Task {
+                    try? await Task.sleep(for: .seconds(0.7))
                     withAnimation {
                         opacity = .leastNonzeroMagnitude
                     }

@@ -8,7 +8,8 @@
 import Foundation
 import SwiftUI
 
-protocol SettingsManagerProtocol {
+@MainActor
+protocol SettingsManagerProtocol: Sendable {
     var category: String { get }
     var soundTheme: String { get }
     var loader: String { get }
@@ -31,6 +32,7 @@ protocol SettingsManagerProtocol {
     func loadSettings(_ settings: [SettingsModel])
 }
 
+@MainActor
 final class SettingsManager: SettingsManagerProtocol {
     private var settings: SettingsModel? {
         savedSettings?.first
@@ -39,41 +41,39 @@ final class SettingsManager: SettingsManagerProtocol {
     private var savedSettings: [SettingsModel]?
 
     func loadSettings(_ settings: [SettingsModel]) {
-        self.savedSettings = settings
-        // Updates active localization bundle in SwiftGen Texts class without app restart
-        Texts.currentLanguage = language
+        performLoadSettings(settings)
     }
 
     var category: String {
-        (settings?.category).or(Constants.DefaultSettings.category)
+        getCategory()
     }
 
     var soundTheme: String {
-        (settings?.soundTheme).or(Constants.DefaultSettings.soundTheme)
+        getSoundTheme()
     }
 
     var loader: String {
-        (settings?.loader).or(Constants.DefaultSettings.loader)
+        getLoader()
     }
 
     var appIcon: String {
-        (settings?.appIcon).or(Constants.DefaultSettings.appIcon)
+        getAppIcon()
     }
 
     var language: String {
-        (settings?.language).or(Constants.DefaultSettings.language)
+        getLanguage()
     }
 
     var keyword: String {
-        (settings?.keyword).or("")
+        getKeyword()
     }
 
     var watchedTopics: Set<String> {
-        (settings?.watchedTopics).orEmpty
+        getWatchedTopics()
     }
 
     var favoriteTopics: [FavoriteArticle] {
-        sortIsRead((settings?.favoriteTopics).orEmpty)
+        getFavoriteTopics()
     }
 
     var loaderShadowColor: Color {
@@ -81,14 +81,85 @@ final class SettingsManager: SettingsManagerProtocol {
     }
 
     func save(category: String) {
-        savedSettings?.first?.category = category
+        setCategory(category)
     }
 
     func save(appIcon: String) {
+        setAppIcon(appIcon)
+    }
+
+    func save(soundTheme: String) {
+        setSoundTheme(soundTheme)
+    }
+
+    func save(loader: String) {
+        setLoader(loader)
+    }
+
+    func save(language: String) {
+        setLanguage(language)
+    }
+
+    func save(watchedTopics: Set<String>) {
+        setWatchedTopics(watchedTopics)
+    }
+
+    func save(favorites: [FavoriteArticle]) {
+        setFavorites(favorites)
+    }
+
+    func save(keyword: String) {
+        setKeyword(keyword)
+    }
+}
+
+// MARK: - MainActor Implementations
+private extension SettingsManager {
+    func performLoadSettings(_ settings: [SettingsModel]) {
+        self.savedSettings = settings
+        let lang = (settings.first?.language).or(Constants.DefaultSettings.language)
+        Texts.currentLanguage = lang
+    }
+
+    func getCategory() -> String {
+        (settings?.category).or(Constants.DefaultSettings.category)
+    }
+
+    func getSoundTheme() -> String {
+        (settings?.soundTheme).or(Constants.DefaultSettings.soundTheme)
+    }
+
+    func getLoader() -> String {
+        (settings?.loader).or(Constants.DefaultSettings.loader)
+    }
+
+    func getAppIcon() -> String {
+        (settings?.appIcon).or(Constants.DefaultSettings.appIcon)
+    }
+
+    func getLanguage() -> String {
+        (settings?.language).or(Constants.DefaultSettings.language)
+    }
+
+    func getKeyword() -> String {
+        (settings?.keyword).or("")
+    }
+
+    func getWatchedTopics() -> Set<String> {
+        (settings?.watchedTopics).orEmpty
+    }
+
+    func getFavoriteTopics() -> [FavoriteArticle] {
+        sortIsRead((settings?.favoriteTopics).orEmpty)
+    }
+
+    func setCategory(_ category: String) {
+        savedSettings?.first?.category = category
+    }
+
+    func setAppIcon(_ appIcon: String) {
         savedSettings?.first?.appIcon = appIcon
-
         let iconName = (AppIconConfiguration.init(rawValue: appIcon)?.iconName).orEmpty
-
         UIApplication.shared.setAlternateIconName(iconName) { error in
             if let error {
                 print("App icon change notice (\(appIcon)): \(error.localizedDescription)")
@@ -96,33 +167,32 @@ final class SettingsManager: SettingsManagerProtocol {
         }
     }
 
-    func save(soundTheme: String) {
+    func setSoundTheme(_ soundTheme: String) {
         savedSettings?.first?.soundTheme = soundTheme
     }
 
-    func save(loader: String) {
+    func setLoader(_ loader: String) {
         savedSettings?.first?.loader = loader
     }
 
-    func save(language: String) {
+    func setLanguage(_ language: String) {
         savedSettings?.first?.language = language
-        // Updates active localization bundle in SwiftGen Texts class without app restart
         Texts.currentLanguage = language
     }
 
-    func save(watchedTopics: Set<String>) {
+    func setWatchedTopics(_ watchedTopics: Set<String>) {
         savedSettings?.first?.watchedTopics = watchedTopics
     }
 
-    func save(favorites: [FavoriteArticle]) {
+    func setFavorites(_ favorites: [FavoriteArticle]) {
         savedSettings?.first?.favoriteTopics = favorites
     }
 
-    func save(keyword: String) {
+    func setKeyword(_ keyword: String) {
         savedSettings?.first?.keyword = keyword
     }
 
-    private func sortIsRead(_ articles: [FavoriteArticle]) -> [FavoriteArticle] {
+    func sortIsRead(_ articles: [FavoriteArticle]) -> [FavoriteArticle] {
         var read = [FavoriteArticle]()
         var notRead = [FavoriteArticle]()
 
@@ -139,7 +209,7 @@ final class SettingsManager: SettingsManagerProtocol {
         return notRead + read
     }
 
-    private func checkIsRead(_ key: String) -> Bool {
+    func checkIsRead(_ key: String) -> Bool {
         watchedTopics.contains(where: { $0 == key })
     }
 }

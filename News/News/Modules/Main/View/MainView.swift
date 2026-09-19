@@ -13,7 +13,7 @@ struct MainView: View {
     @Environment(\.scenePhase) var phase
     @Environment(\.modelContext) var modelContext
 
-    @StateObject var viewModel: MainViewModel
+    @State var viewModel: MainViewModel
 
     @State private var imageWrapper: ContentWrapper?
     @State private var needOpenSettings = false
@@ -47,11 +47,11 @@ private extension MainView {
                 )
         }
         .onAppear { onAppear() }
-        .onReceive(viewModel.$shareShortcutItemTapped) { needShare in
+        .onChange(of: viewModel.shareShortcutItemTapped) { _, needShare in
             guard needShare else { return }
             self.imageWrapper = ContentWrapper(link: .empty, description: DeveloperInfo.shareInfo)
         }
-        .onReceive(viewModel.$settingsShortcutItemTapped) { needOpen in
+        .onChange(of: viewModel.settingsShortcutItemTapped) { _, needOpen in
             guard needOpen else { return }
             needOpenSettings.toggle()
         }

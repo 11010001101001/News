@@ -6,24 +6,15 @@
 //
 
 import AVKit
-import Combine
 
-protocol SoundManagerProtocol {
-    func bind(to publisher: AnyPublisher<String, Never>)
+protocol SoundManagerProtocol: Sendable {
+    func play(_ name: String)
 }
 
-final class SoundManager {
+final class SoundManager: SoundManagerProtocol, Sendable {
     private let engine: SoundEngineProtocol = SoundEngine()
-    private var cancellables = Set<AnyCancellable>()
-}
 
-// MARK: - SoundManagerProtocol
-extension SoundManager: SoundManagerProtocol {
-    func bind(to publisher: AnyPublisher<String, Never>) {
-        publisher
-            .sink { [weak self] name in
-                self?.engine.play(name)
-            }
-            .store(in: &cancellables)
+    func play(_ name: String) {
+        engine.play(name)
     }
 }

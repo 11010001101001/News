@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsCell: View, ImageProvider {
-	@ObservedObject var viewModel: SettingsViewModel
+	@Bindable var viewModel: SettingsViewModel
 	let id: String
 
 	var body: some View {

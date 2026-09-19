@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct FavoritesButton: View {
-    @ObservedObject var viewModel: DetailsViewModel
+    @Bindable var viewModel: DetailsViewModel
     let article: Article
     let isGlass: Bool
     let title: String?

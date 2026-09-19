@@ -8,31 +8,34 @@
 import Foundation
 import WebKit
 import SwiftUI
-import Combine
 
-final class WebViewModel: ObservableObject {
-    @Published var url: URL?
-    @Published var loadingState: LoadingState = .loading
-    @Published var estimatedProgress: Double = .zero
-    @Published var scrollProgress: Double = .zero
+@Observable
+@MainActor
+final class WebViewModel {
+    var url: URL?
+    var loadingState: LoadingState = .loading
+    var estimatedProgress: Double = .zero
+    var scrollProgress: Double = .zero
 
-    private var cancellables = Set<AnyCancellable>()
+    private var progressObservation: NSKeyValueObservation?
 
     init(url: URL? = nil) {
         self.url = url
     }
 
     func bind(to webView: WKWebView) {
-        cancellables.removeAll()
-
-        webView.publisher(for: \.estimatedProgress)
-            .receive(on: RunLoop.main)
-            .assign(to: &$estimatedProgress)
+        progressObservation?.invalidate()
+        progressObservation = webView.observe(\.estimatedProgress, options: [.new]) { [weak self] _, change in
+            guard let progress = change.newValue else { return }
+            Task { @MainActor [weak self] in
+                self?.estimatedProgress = progress
+            }
+        }
     }
 }
 
 struct WebView: UIViewRepresentable {
-    @ObservedObject var viewModel: WebViewModel
+    @Bindable var viewModel: WebViewModel
 
     func makeUIView(context: Context) -> some WKWebView {
         let webView = WKWebView()
@@ -59,7 +62,7 @@ struct WebView: UIViewRepresentable {
 
 // MARK: Coordinator
 extension WebView {
-    final class WKWebViewCoordinator: NSObject, WKNavigationDelegate, ObservableObject, UIScrollViewDelegate {
+    final class WKWebViewCoordinator: NSObject, WKNavigationDelegate, UIScrollViewDelegate {
         private var viewModel: WebViewModel
 
         init(viewModel: WebViewModel) {
@@ -68,15 +71,21 @@ extension WebView {
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            viewModel.loadingState = .loaded(data: [])
+            Task { @MainActor in
+                viewModel.loadingState = .loaded(data: [])
+            }
         }
 
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-            viewModel.loadingState = .error(message: error.localizedDescription)
+            Task { @MainActor in
+                viewModel.loadingState = .error(message: error.localizedDescription)
+            }
         }
 
         func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-            viewModel.loadingState = .loaded(data: [])
+            Task { @MainActor in
+                viewModel.loadingState = .loaded(data: [])
+            }
         }
 
         func webView(
@@ -84,7 +93,9 @@ extension WebView {
             didFailProvisionalNavigation navigation: WKNavigation!,
             withError error: any Error
         ) {
-            viewModel.loadingState = .error(message: error.localizedDescription)
+            Task { @MainActor in
+                viewModel.loadingState = .error(message: error.localizedDescription)
+            }
         }
 
         func webView(
@@ -95,7 +106,7 @@ extension WebView {
             if navigationResponse.isForMainFrame,
                let httpResponse = navigationResponse.response as? HTTPURLResponse {
                 if httpResponse.statusCode == 403 {
-                    DispatchQueue.main.async { [weak self] in
+                    Task { @MainActor [weak self] in
                         self?.viewModel.loadingState = .error(message: "Access denied")
                     }
                     decisionHandler(.cancel)
@@ -108,11 +119,16 @@ extension WebView {
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
             let height = scrollView.contentSize.height - scrollView.frame.height
             guard height > 0 else {
-                viewModel.scrollProgress = 0
+                Task { @MainActor in
+                    viewModel.scrollProgress = 0
+                }
                 return
             }
             let ratio = scrollView.contentOffset.y / height
-            viewModel.scrollProgress = max(0, min(1, ratio))
+            let scrollProgress = max(0, min(1, Double(ratio)))
+            Task { @MainActor in
+                viewModel.scrollProgress = scrollProgress
+            }
         }
     }
 }

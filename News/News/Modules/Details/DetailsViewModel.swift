@@ -1,12 +1,18 @@
+//
+//  DetailsViewModel.swift
+//  News
+//
+//  Created by Ярослав Куприянов on 10.10.2025.
+//
+
 import Foundation
-import Combine
 import SwiftUI
 
-final class DetailsViewModel: ObservableObject {
+@Observable
+@MainActor
+final class DetailsViewModel {
     // MARK: Internal variables
-    @Published var imageCacheData: (image: AnyObject, key: AnyObject)?
-    @Published var feedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle?
-    @Published var feedBackType: UINotificationFeedbackGenerator.FeedbackType?
+    var imageCacheData: (image: AnyObject, key: AnyObject)?
 
     var loader: String {
         get { settingsManager.loader }
@@ -45,16 +51,13 @@ final class DetailsViewModel: ObservableObject {
         self.cacheManager = cacheManager
         self.settingsManager = settingsManager
         self.vibrateManager = vibrateManager
-
-        bindCacheManager()
-        bindVibrateManager()
     }
 }
 
 // MARK: - Public
 extension DetailsViewModel {
-    func getCachedImage(key: AnyObject) -> Image? {
-        cacheManager.getCachedImage(key: key)
+    func getCachedImage(key: AnyObject) async -> Image? {
+        await cacheManager.getCachedImage(key: key)
     }
 
     func markAsRead(_ key: String) {
@@ -73,6 +76,9 @@ extension DetailsViewModel {
 
     func cache(object: AnyObject, key: AnyObject) {
         imageCacheData = (object, key)
+        Task {
+            await cacheManager.save(object: object, key: key)
+        }
     }
 
     func checkIsRead(_ key: String) -> Bool {
@@ -80,26 +86,14 @@ extension DetailsViewModel {
     }
 
     func impactOccured(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
-        feedbackStyle = style
+        vibrateManager.vibrate(style)
     }
 
     func notificationOccurred(_ feedBackType: UINotificationFeedbackGenerator.FeedbackType) {
-        self.feedBackType = feedBackType
+        vibrateManager.vibrate(feedBackType)
     }
 
     func checkIsFavorite(_ article: Article) -> Bool {
         favoriteTopics.contains(article.favorite)
-    }
-}
-
-// MARK: - Private
-private extension DetailsViewModel {
-    func bindCacheManager() {
-        cacheManager.bind(to: $imageCacheData.eraseToAnyPublisher())
-    }
-
-    func bindVibrateManager() {
-        vibrateManager.bind(to: $feedbackStyle.eraseToAnyPublisher())
-        vibrateManager.bind(to: $feedBackType.eraseToAnyPublisher())
     }
 }

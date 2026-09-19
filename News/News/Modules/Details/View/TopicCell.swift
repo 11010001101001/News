@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TopicCell: View {
-    @ObservedObject var viewModel: DetailsViewModel
+    @Bindable var viewModel: DetailsViewModel
     @State var imageWrapper: ContentWrapper?
 
     let article: Article

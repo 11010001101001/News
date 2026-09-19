@@ -7,15 +7,13 @@
 
 import Foundation
 import SwiftUI
-import Combine
 
-protocol CacheManagerProtocol {
-    func getCachedImage(key: AnyObject) -> Image?
-    func bind(to publisher: AnyPublisher<(image: AnyObject, key: AnyObject)?, Never>)
+protocol CacheManagerProtocol: Sendable {
+    func getCachedImage(key: AnyObject) async -> Image?
+    func save(object: AnyObject, key: AnyObject) async
 }
 
-final class CacheManager {
-    private var cancellables = Set<AnyCancellable>()
+actor CacheManager {
     private let cache = NSCache<AnyObject, AnyObject>()
 }
 
@@ -25,22 +23,13 @@ extension CacheManager: CacheManagerProtocol {
         (get(key: key) as? CachedImage)?.image
     }
 
-    func bind(to publisher: AnyPublisher<(image: AnyObject, key: AnyObject)?, Never>) {
-        publisher
-            .sink { [weak self] data in
-                guard let data, let self else { return }
-                save(object: data.image, key: data.key)
-            }
-            .store(in: &cancellables)
+    func save(object: AnyObject, key: AnyObject) {
+        cache.setObject(object, forKey: key)
     }
 }
 
 // MARK: - Private
 private extension CacheManager {
-    func save(object: AnyObject, key: AnyObject) {
-        cache.setObject(object, forKey: key)
-    }
-
     func get(key: AnyObject) -> AnyObject? {
         cache.object(forKey: key)
     }

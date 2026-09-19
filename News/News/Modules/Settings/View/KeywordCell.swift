@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct KeywordCell: View, ImageProvider {
-	@ObservedObject var viewModel: SettingsViewModel
+	@Bindable var viewModel: SettingsViewModel
     @State var keyword: String
 
 	var body: some View {

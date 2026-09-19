@@ -6,66 +6,44 @@
 //
 
 import Foundation
-import Combine
-import UIKit
+import UserNotifications
 
-protocol NotificationManagerProtocol {
-    func bind(to publisher: AnyPublisher<String, Never>)
+protocol NotificationManagerProtocol: Sendable {
+    func configureNotifications(with sound: String) async
 }
 
-final class NotificationManager {
-    private var cancellables = Set<AnyCancellable>()
-}
-
-// MARK: - NotificationManagerProtocol
-extension NotificationManager: NotificationManagerProtocol {
-    func bind(to publisher: AnyPublisher<String, Never>) {
-        publisher
-            .sink { [weak self] sound in
-                self?.configureNotifications(with: sound)
-            }
-            .store(in: &cancellables)
-    }
-}
-
-// MARK: - Private
-private extension NotificationManager {
-    func configureNotifications(with sound: String) {
+final class NotificationManager: NotificationManagerProtocol, Sendable {
+    func configureNotifications(with sound: String) async {
         guard SoundTheme.allCases.map({ $0.notificationSound }).contains(sound) else { return }
 
         let notificationCenter = UNUserNotificationCenter.current()
-
         notificationCenter.removeAllPendingNotificationRequests()
 
-        notificationCenter.getPendingNotificationRequests { requests in
-            guard requests.isEmpty else { return }
+        let pending = await notificationCenter.pendingNotificationRequests()
+        guard pending.isEmpty else { return }
 
-            let options: UNAuthorizationOptions = [.alert, .badge, .carPlay, .providesAppNotificationSettings, .sound]
+        let options: UNAuthorizationOptions = [.alert, .badge, .carPlay, .providesAppNotificationSettings, .sound]
 
-            notificationCenter.requestAuthorization(options: options) { granted, error in
-                guard error == nil, granted else { return }
+        do {
+            let granted = try await notificationCenter.requestAuthorization(options: options)
+            guard granted else { return }
 
-                let content = UNMutableNotificationContent()
-                content.title = Texts.Notification.title()
-                content.body = Texts.Notification.body()
-                content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "\(sound).mp3"))
+            let content = UNMutableNotificationContent()
+            content.title = Texts.Notification.title()
+            content.body = Texts.Notification.body()
+            content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "\(sound).mp3"))
 
-                var dateComponents = DateComponents()
-                dateComponents.weekday = 6
-                dateComponents.hour = 17
+            var dateComponents = DateComponents()
+            dateComponents.weekday = 6
+            dateComponents.hour = 17
 
-                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            let uuid = UUID().uuidString
+            let request = UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
 
-                let uuid = UUID().uuidString
-
-                let request = UNNotificationRequest(
-                    identifier: uuid,
-                    content: content,
-                    trigger: trigger
-                )
-
-                notificationCenter.add(request)
-            }
+            try await notificationCenter.add(request)
+        } catch {
+            print("Notification configuration error: \(error.localizedDescription)")
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-//  LoaderSettingsCell.swift
+//  AppIconSettingsCell.swift
 //  News
 //
 //  Created by Ярослав Куприянов on 04.04.2024.
@@ -9,7 +9,7 @@ import SwiftUI
 import Lottie
 
 struct AppIconSettingsCell: View {
-    @ObservedObject var viewModel: SettingsViewModel
+    @Bindable var viewModel: SettingsViewModel
     let id: String
 
 	private var shadowColor: Color {
