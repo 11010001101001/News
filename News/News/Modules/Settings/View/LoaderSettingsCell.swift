@@ -5,8 +5,8 @@
 //  Created by Ярослав Куприянов on 04.04.2024.
 //
 
-import SwiftUI
 import Lottie
+import SwiftUI
 
 struct LoaderSettingsCell: View {
     @Bindable var viewModel: SettingsViewModel
@@ -21,14 +21,17 @@ struct LoaderSettingsCell: View {
             HorStack {
                 LottieView(animation: .named(id))
                     .playing(loopMode: .loop)
-					.gloss(isEnabled: isEnabled, color: viewModel.loaderShadowColor, isBorderHighlighted: true)
+                    .gloss(
+                        isEnabled: isEnabled, color: viewModel.loaderShadowColor,
+                        isBorderHighlighted: true
+                    )
                     .frame(width: 150, height: 100)
                     .padding(.leading, -20)
 
                 Spacer()
             }
 
-			HorStack {
+            HorStack {
                 DesignedText(text: viewModel.displayName(for: id))
                     .font(.system(size: 18, weight: .regular))
                     .padding(.leading, 100)

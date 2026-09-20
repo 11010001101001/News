@@ -8,16 +8,16 @@
 import Foundation
 
 extension Optional where Wrapped == String {
-	var orEmpty: String {
-		self ?? .empty
-	}
+    var orEmpty: String {
+        self ?? .empty
+    }
 
-	func or(_ defaultValue: String) -> String {
-		if let self, self.isEmpty {
-			return defaultValue
-		}
-		return self ?? defaultValue
-	}
+    func or(_ defaultValue: String) -> String {
+        if let self, self.isEmpty {
+            return defaultValue
+        }
+        return self ?? defaultValue
+    }
 }
 
 extension Optional where Wrapped == Set<String> {

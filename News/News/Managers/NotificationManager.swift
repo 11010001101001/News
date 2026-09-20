@@ -22,16 +22,19 @@ final class NotificationManager: NotificationManagerProtocol, Sendable {
         let pending = await notificationCenter.pendingNotificationRequests()
         guard pending.isEmpty else { return }
 
-        let options: UNAuthorizationOptions = [.alert, .badge, .carPlay, .providesAppNotificationSettings, .sound]
+        let options: UNAuthorizationOptions = [
+            .alert, .badge, .carPlay, .providesAppNotificationSettings, .sound,
+        ]
 
         do {
             let granted = try await notificationCenter.requestAuthorization(options: options)
             guard granted else { return }
 
             let content = UNMutableNotificationContent()
-            content.title = Texts.Notification.title()
-            content.body = Texts.Notification.body()
-            content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "\(sound).mp3"))
+            content.title = String(localized: .notificationTitle)
+            content.body = String(localized: .notificationBody)
+            content.sound = UNNotificationSound(
+                named: UNNotificationSoundName(rawValue: "\(sound).mp3"))
 
             var dateComponents = DateComponents()
             dateComponents.weekday = 6
@@ -39,7 +42,8 @@ final class NotificationManager: NotificationManagerProtocol, Sendable {
 
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
             let uuid = UUID().uuidString
-            let request = UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
+            let request = UNNotificationRequest(
+                identifier: uuid, content: content, trigger: trigger)
 
             try await notificationCenter.add(request)
         } catch {

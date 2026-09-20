@@ -9,7 +9,7 @@ import SwiftUI
 import TipKit
 
 struct SettingsTip: Tip {
-    var title: Text { Text(Texts.Tip.Settings.title()) }
-    var message: Text? { Text(Texts.Tip.Settings.message()) }
+    var title: Text { Text(.tipSettingsTitle) }
+    var message: Text? { Text(.tipSettingsMessage) }
     var image: Image? { Image(systemName: SFSymbols.lightbulbMax.rawValue) }
 }

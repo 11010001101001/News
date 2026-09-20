@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct WidgetLevelsCell: View, ImageProvider {
+struct WidgetLevelsCell: View {
     let id: String
 
     var body: some View {
         HorStack(spacing: Constants.padding) {
-            getImage(for: id)
+            Image(systemName: SFSymbols.gamecontrollerFill.rawValue)
                 .padding(.leading, Constants.padding)
             group
             Spacer()
@@ -23,15 +23,15 @@ struct WidgetLevelsCell: View, ImageProvider {
 }
 
 // MARK: - Private
-private extension WidgetLevelsCell {
-    var title: some View {
-        DesignedText(text: id.capitalizingFirstLetter())
+extension WidgetLevelsCell {
+    fileprivate var title: some View {
+        DesignedText(text: .widgetsLevels)
             .font(.headline)
             .foregroundStyle(.foreground)
             .frame(maxHeight: .infinity, alignment: .leading)
     }
 
-    var group: some View {
+    fileprivate var group: some View {
         DisclosureGroup {
             VerStack(spacing: 16) {
                 instruction
@@ -47,18 +47,18 @@ private extension WidgetLevelsCell {
         }
     }
 
-    var instruction: some View {
-        DesignedText(text: Texts.Widgets.instuction())
+    fileprivate var instruction: some View {
+        DesignedText(text: .widgetsInstuction)
             .font(.headline)
     }
 
-    func buildDescription(level: Level) -> some View {
+    fileprivate func buildDescription(level: Level) -> some View {
         VerStack(spacing: 8) {
-            DesignedText(text: "Lvl: " + level.image + .spacer + level.rawValue)
+            DesignedText(text: .init(stringLiteral: level.image + .spacer + level.rawValue))
                 .font(.headline)
                 .shadow(color: level.color, radius: 7)
 
-            DesignedText(text: Texts.Widgets.range(level.range))
+            DesignedText(text: .widgetsRange(level.range))
                 .font(.subheadline)
         }
         .padding(.leading, 8)

@@ -5,15 +5,15 @@
 //  Created by Ярослав Куприянов on 26.03.2024.
 //
 
-import SwiftUI
 import Lottie
+import SwiftUI
 
 struct SettingsList: View {
     @Bindable var viewModel: SettingsViewModel
 
     var body: some View {
         TabView {
-            Tab(Texts.Loader.title(), systemImage: LoaderConfiguration.image) {
+            Tab(.loaderTitle, systemImage: LoaderConfiguration.tabImage) {
                 buildContentScroll {
                     ForEach(LoaderConfiguration.allCases) { loader in
                         LoaderSettingsCell(viewModel: viewModel, id: loader.rawValue)
@@ -21,7 +21,7 @@ struct SettingsList: View {
                 }
             }
 
-            Tab(Texts.Category.title(), systemImage: NewsCategory.image) {
+            Tab(.categoryTitle, systemImage: NewsCategory.tabImage) {
                 buildContentScroll {
                     VerStack(spacing: Constants.padding) {
                         ForEach(NewsCategory.allCases) { category in
@@ -32,7 +32,7 @@ struct SettingsList: View {
                 }
             }
 
-            Tab(Texts.Sound.title(), systemImage: SoundTheme.image) {
+            Tab(.soundTitle, systemImage: SoundTheme.tabImage) {
                 buildContentScroll {
                     ForEach(SoundTheme.allCases) { theme in
                         SettingsCell(viewModel: viewModel, id: theme.rawValue)
@@ -41,7 +41,7 @@ struct SettingsList: View {
             }
 
             if UIApplication.shared.supportsAlternateIcons {
-                Tab(Texts.AppIcon.title(), systemImage: AppIconConfiguration.image) {
+                Tab(.appIconTitle, systemImage: AppIconConfiguration.tabImage) {
                     buildContentScroll {
                         ForEach(AppIconConfiguration.allCases) { theme in
                             AppIconSettingsCell(viewModel: viewModel, id: theme.rawValue)
@@ -50,7 +50,7 @@ struct SettingsList: View {
                 }
             }
 
-            Tab(AdditionalInfo.title, systemImage: AdditionalInfo.image) {
+            Tab(AdditionalInfo.title, systemImage: AdditionalInfo.tabImage) {
                 buildContentScroll {
                     AdditionalInfoCell(viewModel: viewModel)
                 }
@@ -59,7 +59,7 @@ struct SettingsList: View {
         .toolbarRole(.editor)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                DesignedText(text: Texts.Screen.Settings.title())
+                DesignedText(text: .screenSettingsTitle)
                     .font(.title)
             }
         }

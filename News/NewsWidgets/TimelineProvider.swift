@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import WidgetKit
 import SwiftData
+import WidgetKit
 
 struct Provider: TimelineProvider {
     let container = try? ModelContainer(
@@ -38,7 +38,10 @@ struct Provider: TimelineProvider {
 
             let entry = Entry(category: settings.category, level: level)
 
-            guard let nextUpdate = Calendar.current.date(byAdding: DateComponents(minute: 180), to: Date()) else { return }
+            guard
+                let nextUpdate = Calendar.current.date(
+                    byAdding: DateComponents(minute: 180), to: Date())
+            else { return }
 
             let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
             completion(timeline)
@@ -49,11 +52,12 @@ struct Provider: TimelineProvider {
         guard let category = settings?.category else { return .error }
 
         // swiftlint:disable line_length
-        let link = "https://newsapi.org/v2/top-headlines?country=us&category=\(category)&pageSize=100&apiKey=8f825354e7354c71829cfb4cb15c4893"
+        let link =
+            "https://newsapi.org/v2/top-headlines?country=us&category=\(category)&pageSize=100&apiKey=8f825354e7354c71829cfb4cb15c4893"
         // swiftlint:enable line_length
 
         guard let url = URL(string: link),
-              let watchedTopics = settings?.watchedTopics
+            let watchedTopics = settings?.watchedTopics
         else {
             return .error
         }

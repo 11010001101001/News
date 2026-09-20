@@ -11,7 +11,7 @@ import SwiftUI
 enum AppIconConfiguration: String, CaseIterable, Identifiable {
     var id: Self { return self }
 
-    static var image: String { SFSymbols.photo.rawValue }
+    static var tabImage: String { SFSymbols.photo.rawValue }
 
     case globe
     case cat

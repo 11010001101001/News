@@ -18,7 +18,10 @@ final class SoundEngine: SoundEngineProtocol, @unchecked Sendable {
 
     init() {
         try? AVAudioSession.sharedInstance().setCategory(.playback, options: .mixWithOthers)
-        try? AVAudioSession.sharedInstance().setActive(true)
+        Task.detached(priority: .high) {
+            try? AVAudioSession.sharedInstance().setActive(true)
+        }
+
         engine.attach(player)
         prewarm()
     }
@@ -40,27 +43,27 @@ extension SoundEngine {
 }
 
 // MARK: - Private
-private extension SoundEngine {
-    func prewarm() {
+extension SoundEngine {
+    fileprivate func prewarm() {
         if let urls = Bundle.main.urls(forResourcesWithExtension: "mp3", subdirectory: nil) {
             for url in urls {
                 load(name: url.deletingPathExtension().lastPathComponent)
             }
         }
-        
+
         if let firstBuffer = buffers.values.first {
             try? engine.connectNode(player, to: engine.mainMixerNode, format: firstBuffer.format)
             try? engine.start()
         }
     }
 
-    func load(name: String) {
+    fileprivate func load(name: String) {
         guard let url = Bundle.main.url(forResource: name, withExtension: "mp3"),
-              let file = try? AVAudioFile(forReading: url),
-              let buffer = AVAudioPCMBuffer(
+            let file = try? AVAudioFile(forReading: url),
+            let buffer = AVAudioPCMBuffer(
                 pcmFormat: file.processingFormat,
                 frameCapacity: AVAudioFrameCount(file.length)
-              )
+            )
         else { return }
 
         do {

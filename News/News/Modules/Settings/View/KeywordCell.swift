@@ -7,34 +7,34 @@
 
 import SwiftUI
 
-struct KeywordCell: View, ImageProvider {
-	@Bindable var viewModel: SettingsViewModel
+struct KeywordCell: View {
+    @Bindable var viewModel: SettingsViewModel
     @State var keyword: String
 
-	var body: some View {
+    var body: some View {
         VerStack(spacing: Constants.padding) {
             title
             textField
-		}
+        }
         .padding(.vertical, Constants.padding)
-		.glassCard()
-	}
+        .glassCard()
+    }
 }
 
 // MARK: - Private
-private extension KeywordCell {
-    var title: some View {
+extension KeywordCell {
+    fileprivate var title: some View {
         HorStack(spacing: Constants.padding) {
-            getImage(for: NewsKeyword.title)
+            Image(systemName: SFSymbols.lightMax.rawValue)
                 .padding(.leading, Constants.padding)
-            DesignedText(text: NewsKeyword.title)
+            DesignedText(text: .keywordTitle)
                 .font(.headline)
                 .frame(maxHeight: .infinity, alignment: .leading)
             Spacer()
         }
     }
 
-    var textField: some View {
+    fileprivate var textField: some View {
         TextField(String.empty, text: $keyword, prompt: subtitle)
             .font(.system(size: 15, design: .monospaced))
             .foregroundStyle(.background)
@@ -45,8 +45,8 @@ private extension KeywordCell {
             }
     }
 
-    var subtitle: Text {
-        Text(NewsKeyword.prompt)
+    fileprivate var subtitle: Text {
+        Text(.keywordPromt)
             .font(.system(size: 14, design: .monospaced))
             .foregroundStyle(.background)
     }

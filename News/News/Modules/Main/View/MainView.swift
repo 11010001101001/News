@@ -5,9 +5,9 @@
 //  Created by Ярослав Куприянов on 04.10.2025.
 //
 
+import SwiftData
 import SwiftUI
 import TipKit
-import SwiftData
 
 struct MainView: View {
     @Environment(\.scenePhase) var phase
@@ -21,13 +21,14 @@ struct MainView: View {
 
     var body: some View {
         content
+            .environment(\.locale, Locale(identifier: savedSettings.first?.language ?? Constants.DefaultSettings.language))
     }
 }
 
 // MARK: - Content
-private extension MainView {
+extension MainView {
     @ViewBuilder
-    var content: some View {
+    fileprivate var content: some View {
         TipView(SettingsTip())
             .padding()
         NavigationStack {
@@ -65,14 +66,14 @@ private extension MainView {
 }
 
 // MARK: - Private
-private extension MainView {
-    func onAppear() {
+extension MainView {
+    fileprivate func onAppear() {
         loadSettings()
         viewModel.loadNews()
         viewModel.configureNotifications()
     }
 
-    func loadSettings() {
+    fileprivate func loadSettings() {
         if savedSettings.isEmpty {
             let defaultModel = SettingsModel()
             modelContext.insert(defaultModel)
@@ -81,11 +82,9 @@ private extension MainView {
         } else {
             viewModel.loadSettings(savedSettings)
         }
-
-        viewModel.redrawContentViewLoader()
     }
 
-    func handleScenePhase(_ phase: ScenePhase) {
+    fileprivate func handleScenePhase(_ phase: ScenePhase) {
         switch phase {
         case .active:
             if let itemName = ShortcutItem.selectedAction?.userInfo?["name"] as? String {
@@ -100,27 +99,31 @@ private extension MainView {
         }
     }
 
-    func configureTips() {
+    fileprivate func configureTips() {
         try? Tips.configure(
             [
                 .displayFrequency(.immediate),
-                .datastoreLocation(.applicationDefault)
+                .datastoreLocation(.applicationDefault),
             ]
         )
     }
 }
 
 // MARK: - Navigation bar
-private extension TopicsList {
-    func navbar() -> some View {
+extension TopicsList {
+    fileprivate func navbar() -> some View {
         self.toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 NavButton(type: .settings(isDefault: viewModel.isDefaultSettings), action: nil)
             }
 
             ToolbarItem(placement: .principal) {
-                DesignedText(text: ">> \(viewModel.category)")
-                    .font(.title)
+                HorStack(spacing: 16) {
+                    Text(">>")
+                    DesignedText(text: NewsCategory.init(rawValue: viewModel.category)!.localizedResource)
+                    Spacer()
+                }
+                .font(.title)
             }
 
             ToolbarItem(placement: .topBarTrailing) {

@@ -8,23 +8,23 @@
 import SwiftUI
 
 struct OpenLinkButton: View {
-	let data: ButtonMetaData
+    let data: ButtonMetaData
 
     @Environment(\.openURL) private var openURL
 
-	var body: some View {
-		CustomButton(
-			action: { Task { openLinkAction?() } },
-			title: data.title,
-			iconName: data.iconName
-		)
-	}
+    var body: some View {
+        CustomButton(
+            action: { Task { openLinkAction?() } },
+            title: data.title,
+            iconName: data.iconName
+        )
+    }
 
-	private var openLinkAction: Action {
-		{
+    private var openLinkAction: Action {
+        {
             if let url = URL(string: data.article.url.orEmpty) {
-				openURL(url)
-			}
-		}
-	}
+                openURL(url)
+            }
+        }
+    }
 }

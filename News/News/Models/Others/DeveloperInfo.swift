@@ -8,12 +8,11 @@
 import Foundation
 
 struct DeveloperInfo {
-	static let apiKey = Texts.App.apiKey1()
-	static let shareInfo = Texts.Share.info()
-	static let contactLink = URL(string: Texts.App.telegram())!
-	static var currentAppVersion: String {
-		Texts.App.version(
-            (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String).or("Error in recognizing appVersion")
-		)
-	}
+    // eb4bc5c32bdd40ca937aa8f94ff2673a
+    static let apiKey = "8f825354e7354c71829cfb4cb15c4893"
+    static let shareInfo = String(localized: .shareInfo)
+    static let contactLink = URL(string: "https://t.me/Yaroslav_Kupriyanov")!
+    static var currentAppVersion: String {
+        (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String).or("Error in recognizing appVersion")
+    }
 }

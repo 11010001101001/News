@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import WebKit
 import SwiftUI
+import WebKit
 
 @Observable
 @MainActor
@@ -25,7 +25,8 @@ final class WebViewModel {
 
     func bind(to webView: WKWebView) {
         progressObservation?.invalidate()
-        progressObservation = webView.observe(\.estimatedProgress, options: [.new]) { [weak self] _, change in
+        progressObservation = webView.observe(\.estimatedProgress, options: [.new]) {
+            [weak self] _, change in
             guard let progress = change.newValue else { return }
             Task { @MainActor [weak self] in
                 self?.estimatedProgress = progress
@@ -76,13 +77,16 @@ extension WebView {
             }
         }
 
-        func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        func webView(
+            _ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error
+        ) {
             Task { @MainActor in
-                viewModel.loadingState = .error(message: error.localizedDescription)
+                viewModel.loadingState = .error(message: .init(stringLiteral: error.localizedDescription))
             }
         }
 
-        func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!)
+        {
             Task { @MainActor in
                 viewModel.loadingState = .loaded(data: [])
             }
@@ -94,7 +98,7 @@ extension WebView {
             withError error: any Error
         ) {
             Task { @MainActor in
-                viewModel.loadingState = .error(message: error.localizedDescription)
+                viewModel.loadingState = .error(message: .init(stringLiteral: error.localizedDescription))
             }
         }
 
@@ -104,7 +108,8 @@ extension WebView {
             decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
         ) {
             if navigationResponse.isForMainFrame,
-               let httpResponse = navigationResponse.response as? HTTPURLResponse {
+                let httpResponse = navigationResponse.response as? HTTPURLResponse
+            {
                 if httpResponse.statusCode == 403 {
                     Task { @MainActor [weak self] in
                         self?.viewModel.loadingState = .error(message: "Access denied")

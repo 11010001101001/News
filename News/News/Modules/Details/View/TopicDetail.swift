@@ -9,30 +9,30 @@ import SwiftUI
 import UIKit
 
 struct TopicDetail: View {
-	@Bindable var viewModel: DetailsViewModel
-	@Environment(\.dismiss) var dismiss
+    @Bindable var viewModel: DetailsViewModel
+    @Environment(\.dismiss) var dismiss
 
-	let article: Article
+    let article: Article
 
-	var body: some View {
+    var body: some View {
         VerStack(alignment: .center) {
             CachedAsyncImage(article: article, viewModel: viewModel)
             otherContent
-		}
-		.toolbarRole(.editor)
-		.toolbar {
-			ToolbarItem(placement: .principal) {
-				DesignedText(text: Texts.Screen.Details.title())
-					.font(.title)
-			}
-		}
-		.navigationBarTitleDisplayMode(.inline)
-	}
+        }
+        .toolbarRole(.editor)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                DesignedText(text: .screenDetailsTitle)
+                    .font(.title)
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+    }
 }
 
 // MARK: - Content
-private extension TopicDetail {
-	var otherContent: some View {
+extension TopicDetail {
+    fileprivate var otherContent: some View {
         VerStack(alignment: .leading, spacing: Constants.padding) {
             description
             buttons
@@ -41,18 +41,24 @@ private extension TopicDetail {
         }
         .padding([.top, .horizontal])
         .frame(height: CGFloat.screenHeight / 2)
-	}
+    }
 
-	var description: some View {
+    fileprivate var description: some View {
         Group {
-            DesignedText(text: article.description.or(Texts.State.noDescription()))
-                .padding(.all, Constants.padding)
+            if let description = article.description, !description.isEmpty {
+                DesignedText(text: .init(stringLiteral: description))
+            } else {
+                DesignedText(text: .stateNoDescription)
+            }
         }
-        .glassEffect(.clear.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
+        .padding(.all, Constants.padding)
+        .glassEffect(
+            .clear.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius)
+        )
         .contextMenu { contextMenu }
-	}
+    }
 
-	var buttons: some View {
+    fileprivate var buttons: some View {
         GlassEffectContainer {
             VerStack(alignment: .leading, spacing: Constants.detailsButtonsSpacing) {
                 HorStack(spacing: Constants.detailsButtonsSpacing) {
@@ -65,26 +71,26 @@ private extension TopicDetail {
         }
     }
 
-	var shareButton: some View {
-		ShareButton(
-			data: ButtonMetaData(
-				article: article,
-				title: nil,
+    fileprivate var shareButton: some View {
+        ShareButton(
+            data: ButtonMetaData(
+                article: article,
+                title: nil,
                 iconName: SFSymbols.squareAndArrowUp.rawValue
             ),
             viewModel: viewModel,
             isGlass: true
-		)
-	}
+        )
+    }
 
-	var linkButton: some View {
+    fileprivate var linkButton: some View {
         LinkButton(
             viewModel: viewModel,
             article: article
         )
-	}
+    }
 
-    var favoriteButton: some View {
+    fileprivate var favoriteButton: some View {
         FavoritesButton(
             viewModel: viewModel,
             article: article,
@@ -93,9 +99,9 @@ private extension TopicDetail {
         )
     }
 
-    var contextMenu: some View {
+    fileprivate var contextMenu: some View {
         CopyContextMenuButton(
-            text: article.description.or(Texts.State.noDescription()),
+            text: article.description.or(String(localized: .stateNoDescription)),
             viewModel: viewModel
         )
     }

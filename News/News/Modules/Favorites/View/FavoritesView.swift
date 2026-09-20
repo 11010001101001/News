@@ -10,19 +10,19 @@ import SwiftUI
 
 struct FavoritesView: View {
     @State var viewModel: FavoritesViewModel
-    
+
     var body: some View {
         content
     }
 }
 
 // MARK: - Content
-private extension FavoritesView {
-    var content: some View {
+extension FavoritesView {
+    fileprivate var content: some View {
         FavoritesTopicsList(viewModel: viewModel)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    DesignedText(text: Texts.Favorites.Screen.title())
+                    DesignedText(text: .favoritesScreenTitle)
                         .font(.title)
                 }
 

@@ -8,28 +8,47 @@
 import Foundation
 
 enum ApiError: LocalizedError {
-    case invalidRequest(msg: String)
-    case tooManyRequests(msg: String)
-    case internalServerError(msg: String)
-    case notFound(msg: String)
-    case badRequest(msg: String)
-    case mappingError(msg: String)
-    case undefined(msg: String)
-    case noConnection(msg: String)
+    case invalidRequest(msg: LocalizedStringResource)
+    case tooManyRequests(msg: LocalizedStringResource)
+    case internalServerError(msg: LocalizedStringResource)
+    case notFound(msg: LocalizedStringResource)
+    case badRequest(msg: LocalizedStringResource)
+    case mappingError(msg: LocalizedStringResource)
+    case undefined(msg: LocalizedStringResource)
+    case noConnection(msg: LocalizedStringResource)
+    case definite(msg: LocalizedStringResource)
 }
 
-struct Errors {
-	static let topicLabelNoInfo = Texts.Errors.topicLabelNoInfo()
-	static let badRequest = Texts.Errors.badRequest()
-    static let unauthorized = Texts.Errors.unauthorized()
-    static let tooManyRequests = Texts.Errors.tooManyRequests()
-    static let serverError = Texts.Errors.serverError()
-    static let timeout = Texts.Errors.timeout()
-    static let mappingError = Texts.Errors.mappingError()
-    static let invalidUrl = Texts.Errors.invalidUrl()
-    static let responseError = Texts.Errors.responseError()
-    static let undefinedError = Texts.Errors.undefinedError()
-	static let imageLoadingError = Texts.Errors.imageLoadingError()
-    static let noConnection = Texts.Errors.noConnection()
-	static let loadingFailed = Texts.Errors.loadingFailed()
+enum Errors {
+    case topicLabelNoInfo
+    case badRequest
+    case unauthorized
+    case tooManyRequests
+    case serverError
+    case timeout
+    case mappingError
+    case invalidUrl
+    case responseError
+    case undefinedError
+    case imageLoadingError
+    case noConnection
+    case loadingFailed
+
+    var localizedDescription: LocalizedStringResource {
+        switch self {
+        case .topicLabelNoInfo: .errorsTopicLabelNoInfo
+        case .badRequest: .errorsBadRequest
+        case .unauthorized: .errorsUnauthorized
+        case .tooManyRequests: .errorsTooManyRequests
+        case .serverError: .errorsServerError
+        case .timeout: .errorsTimeout
+        case .mappingError: .errorsMapping
+        case .invalidUrl: .errorsInvalidUrl
+        case .responseError: .errorsResponseError
+        case .undefinedError: .errorsUndefinedError
+        case .imageLoadingError: .errorsImageLoadingError
+        case .noConnection: .errorsNoConnection
+        case .loadingFailed: .errorsLoadingFailed
+        }
+    }
 }

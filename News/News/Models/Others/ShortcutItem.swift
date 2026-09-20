@@ -19,34 +19,36 @@ enum ShortcutItem: String {
     }
 
     static var allItems = [
-        UIMutableApplicationShortcutItem(type: ShortcutItem.share.rawValue,
-                                         localizedTitle: ShortcutItem.share.title,
-                                         localizedSubtitle: nil,
-                                         icon: UIApplicationShortcutIcon(
-                                            systemImageName: ShortcutItem.share.systemImageName),
-                                         userInfo: shareInfo),
-        UIMutableApplicationShortcutItem(type: ShortcutItem.settings.rawValue,
-                                         localizedTitle: ShortcutItem.settings.title,
-                                         localizedSubtitle: nil,
-                                         icon: UIApplicationShortcutIcon(
-                                            systemImageName: ShortcutItem.settings.systemImageName),
-                                         userInfo: settingsInfo)
+        UIMutableApplicationShortcutItem(
+            type: ShortcutItem.share.rawValue,
+            localizedTitle: ShortcutItem.share.title,
+            localizedSubtitle: nil,
+            icon: UIApplicationShortcutIcon(
+                systemImageName: ShortcutItem.share.systemImageName),
+            userInfo: shareInfo),
+        UIMutableApplicationShortcutItem(
+            type: ShortcutItem.settings.rawValue,
+            localizedTitle: ShortcutItem.settings.title,
+            localizedSubtitle: nil,
+            icon: UIApplicationShortcutIcon(
+                systemImageName: ShortcutItem.settings.systemImageName),
+            userInfo: settingsInfo),
     ]
 
     case settings
     case share
 
-	var title: String {
-		switch self {
-		case .settings: "Open settings"
-		case .share: "Share app"
-		}
-	}
+    var title: String {
+        switch self {
+        case .settings: "Open settings"
+        case .share: "Share app"
+        }
+    }
 
-	var systemImageName: String {
-		switch self {
+    var systemImageName: String {
+        switch self {
         case .settings: SFSymbols.gear.rawValue
-		case .share: SFSymbols.squareAndArrowUp.rawValue
-		}
-	}
+        case .share: SFSymbols.squareAndArrowUp.rawValue
+        }
+    }
 }

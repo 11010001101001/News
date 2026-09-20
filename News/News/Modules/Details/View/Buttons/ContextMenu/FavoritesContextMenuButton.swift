@@ -16,15 +16,15 @@ struct FavoritesContextMenuButton: View {
         viewModel.checkIsFavorite(article)
     }
 
-    private var title: String {
-        isFavorite ? Texts.ContextMenu.removeFromFavorites() : Texts.ContextMenu.addToFavorites()
+    private var title: LocalizedStringResource {
+        isFavorite ? .contextMenuRemoveFromFavorites : .contextMenuAddToFavorites
     }
 
     var body: some View {
         CustomButton(
             action: {
                 viewModel.impactOccured(.light)
-                
+
                 if isFavorite {
                     viewModel.favoriteTopics.removeAll(where: { $0 == article.favorite })
                 } else {

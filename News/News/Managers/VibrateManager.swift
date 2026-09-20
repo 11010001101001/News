@@ -31,8 +31,8 @@ final class VibrateManager: VibrateManagerProtocol {
 }
 
 // MARK: - Private
-private extension VibrateManager {
-    func prewarm() {
+extension VibrateManager {
+    fileprivate func prewarm() {
         let notificationGen = UINotificationFeedbackGenerator()
         notificationGen.prepare()
         self.notificationGen = notificationGen
@@ -48,7 +48,7 @@ private extension VibrateManager {
             .heavy: heavy,
             .medium: medium,
             .soft: soft,
-            .rigid: rigid
+            .rigid: rigid,
         ]
 
         impactGens?.values.forEach { $0.prepare() }

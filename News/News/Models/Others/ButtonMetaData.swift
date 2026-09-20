@@ -9,6 +9,6 @@ import Foundation
 
 struct ButtonMetaData {
     let article: Article
-    let title: String?
+    let title: LocalizedStringResource?
     let iconName: String
 }

@@ -12,7 +12,7 @@ struct FavoritesButton: View {
     @Bindable var viewModel: DetailsViewModel
     let article: Article
     let isGlass: Bool
-    let title: String?
+    let title: LocalizedStringResource?
 
     private var isFavorite: Bool {
         viewModel.checkIsFavorite(article)
@@ -22,7 +22,7 @@ struct FavoritesButton: View {
         CustomButton(
             action: {
                 viewModel.impactOccured(.light)
-                
+
                 if isFavorite {
                     viewModel.favoriteTopics.removeAll(where: { $0 == article.favorite })
                 } else {

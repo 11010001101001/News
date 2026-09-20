@@ -22,27 +22,33 @@ final class NewsUITests: XCTestCase {
     // 1. Test Main Navigation Appears on Launch
     func testMainNavigationAppearsOnLaunch() throws {
         let navBar = app.navigationBars.firstMatch
-        XCTAssertTrue(navBar.waitForExistence(timeout: 5.0), "Main navigation bar should be visible on app launch")
+        XCTAssertTrue(
+            navBar.waitForExistence(timeout: 5.0),
+            "Main navigation bar should be visible on app launch")
     }
 
     // 2. Test Navigation to Settings Screen
     func testNavigateToSettings() throws {
         let settingsButton = app.buttons["gearshape"].firstMatch
         let altSettingsButton = app.buttons["gearshape.fill"].firstMatch
-        
+
         if settingsButton.waitForExistence(timeout: 3.0) {
             settingsButton.tap()
         } else if altSettingsButton.waitForExistence(timeout: 3.0) {
             altSettingsButton.tap()
         } else {
             let firstNavButton = app.navigationBars.buttons.element(boundBy: 0)
-            XCTAssertTrue(firstNavButton.waitForExistence(timeout: 3.0), "Settings navigation button should exist")
+            XCTAssertTrue(
+                firstNavButton.waitForExistence(timeout: 3.0),
+                "Settings navigation button should exist")
             firstNavButton.tap()
         }
 
         let settingsNavTitle = app.staticTexts["Settings"]
         let settingsTab = app.tabBars.buttons["Category"]
-        let isSettingsVisible = settingsNavTitle.waitForExistence(timeout: 3.0) || settingsTab.waitForExistence(timeout: 3.0)
+        let isSettingsVisible =
+            settingsNavTitle.waitForExistence(timeout: 3.0)
+            || settingsTab.waitForExistence(timeout: 3.0)
         XCTAssertTrue(isSettingsVisible, "Settings view should open after tapping settings button")
     }
 
@@ -57,13 +63,17 @@ final class NewsUITests: XCTestCase {
             altFavoritesButton.tap()
         } else {
             let navButton = app.navigationBars.buttons.element(boundBy: 1)
-            XCTAssertTrue(navButton.waitForExistence(timeout: 3.0), "Favorites navigation button should exist")
+            XCTAssertTrue(
+                navButton.waitForExistence(timeout: 3.0), "Favorites navigation button should exist"
+            )
             navButton.tap()
         }
 
         let favoritesTitle = app.staticTexts["Favorites"]
         let emptyText = app.staticTexts.firstMatch
-        let isFavoritesVisible = favoritesTitle.waitForExistence(timeout: 3.0) || emptyText.waitForExistence(timeout: 3.0)
+        let isFavoritesVisible =
+            favoritesTitle.waitForExistence(timeout: 3.0)
+            || emptyText.waitForExistence(timeout: 3.0)
         XCTAssertTrue(isFavoritesVisible, "Favorites view should open")
     }
 
@@ -79,7 +89,10 @@ final class NewsUITests: XCTestCase {
         let backButton = app.navigationBars.buttons.element(boundBy: 0)
         if backButton.waitForExistence(timeout: 3.0) {
             backButton.tap()
-            XCTAssertTrue(app.navigationBars.firstMatch.waitForExistence(timeout: 3.0), "Should return to main screen")
+            XCTAssertTrue(
+                app.navigationBars.firstMatch.waitForExistence(timeout: 3.0),
+                "Should return to main screen"
+            )
         }
     }
 
@@ -95,7 +108,10 @@ final class NewsUITests: XCTestCase {
         let backButton = app.navigationBars.buttons.element(boundBy: 0)
         if backButton.waitForExistence(timeout: 3.0) {
             backButton.tap()
-            XCTAssertTrue(app.navigationBars.firstMatch.waitForExistence(timeout: 3.0), "Should return to main screen")
+            XCTAssertTrue(
+                app.navigationBars.firstMatch.waitForExistence(timeout: 3.0),
+                "Should return to main screen"
+            )
         }
     }
 
@@ -111,7 +127,8 @@ final class NewsUITests: XCTestCase {
         let categoryTab = app.tabBars.buttons["Category"]
         if categoryTab.waitForExistence(timeout: 3.0) {
             categoryTab.tap()
-            XCTAssertTrue(categoryTab.isSelected || categoryTab.exists, "Category tab should be selected")
+            XCTAssertTrue(
+                categoryTab.isSelected || categoryTab.exists, "Category tab should be selected")
         }
     }
 
@@ -131,10 +148,14 @@ final class NewsUITests: XCTestCase {
 
         if markReadButton.waitForExistence(timeout: 3.0) {
             markReadButton.tap()
-            XCTAssertTrue(markReadButton.exists || altMarkReadButton.exists, "Mark as read button should toggle")
+            XCTAssertTrue(
+                markReadButton.exists || altMarkReadButton.exists,
+                "Mark as read button should toggle")
         } else if altMarkReadButton.waitForExistence(timeout: 3.0) {
             altMarkReadButton.tap()
-            XCTAssertTrue(markReadButton.exists || altMarkReadButton.exists, "Mark as read button should toggle")
+            XCTAssertTrue(
+                markReadButton.exists || altMarkReadButton.exists,
+                "Mark as read button should toggle")
         }
     }
 

@@ -28,7 +28,7 @@ struct WebViewSheetModifier: ViewModifier {
         content
             .sheet(isPresented: $webViewPresented) {
                 SheetNavigationContainer(
-                    title: Texts.Screen.More.title()
+                    title: .screenMoreTitle,
                 ) {
                     VerStack {
                         estimatedProgressView
@@ -43,8 +43,8 @@ struct WebViewSheetModifier: ViewModifier {
 }
 
 // MARK: - Cover contents
-private extension WebViewSheetModifier {
-    func buildCoverContents() -> some View {
+extension WebViewSheetModifier {
+    fileprivate func buildCoverContents() -> some View {
         ZStack {
             loader
             webView
@@ -54,8 +54,8 @@ private extension WebViewSheetModifier {
 }
 
 // MARK: - Views
-private extension WebViewSheetModifier {
-    var loader: some View {
+extension WebViewSheetModifier {
+    fileprivate var loader: some View {
         Loader(
             loaderName: viewModel.loader,
             shadowColor: viewModel.loaderShadowColor
@@ -64,18 +64,18 @@ private extension WebViewSheetModifier {
         .opacity(webViewModel.loadingState.loaderOpacity)
     }
 
-    var webView: some View {
+    fileprivate var webView: some View {
         WebView(viewModel: webViewModel)
             .opacity(webViewModel.loadingState.contentOpacity)
     }
 
-    var error: some View {
+    fileprivate var error: some View {
         ErrorView(title: webViewModel.loadingState.errorMessage, action: nil)
             .frame(height: Constants.imageHeight)
             .opacity(webViewModel.loadingState.errorOpacity)
     }
 
-    var estimatedProgressView: some View {
+    fileprivate var estimatedProgressView: some View {
         ProgressView(value: webViewModel.estimatedProgress)
             .scaleEffect(.init(width: 1.0, height: 0.3))
             .tint(.white)
@@ -94,7 +94,7 @@ private extension WebViewSheetModifier {
             .opacity(opacity)
     }
 
-    var scrollProgressView: some View {
+    fileprivate var scrollProgressView: some View {
         ProgressView(value: webViewModel.scrollProgress)
             .scaleEffect(.init(width: 1.0, height: 20))
             .tint(Color.gray.opacity(0.5))

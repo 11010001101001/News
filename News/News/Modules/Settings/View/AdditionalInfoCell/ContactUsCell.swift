@@ -1,5 +1,5 @@
 //
-//  LinkCell.swift
+//  ContactUsCell.swift
 //  News
 //
 //  Created by Ярослав Куприянов on 02.04.2024.

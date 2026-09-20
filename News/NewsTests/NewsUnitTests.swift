@@ -5,9 +5,10 @@
 //  Created by Yaroslav Kupriyanov on 19.09.2026.
 //
 
-import Testing
 import Foundation
 import SwiftUI
+import Testing
+
 @testable import News
 
 // MARK: - Mocks
@@ -138,7 +139,9 @@ struct NewsUnitTests {
     }
 
     // MARK: 2. SettingsViewModel Tests
-    @Test("SettingsViewModel applySettings updates setting for category, theme, loader, appIcon and language")
+    @Test(
+        "SettingsViewModel applySettings updates setting for category, theme, loader, appIcon and language"
+    )
     func testSettingsViewModelApplySettings() {
         let settingsManager = MockSettingsManager()
         let networkManager = MockNetworkManager()
@@ -192,7 +195,7 @@ struct NewsUnitTests {
         #expect(NewsCategory.allCases.contains(.business))
         #expect(NewsCategory.allCases.contains(.entertainment))
         #expect(NewsCategory.allCases.contains(.technology))
-        #expect(!Texts.Category.title().isEmpty)
+        #expect(!String(localized: .categoryTitle).isEmpty)
     }
 
     @Test("SoundTheme notification sound mapping")
@@ -210,7 +213,7 @@ struct NewsUnitTests {
     @Test("AppIconConfiguration properties and names match")
     func testAppIconConfigurationEnum() {
         #expect(AppIconConfiguration.allCases.count == 3)
-        #expect(!Texts.AppIcon.title().isEmpty)
+        #expect(!String(localized: .appIconTitle).isEmpty)
         #expect(AppIconConfiguration.globe.iconName == "GlobeIcon")
     }
 
@@ -234,20 +237,37 @@ struct NewsUnitTests {
 
     @Test("Dynamic localization switches strings for en, ru, and id")
     func testDynamicLocalization() {
-        Texts.currentLanguage = "en"
-        #expect(Texts.Settings.language() == "Language")
-        #expect(Texts.Category.business() == "Business")
+        // 1. Проверяем английский
+        var settingsLanguageEn = LocalizedStringResource.settingsLanguage
+        settingsLanguageEn.locale = Locale(identifier: "en")
+        
+        var categoryBusinessEn = LocalizedStringResource.categoryBusiness
+        categoryBusinessEn.locale = Locale(identifier: "en")
+        
+        #expect(String(localized: settingsLanguageEn) == "Language")
+        #expect(String(localized: categoryBusinessEn) == "Business")
 
-        Texts.currentLanguage = "ru"
-        #expect(Texts.Settings.language() == "Язык")
-        #expect(Texts.Category.business() == "Бизнес")
+        // 2. Проверяем русский
+        var settingsLanguageRu = LocalizedStringResource.settingsLanguage
+        settingsLanguageRu.locale = Locale(identifier: "ru")
+        
+        var categoryBusinessRu = LocalizedStringResource.categoryBusiness
+        categoryBusinessRu.locale = Locale(identifier: "ru")
+        
+        #expect(String(localized: settingsLanguageRu) == "Язык")
+        #expect(String(localized: categoryBusinessRu) == "Бизнес")
 
-        Texts.currentLanguage = "id"
-        #expect(Texts.Settings.language() == "Bahasa")
-        #expect(Texts.Category.business() == "Bisnis")
-
-        Texts.currentLanguage = "en"
+        // 3. Проверяем индонезийский
+        var settingsLanguageId = LocalizedStringResource.settingsLanguage
+        settingsLanguageId.locale = Locale(identifier: "id")
+        
+        var categoryBusinessId = LocalizedStringResource.categoryBusiness
+        categoryBusinessId.locale = Locale(identifier: "id")
+        
+        #expect(String(localized: settingsLanguageId) == "Bahasa")
+        #expect(String(localized: categoryBusinessId) == "Bisnis")
     }
+
 
     // MARK: 5. SettingsManager Tests
     @Test("SettingsManager provides default values and saves updates")

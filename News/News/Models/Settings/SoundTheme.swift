@@ -5,12 +5,12 @@
 //  Created by Ярослав Куприянов on 28.03.2024.
 //
 
-import Foundation
+import SwiftUI
 
 enum SoundTheme: String, CaseIterable, Identifiable {
     var id: Self { return self }
 
-    static var image: String { SFSymbols.musicNote.rawValue }
+    static var tabImage: String { SFSymbols.musicNote.rawValue }
 
     case starwars = "star wars"
     case cats = "cats meow"
@@ -25,5 +25,14 @@ enum SoundTheme: String, CaseIterable, Identifiable {
         case .silentMode:
             "empty"
         }
+    }
+    
+    var image: Image {
+        let systemName: SFSymbols = switch self {
+        case .starwars: .starFill
+        case .silentMode: .powersleep
+        case .cats: .catFill
+        }
+        return Image(systemName: systemName.rawValue)
     }
 }

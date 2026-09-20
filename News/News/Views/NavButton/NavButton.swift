@@ -22,9 +22,9 @@ struct NavButton: View {
 }
 
 // MARK: Contents
-private extension NavButton {
+extension NavButton {
     @ViewBuilder
-    func buildContent() -> some View {
+    fileprivate func buildContent() -> some View {
         switch type {
         case .settings:
             NavigationLink {
@@ -43,7 +43,7 @@ private extension NavButton {
         }
     }
 
-    var image: some View {
+    fileprivate var image: some View {
         Image(systemName: type.imageName)
             .tint(.primary)
             .frame(width: 24, height: 24)

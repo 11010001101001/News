@@ -12,15 +12,15 @@ struct CopyContextMenuButton: View {
     let text: String
     let viewModel: DetailsViewModel
 
-	var body: some View {
-		CustomButton(
-			action: {
+    var body: some View {
+        CustomButton(
+            action: {
                 UIPasteboard.general.string = text
                 viewModel.impactOccured(.medium)
-			},
-			title: Texts.ContextMenu.copy(),
+            },
+            title: .contextMenuCopy,
             iconName: SFSymbols.documentOnDocument.rawValue,
             isGlass: false
-		)
-	}
+        )
+    }
 }

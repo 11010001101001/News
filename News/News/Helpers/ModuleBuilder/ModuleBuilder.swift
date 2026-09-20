@@ -4,7 +4,7 @@ import SwiftUI
 @MainActor
 struct ModuleBuilder {
     static let shared = ModuleBuilder()
-    
+
     private let soundManager: SoundManagerProtocol = SoundManager()
     private let vibrateManager: VibrateManagerProtocol = VibrateManager()
     private let notificationManager: NotificationManagerProtocol = NotificationManager()
@@ -25,7 +25,7 @@ struct ModuleBuilder {
             )
             MainView(viewModel: viewModel)
 
-        case let .details(article):
+        case .details(let article):
             let viewModel = DetailsViewModel(
                 cacheManager: cacheManager,
                 settingsManager: settingsManager,
@@ -42,7 +42,7 @@ struct ModuleBuilder {
                 networkManager: networkManager
             )
             SettingsView(viewModel: viewModel)
-            
+
         case .favorites:
             let viewModel = FavoritesViewModel(
                 settingsManager: settingsManager

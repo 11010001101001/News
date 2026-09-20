@@ -6,8 +6,8 @@
 //
 
 import ActivityKit
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 struct NewsWidgetsAttributes: ActivityAttributes {
     struct ContentState: Codable & Hashable {
@@ -42,9 +42,9 @@ struct NewsWidgetsLiveActivity: Widget {
 }
 
 // MARK: - Content
-private extension NewsWidgetsLiveActivity {
+extension NewsWidgetsLiveActivity {
     @ViewBuilder
-    func blockOrExpandedView(procents: Int) -> some View {
+    fileprivate func blockOrExpandedView(procents: Int) -> some View {
         let lvls = [Level.newbie, Level.curiousObserver, Level.loopMaster, Level.techNinja]
         let isNewbieActive = procents >= 0
         let isObserverActive = procents >= 25
@@ -82,7 +82,9 @@ private extension NewsWidgetsLiveActivity {
                 Circle()
                     .fill(isObserverActive ? Level.curiousObserver.color : .gray)
                     .frame(width: 30, height: 30)
-                    .shadow(color: isObserverActive ? Level.curiousObserver.color : .clear, radius: 7)
+                    .shadow(
+                        color: isObserverActive ? Level.curiousObserver.color : .clear, radius: 7
+                    )
                     .overlay(alignment: .center) {
                         Text(Level.curiousObserver.image)
                             .grayscale(isObserverActive ? 0 : 1)
@@ -114,7 +116,7 @@ private extension NewsWidgetsLiveActivity {
         .padding(.horizontal, 40)
     }
 
-    func buildTrailingOrMinimal(lvl: Level) -> some View {
+    fileprivate func buildTrailingOrMinimal(lvl: Level) -> some View {
         Text(lvl.image)
             .shadow(color: lvl.color, radius: 7)
     }

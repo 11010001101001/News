@@ -9,7 +9,7 @@ import Foundation
 enum LoadingState {
     case loading
     case loaded(data: [Article])
-    case error(message: String?)
+    case error(message: LocalizedStringResource?)
 
     var loaderOpacity: CGFloat {
         switch self {
@@ -32,9 +32,9 @@ enum LoadingState {
         }
     }
 
-    var errorMessage: String? {
+    var errorMessage: LocalizedStringResource? {
         switch self {
-        case let .error(message): message
+        case .error(let message): message
         case .loaded, .loading: nil
         }
     }

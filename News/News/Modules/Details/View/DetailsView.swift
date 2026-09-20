@@ -17,8 +17,8 @@ struct DetailsView: View {
     }
 }
 
-private extension DetailsView {
-    var content: some View {
+extension DetailsView {
+    fileprivate var content: some View {
         NavigationLink {
             TopicDetail(viewModel: viewModel, article: article)
         } label: {

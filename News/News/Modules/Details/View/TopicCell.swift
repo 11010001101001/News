@@ -46,19 +46,19 @@ struct TopicCell: View {
 }
 
 // MARK: - Content
-private extension TopicCell {
-    var texts: some View {
+extension TopicCell {
+    fileprivate var texts: some View {
         HorStack {
             VerStack {
-                DesignedText(text: article.title.orEmpty)
+                DesignedText(text: .init(stringLiteral: article.title.orEmpty))
                     .multilineTextAlignment(.leading)
                     .padding(.bottom)
                     .font(.headline)
                     .foregroundStyle(Color.primary)
-                DesignedText(text: (article.publishedAt?.toReadableDate()).orEmpty)
+                DesignedText(text: .init(stringLiteral: (article.publishedAt?.toReadableDate()).orEmpty))
                     .font(.subheadline)
                     .foregroundStyle(Color.secondary)
-                DesignedText(text: (article.source?.name).orEmpty)
+                DesignedText(text: .init(stringLiteral: (article.source?.name).orEmpty))
                     .font(.subheadline)
                     .foregroundStyle(Color.secondary)
             }
@@ -66,7 +66,7 @@ private extension TopicCell {
         }
     }
 
-    var favoriteButton: some View {
+    fileprivate var favoriteButton: some View {
         FavoritesButton(
             viewModel: viewModel,
             article: article,
@@ -76,7 +76,7 @@ private extension TopicCell {
     }
 
     @ViewBuilder
-    var contextMenu: some View {
+    fileprivate var contextMenu: some View {
         FavoritesContextMenuButton(
             viewModel: viewModel,
             article: article
@@ -86,7 +86,7 @@ private extension TopicCell {
             imageWrapper: $imageWrapper,
             data: ButtonMetaData(
                 article: article,
-                title: Texts.ContextMenu.share(),
+                title: .contextMenuShare,
                 iconName: SFSymbols.squareAndArrowUp.rawValue
             ),
             viewModel: viewModel

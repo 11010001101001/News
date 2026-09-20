@@ -13,7 +13,6 @@ struct TopicsList: View {
                 shadowColor: viewModel.loaderShadowColor
             )
             .opacity(viewModel.loadingState.loaderOpacity)
-            .id(viewModel.loaderId)
 
             ErrorView(
                 title: viewModel.loadingState.errorMessage,
@@ -29,8 +28,8 @@ struct TopicsList: View {
 }
 
 // MARK: - Private
-private extension TopicsList {
-    var list: some View {
+extension TopicsList {
+    fileprivate var list: some View {
         ScrollView(.vertical) {
             VerStack {
                 ForEach(viewModel.news, id: \.self) {
@@ -46,7 +45,7 @@ private extension TopicsList {
         .opacity(viewModel.loadingState.contentOpacity)
     }
 
-    var gradient: some View {
+    fileprivate var gradient: some View {
         VerStack {
             Spacer()
             LinearGradient(

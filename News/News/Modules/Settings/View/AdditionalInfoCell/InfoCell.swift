@@ -7,19 +7,19 @@
 
 import SwiftUI
 
-struct InfoCell: View, ImageProvider {
-	let id: String
+struct InfoCell: View {
+    let id: LocalizedStringResource
 
-	var body: some View {
-		HorStack(spacing: Constants.padding) {
-			getImage(for: id)
-				.padding(.leading, Constants.padding)
-			DesignedText(text: id.capitalizingFirstLetter())
-				.font(.headline)
-				.frame(maxHeight: .infinity, alignment: .leading)
-			Spacer()
-		}
-		.glassCard()
-		.frame(height: 70)
-	}
+    var body: some View {
+        HorStack(spacing: Constants.padding) {
+            Image(systemName: SFSymbols.infoCircleFill.rawValue)
+                .padding(.leading, Constants.padding)
+            DesignedText(text: id)
+                .font(.headline)
+                .frame(maxHeight: .infinity, alignment: .leading)
+            Spacer()
+        }
+        .glassCard()
+        .frame(height: 70)
+    }
 }

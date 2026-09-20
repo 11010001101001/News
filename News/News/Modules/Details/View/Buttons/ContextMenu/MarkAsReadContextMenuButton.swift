@@ -20,20 +20,20 @@ struct MarkAsReadContextMenuButton: View {
         isRead ? SFSymbols.checkmarkSealFill.rawValue : SFSymbols.checkmarkSeal.rawValue
     }
 
-    private var title: String {
-        isRead ? Texts.ContextMenu.markAsUnread() : Texts.ContextMenu.markAsRead()
+    private var title: LocalizedStringResource {
+        isRead ? .contextMenuMarkAsUnread : .contextMenuMarkAsRead
     }
 
-	var body: some View {
-		CustomButton(
-			action: {
+    var body: some View {
+        CustomButton(
+            action: {
                 let key = article.key
                 viewModel.impactOccured(.light)
                 isRead ? viewModel.markAsUnread(key) : viewModel.markAsRead(key)
-			},
-			title: title,
+            },
+            title: title,
             iconName: iconName,
             isGlass: false
-		)
-	}
+        )
+    }
 }

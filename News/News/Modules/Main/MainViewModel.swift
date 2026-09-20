@@ -16,7 +16,7 @@ final class MainViewModel {
     var news = [Article]()
 
     /// For redraw loader on content view after settings loaded: render loader -> settings loaded -> redraw
-    var loaderId: Int?
+    //    var loaderId: Int?
     var settingsShortcutItemTapped = false
     var shareShortcutItemTapped = false
 
@@ -53,10 +53,10 @@ final class MainViewModel {
     }
 
     var isDefaultSettings: Bool {
-        category == Constants.DefaultSettings.category &&
-        soundTheme == Constants.DefaultSettings.soundTheme &&
-        loader == Constants.DefaultSettings.loader &&
-        appIcon == Constants.DefaultSettings.appIcon
+        category == Constants.DefaultSettings.category
+            && soundTheme == Constants.DefaultSettings.soundTheme
+            && loader == Constants.DefaultSettings.loader
+            && appIcon == Constants.DefaultSettings.appIcon
     }
 
     var starwarsRefresh: String {
@@ -122,16 +122,17 @@ extension MainViewModel {
                 WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
                 notificationOccurred(.success)
             } catch let error as ApiError {
-                let message: String = switch error {
-                case let .noConnection(msg): msg
-                case let .mappingError(msg): msg
-                default: Texts.Errors.unhandled()
-                }
+                let message: LocalizedStringResource =
+                    switch error {
+                    case .noConnection(let msg): msg
+                    case .mappingError(let msg): msg
+                    default: .errorsUnhandled
+                    }
                 self.loadingState = .error(message: message)
                 notificationOccurred(.error)
                 playError()
             } catch {
-                self.loadingState = .error(message: error.localizedDescription)
+                self.loadingState = .error(message: .errorsUndefinedError)
                 notificationOccurred(.error)
                 playError()
             }
@@ -168,10 +169,6 @@ extension MainViewModel {
         UIApplication.shared.shortcutItems = ShortcutItem.allItems
     }
 
-    func redrawContentViewLoader() {
-        loaderId = Int.random(in: .zero...Int.max)
-    }
-
     /// sound theme can change - do it during every app launch and sound changing
     func configureNotifications() {
         let notificationSound = (SoundTheme(rawValue: soundTheme)?.notificationSound).orEmpty
@@ -191,8 +188,8 @@ extension MainViewModel {
 }
 
 // MARK: - Private
-private extension MainViewModel {
-    func sortIsRead(_ articles: [Article]?) -> [Article] {
+extension MainViewModel {
+    fileprivate func sortIsRead(_ articles: [Article]?) -> [Article] {
         var read = [Article]()
         var notRead = [Article]()
 
@@ -209,16 +206,16 @@ private extension MainViewModel {
         return notRead + read
     }
 
-    func checkIsRead(_ key: String) -> Bool {
+    fileprivate func checkIsRead(_ key: String) -> Bool {
         watchedTopics.contains(where: { $0 == key })
     }
 
-    func markAsUnread(_ key: String) {
+    fileprivate func markAsUnread(_ key: String) {
         watchedTopics.remove(key)
         WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
     }
 
-    func markAsRead(_ key: String) {
+    fileprivate func markAsRead(_ key: String) {
         let isViewed = checkIsRead(key)
 
         guard !isViewed else { return }
@@ -227,37 +224,41 @@ private extension MainViewModel {
         WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
     }
 
-    func notificationOccurred(_ feedBackType: UINotificationFeedbackGenerator.FeedbackType) {
+    fileprivate func notificationOccurred(
+        _ feedBackType: UINotificationFeedbackGenerator.FeedbackType
+    ) {
         vibrateManager.vibrate(feedBackType)
     }
 
-    func playRefresh() {
+    fileprivate func playRefresh() {
         guard soundTheme != SoundTheme.silentMode.rawValue else { return }
 
-        let refreshSound = switch SoundTheme(rawValue: soundTheme) {
-        case .starwars:
-            starwarsRefresh
-        case .cats:
-            catsRefresh
-        default:
-            String.empty
-        }
+        let refreshSound =
+            switch SoundTheme(rawValue: soundTheme) {
+            case .starwars:
+                starwarsRefresh
+            case .cats:
+                catsRefresh
+            default:
+                String.empty
+            }
         if !refreshSound.isEmpty {
             soundManager.play(refreshSound)
         }
     }
 
-    func playError() {
+    fileprivate func playError() {
         guard soundTheme != SoundTheme.silentMode.rawValue else { return }
 
-        let errorSound = switch SoundTheme(rawValue: soundTheme) {
-        case .starwars:
-            "starwars_error"
-        case .cats:
-            "cats_error"
-        default:
-            String.empty
-        }
+        let errorSound =
+            switch SoundTheme(rawValue: soundTheme) {
+            case .starwars:
+                "starwars_error"
+            case .cats:
+                "cats_error"
+            default:
+                String.empty
+            }
         if !errorSound.isEmpty {
             soundManager.play(errorSound)
         }

@@ -29,8 +29,8 @@ extension CacheManager: CacheManagerProtocol {
 }
 
 // MARK: - Private
-private extension CacheManager {
-    func get(key: AnyObject) -> AnyObject? {
+extension CacheManager {
+    fileprivate func get(key: AnyObject) -> AnyObject? {
         cache.object(forKey: key)
     }
 }

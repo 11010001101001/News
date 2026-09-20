@@ -9,23 +9,23 @@ import Foundation
 import SwiftUI
 
 enum LoaderConfiguration: String, CaseIterable, Identifiable {
-	var id: Self { return self }
+    var id: Self { return self }
 
-    static var image: String { SFSymbols.hourglass.rawValue }
+    static var tabImage: String { SFSymbols.hourglass.rawValue }
 
-	case rocket
-	case hourGlass = "hourglass"
-	case astronaut
-	case hamster
-	case kitten
+    case rocket
+    case hourGlass = "hourglass"
+    case astronaut
+    case hamster
+    case kitten
 
-	var shadowColor: Color {
-		switch self {
-		case .rocket: .orange
-		case .hourGlass: .cyan
-		case .astronaut: .red
-		case .hamster: .blue
-		case .kitten: .indigo
-		}
-	}
+    var shadowColor: Color {
+        switch self {
+        case .rocket: .orange
+        case .hourGlass: .cyan
+        case .astronaut: .red
+        case .hamster: .blue
+        case .kitten: .indigo
+        }
+    }
 }

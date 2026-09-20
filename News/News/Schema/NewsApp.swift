@@ -5,8 +5,8 @@
 //  Created by Ярослав Куприянов on 26.03.2024.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 import TipKit
 
 @main
@@ -27,7 +27,9 @@ struct NewsApp: App {
             return try ModelContainer(for: schema, configurations: [configuration])
         } catch {
             let fallbackConfig = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-            if let inMemoryContainer = try? ModelContainer(for: schema, configurations: [fallbackConfig]) {
+            if let inMemoryContainer = try? ModelContainer(
+                for: schema, configurations: [fallbackConfig])
+            {
                 return inMemoryContainer
             }
             fatalError("Could not create ModelContainer: \(error)")

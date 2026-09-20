@@ -5,8 +5,8 @@
 //  Created by Ярослав Куприянов on 04.07.2024.
 //
 
-import SwiftUI
 import Foundation
+import SwiftUI
 
 struct CachedAsyncImage: View {
     let article: Article
@@ -34,31 +34,23 @@ struct CachedAsyncImage: View {
 }
 
 // MARK: Content
-private extension CachedAsyncImage {
+extension CachedAsyncImage {
     @ViewBuilder
     private func buildCachedAsyncImage() -> some View {
         if let cachedImage {
             cachedImage
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(
-                    width: CGFloat.screenWidth - 32,
-                    height: Constants.imageHeight,
-                    alignment: .center
-                )
-                .clipped()
-                .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius, style: .continuous))
+                .toFrame()
                 .glassCard()
         } else {
             asyncImage
         }
     }
 
-    var asyncImage: some View {
+    fileprivate var asyncImage: some View {
         AsyncImage(url: URL(string: url)) { phase in
             if let image = phase.image {
                 image
-                    .resizable()
+                    .toFrame()
                     .onAppear { cache(image) }
             } else if phase.error != nil {
                 let error = String(phase.error?.localizedDescription.prefix(40) ?? "") + "..."
@@ -69,7 +61,7 @@ private extension CachedAsyncImage {
         }
     }
 
-    var loader: some View {
+    fileprivate var loader: some View {
         Loader(
             loaderName: viewModel.loader,
             shadowColor: viewModel.loaderShadowColor
@@ -77,16 +69,32 @@ private extension CachedAsyncImage {
         .frame(height: Constants.imageHeight)
     }
 
-    func buildError(title: String) -> some View {
-        ErrorView(title: title, action: nil)
+    fileprivate func buildError(title: String) -> some View {
+        ErrorView(title: .init(stringLiteral: title), action: nil)
             .frame(height: Constants.imageHeight)
     }
 }
 
 // MARK: Cache
-private extension CachedAsyncImage {
-    func cache(_ image: Image) {
+extension CachedAsyncImage {
+    fileprivate func cache(_ image: Image) {
         let object = CachedImage(image: image)
         viewModel.cache(object: object, key: key)
+    }
+}
+
+extension Image {
+    fileprivate func toFrame() -> some View {
+        self
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(
+                width: CGFloat.screenWidth - 32,
+                height: Constants.imageHeight,
+                alignment: .center
+            )
+            .clipped()
+            .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius, style: .continuous))
+            .glassCard()
     }
 }

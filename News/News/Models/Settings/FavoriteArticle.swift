@@ -72,14 +72,10 @@ extension FavoriteArticle {
 // MARK: - Equatable
 extension FavoriteArticle: Equatable {
     static func == (lhs: FavoriteArticle, rhs: FavoriteArticle) -> Bool {
-        lhs.source?.id == rhs.source?.id &&
-        lhs.source?.name == rhs.source?.name &&
-        lhs.author == rhs.author &&
-        lhs.title == rhs.title &&
-        lhs.articleDescription == rhs.articleDescription &&
-        lhs.url == rhs.url &&
-        lhs.urlToImage == rhs.urlToImage &&
-        lhs.publishedAt == rhs.publishedAt &&
-        lhs.content == rhs.content
+        lhs.source?.id == rhs.source?.id && lhs.source?.name == rhs.source?.name
+            && lhs.author == rhs.author && lhs.title == rhs.title
+            && lhs.articleDescription == rhs.articleDescription && lhs.url == rhs.url
+            && lhs.urlToImage == rhs.urlToImage && lhs.publishedAt == rhs.publishedAt
+            && lhs.content == rhs.content
     }
 }

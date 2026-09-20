@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ButtonTransition: Transition {
-	func body(content: Content, phase: TransitionPhase) -> some View {
-		content
-			.opacity(phase.isIdentity ? 1 : 0.001)
-			.brightness(phase == .willAppear ? 1 : 0)
-	}
+    func body(content: Content, phase: TransitionPhase) -> some View {
+        content
+            .opacity(phase.isIdentity ? 1 : 0.001)
+            .brightness(phase == .willAppear ? 1 : 0)
+    }
 }

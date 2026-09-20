@@ -14,23 +14,23 @@ final class SettingsModel {
     var category: String
     var soundTheme: String
     var loader: String
-	var appIcon: String
+    var appIcon: String
     var watchedTopics: Set<String> = []
     var favoriteTopics: [FavoriteArticle] = []
     var keyword: String = ""
     var language: String? = Constants.DefaultSettings.language
 
     init(
-		category: String = Constants.DefaultSettings.category,
-		soundTheme: String = Constants.DefaultSettings.soundTheme,
-		loader: String = Constants.DefaultSettings.loader,
-		appIcon: String = Constants.DefaultSettings.appIcon,
-		language: String? = Constants.DefaultSettings.language
-	) {
+        category: String = Constants.DefaultSettings.category,
+        soundTheme: String = Constants.DefaultSettings.soundTheme,
+        loader: String = Constants.DefaultSettings.loader,
+        appIcon: String = Constants.DefaultSettings.appIcon,
+        language: String? = Constants.DefaultSettings.language
+    ) {
         self.category = category
         self.soundTheme = soundTheme
         self.loader = loader
-		self.appIcon = appIcon
-		self.language = language
+        self.appIcon = appIcon
+        self.language = language
     }
 }

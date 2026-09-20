@@ -5,8 +5,8 @@
 //  Created by Ярослав Куприянов on 13.10.2025.
 //
 
-import SwiftUI
 import Lottie
+import SwiftUI
 
 struct FavoritesEmptyView: View {
     @Environment(\.dismiss) private var dismiss
@@ -25,9 +25,9 @@ struct FavoritesEmptyView: View {
 }
 
 // MARK: - Content
-private extension FavoritesEmptyView {
-    var titleView: some View {
-        DesignedText(text: Texts.Favorites.empty())
+extension FavoritesEmptyView {
+    fileprivate var titleView: some View {
+        DesignedText(text: .favoritesEmpty)
             .labelStyle(.titleOnly)
             .foregroundStyle(.white)
             .multilineTextAlignment(.center)
@@ -36,7 +36,7 @@ private extension FavoritesEmptyView {
             .padding(.horizontal, CGFloat.sideInsets)
     }
 
-    var image: some View {
+    fileprivate var image: some View {
         Image(uiImage: .favoritesEmptyCat)
             .resizable()
             .frame(width: 170, height: 170)
@@ -45,10 +45,10 @@ private extension FavoritesEmptyView {
             .padding(.horizontal)
     }
 
-    var reloadButton: some View {
+    fileprivate var reloadButton: some View {
         CustomButton(
             action: { dismiss() },
-            title: Texts.Favorites.add()
+            title: .favoritesAdd
         )
     }
 }

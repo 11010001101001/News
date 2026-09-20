@@ -7,26 +7,29 @@
 
 import SwiftUI
 
-struct SettingsCell: View, ImageProvider {
-	@Bindable var viewModel: SettingsViewModel
-	let id: String
+struct SettingsCell: View {
+    @Bindable var viewModel: SettingsViewModel
+    let id: String
 
-	var body: some View {
-		HorStack(spacing: Constants.padding) {
-			getImage(for: id)
-				.padding(.leading, Constants.padding)
-			DesignedText(text: viewModel.displayName(for: id))
-				.font(.headline)
-				.frame(maxHeight: .infinity, alignment: .leading)
-			Spacer()
-		}
-		.glassCard()
+    var body: some View {
+        HorStack(spacing: Constants.padding) {
+            ImageProvider.image(id)
+                .padding(.leading, Constants.padding)
+                         
+            DesignedText(text: viewModel.displayName(for: id))
+                .font(.headline)
+                .frame(maxHeight: .infinity, alignment: .leading)
+                         
+            Spacer()
+        }
+        .glassCard()
         .markIsSelected(viewModel, id)
-		.frame(height: 70)
-		.applyOrNotSettingsModifier(
-			isEnabled: viewModel.checkIsEnabled(id.lowercased())
-		) {
-			viewModel.applySettings(id.lowercased())
-		}
-	}
+        .frame(height: 70)
+        .applyOrNotSettingsModifier(
+            isEnabled: viewModel.checkIsEnabled(id.lowercased())
+        ) {
+            viewModel.applySettings(id.lowercased())
+        }
+    }
 }
+

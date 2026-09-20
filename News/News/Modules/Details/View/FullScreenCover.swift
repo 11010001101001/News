@@ -8,30 +8,30 @@
 import SwiftUI
 
 struct SheetNavigationContainer<Content: View>: View {
-	@Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) var dismiss
 
-	let title: String
-	let content: () -> Content
+    let title: LocalizedStringResource
+    let content: () -> Content
 
-	var body: some View {
-		NavigationStack {
-			content()
-				.ignoresSafeArea(.all, edges: .bottom)
-				.toolbar {
-					ToolbarItem(placement: .principal) {
-						DesignedText(text: title)
-							.font(.title)
-					}
+    var body: some View {
+        NavigationStack {
+            content()
+                .ignoresSafeArea(.all, edges: .bottom)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        DesignedText(text: title)
+                            .font(.title)
+                    }
 
-					ToolbarItem(placement: .topBarTrailing) {
+                    ToolbarItem(placement: .topBarTrailing) {
                         NavButton(
                             type: .close,
                             action: { dismiss() }
                         )
-					}
-				}
-				.navigationBarTitleDisplayMode(.inline)
-				.background(ignoresSafeAreaEdges: .all)
-		}
-	}
+                    }
+                }
+                .navigationBarTitleDisplayMode(.inline)
+                .background(ignoresSafeAreaEdges: .all)
+        }
+    }
 }

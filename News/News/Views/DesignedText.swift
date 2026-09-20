@@ -9,10 +9,14 @@ import Foundation
 import SwiftUI
 
 struct DesignedText: View {
-	let text: String
+    let text: LocalizedStringResource
+    
+    init(text: LocalizedStringResource) {
+        self.text = text
+    }
 
-	var body: some View {
-		Text(text)
-			.fontDesign(.monospaced)
-	}
+    var body: some View {
+        Text(text)
+            .fontDesign(.monospaced)
+    }
 }

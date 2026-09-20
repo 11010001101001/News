@@ -17,8 +17,8 @@ struct SettingsView: View {
 }
 
 // MARK: - Content
-private extension SettingsView {
-    var content: some View {
+extension SettingsView {
+    fileprivate var content: some View {
         SettingsList(viewModel: viewModel)
     }
 }

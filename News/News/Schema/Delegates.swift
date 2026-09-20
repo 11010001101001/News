@@ -8,23 +8,28 @@
 import UIKit
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
-	override init() {
-		super.init()
-		setURLCacheMemoryCapacity()
-	}
+    override init() {
+        super.init()
+        setURLCacheMemoryCapacity()
+    }
 
-    func application(_ application: UIApplication,
-                     configurationForConnecting connectingSceneSession: UISceneSession,
-                     options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+    func application(
+        _ application: UIApplication,
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    ) -> UISceneConfiguration {
         if let selectedAction = options.shortcutItem {
             ShortcutItem.selectedAction = selectedAction
         }
-        let configuration = UISceneConfiguration(name: "scene", sessionRole: connectingSceneSession.role)
+        let configuration = UISceneConfiguration(
+            name: "scene", sessionRole: connectingSceneSession.role)
         configuration.delegateClass = SceneDelegate.self
         return configuration
     }
 
-    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+    func application(
+        _ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?
+    ) -> UIInterfaceOrientationMask {
         .portrait
     }
 
@@ -34,18 +39,20 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    func windowScene(_ windowScene: UIWindowScene,
-                     performActionFor shortcutItem: UIApplicationShortcutItem,
-                     completionHandler: @escaping (Bool) -> Void) {
+    func windowScene(
+        _ windowScene: UIWindowScene,
+        performActionFor shortcutItem: UIApplicationShortcutItem,
+        completionHandler: @escaping (Bool) -> Void
+    ) {
         ShortcutItem.selectedAction = shortcutItem
     }
 }
 
 extension AppDelegate {
-	func setURLCacheMemoryCapacity() {
-		// ~200 MB memory space
-		URLCache.shared.memoryCapacity = 200_000_000
-		// ~1GB disk cache space
-		URLCache.shared.diskCapacity = 1_000_000_000
-	}
+    func setURLCacheMemoryCapacity() {
+        // ~200 MB memory space
+        URLCache.shared.memoryCapacity = 200_000_000
+        // ~1GB disk cache space
+        URLCache.shared.diskCapacity = 1_000_000_000
+    }
 }

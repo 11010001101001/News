@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CustomButton: View {
     let action: Action
-    var title: String?
+    var title: LocalizedStringResource?
     var iconName: String?
     var isGlass = true
 
@@ -36,22 +36,22 @@ struct CustomButton: View {
 }
 
 // MARK: - Content
-private extension CustomButton {
-    var label: some View {
+extension CustomButton {
+    fileprivate var label: some View {
         Label(
             title: { titleView },
             icon: { iconView }
         )
     }
 
-    var titleView: some View {
+    fileprivate var titleView: some View {
         OptionalView(title) {
             DesignedText(text: $0)
                 .foregroundStyle(.white)
         }
     }
 
-    var iconView: some View {
+    fileprivate var iconView: some View {
         OptionalView(iconName) {
             Image(systemName: $0)
                 .foregroundStyle(.white)

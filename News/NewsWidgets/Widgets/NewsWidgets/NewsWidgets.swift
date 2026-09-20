@@ -1,6 +1,6 @@
-import WidgetKit
 import SwiftData
 import SwiftUI
+import WidgetKit
 
 struct NewsWidgets: Widget {
     let kind: String = "NewsWidget"
@@ -19,15 +19,15 @@ struct NewsWidgets: Widget {
             .systemExtraLarge,
             .accessoryCircular,
             .accessoryInline,
-            .accessoryRectangular
+            .accessoryRectangular,
         ])
     }
 }
 
 #if DEBUG
-#Preview(as: .systemSmall) {
-    NewsWidgets()
-} timeline: {
-    Entry(category: NewsCategory.technology.rawValue, level: .techNinja)
-}
+    #Preview(as: .systemSmall) {
+        NewsWidgets()
+    } timeline: {
+        Entry(category: NewsCategory.technology.rawValue, level: .techNinja)
+    }
 #endif

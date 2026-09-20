@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 struct ContentWrapper: Identifiable {
     let id = UUID()

@@ -8,7 +8,7 @@
 import Foundation
 
 enum AdditionalInfo {
-    static var title: String { Texts.Info.title() }
+    static var title: LocalizedStringResource { .infoTitle }
 
-    static var image: String { SFSymbols.info.rawValue }
+    static var tabImage: String { SFSymbols.info.rawValue }
 }

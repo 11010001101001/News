@@ -9,31 +9,31 @@ import Foundation
 import SwiftUI
 
 struct ShareButton: View {
-	@State var imageWrapper: ContentWrapper?
-	let data: ButtonMetaData
+    @State var imageWrapper: ContentWrapper?
+    let data: ButtonMetaData
     let viewModel: DetailsViewModel
     let isGlass: Bool
 
-	var body: some View {
-		CustomButton(
-			action: {
+    var body: some View {
+        CustomButton(
+            action: {
                 viewModel.impactOccured(.light)
-                
-				self.imageWrapper = ContentWrapper(
+
+                self.imageWrapper = ContentWrapper(
                     link: (URL(string: data.article.url.orEmpty)?.absoluteString).orEmpty,
-					description: DeveloperInfo.shareInfo
+                    description: DeveloperInfo.shareInfo
                 )
-			},
-			title: data.title,
+            },
+            title: data.title,
             iconName: data.iconName,
             isGlass: isGlass
-		)
-		.sheet(
-			item: $imageWrapper,
-			content: { content in
-				ActivityViewController(contentWrapper: content)
-					.presentationDetents([.medium])
-			}
-		)
-	}
+        )
+        .sheet(
+            item: $imageWrapper,
+            content: { content in
+                ActivityViewController(contentWrapper: content)
+                    .presentationDetents([.medium])
+            }
+        )
+    }
 }

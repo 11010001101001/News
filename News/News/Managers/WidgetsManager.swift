@@ -5,8 +5,8 @@
 //  Created by Ярослав Куприянов on 02.11.2025.
 //
 
-import Foundation
 import ActivityKit
+import Foundation
 import WidgetKit
 
 final class WidgetsManager {
@@ -18,7 +18,9 @@ final class WidgetsManager {
     private var oldActivitiesEnded = false
 
     func start() {
-        guard ActivityAuthorizationInfo().areActivitiesEnabled, currentActivity == nil else { return }
+        guard ActivityAuthorizationInfo().areActivitiesEnabled, currentActivity == nil else {
+            return
+        }
 
         endOldActivities()
 
@@ -44,7 +46,7 @@ final class WidgetsManager {
 
     func updateLevel(watchedTopics: Set<String>) {
         guard !articles.isEmpty else { return }
-        
+
         let watched = articles.filter { article in
             watchedTopics.contains(where: { $0 == article.key })
         }

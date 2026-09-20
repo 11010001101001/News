@@ -5,16 +5,16 @@
 //  Created by Ярослав Куприянов on 04.04.2024.
 //
 
-import SwiftUI
 import Lottie
+import SwiftUI
 
 struct AppIconSettingsCell: View {
     @Bindable var viewModel: SettingsViewModel
     let id: String
 
-	private var shadowColor: Color {
-		AppIconConfiguration(rawValue: id)?.shadowColor ?? .shadowHighlight
-	}
+    private var shadowColor: Color {
+        AppIconConfiguration(rawValue: id)?.shadowColor ?? .shadowHighlight
+    }
 
     private var isEnabled: Bool {
         viewModel.checkIsEnabled(id.lowercased())
@@ -23,17 +23,19 @@ struct AppIconSettingsCell: View {
     var body: some View {
         ZStack {
             HorStack {
-				Image(id)
-					.resizable()
-					.frame(width: 80, height: 80)
-					.clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius, style: .continuous))
-					.gloss(isEnabled: isEnabled, color: shadowColor, isBorderHighlighted: true)
-					.padding(.all, Constants.padding + 7)
+                Image(id)
+                    .resizable()
+                    .frame(width: 80, height: 80)
+                    .clipShape(
+                        RoundedRectangle(cornerRadius: Constants.cornerRadius, style: .continuous)
+                    )
+                    .gloss(isEnabled: isEnabled, color: shadowColor, isBorderHighlighted: true)
+                    .padding(.all, Constants.padding + 7)
 
                 Spacer()
             }
 
-			HorStack {
+            HorStack {
                 DesignedText(text: viewModel.displayName(for: id))
                     .font(.system(size: 18, weight: .regular))
                     .padding(.leading, 130)

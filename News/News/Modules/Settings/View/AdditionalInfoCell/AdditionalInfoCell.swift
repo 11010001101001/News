@@ -13,12 +13,12 @@ struct AdditionalInfoCell: View {
 
     var body: some View {
         Group {
-            WidgetLevelsCell(id: Texts.Widgets.levels())
+            WidgetLevelsCell(id: String(localized: .widgetsLevels))
             LanguageCell(viewModel: viewModel)
-            InfoCell(id: DeveloperInfo.currentAppVersion)
-            LinkCell(
+            InfoCell(id: .appVersion(DeveloperInfo.currentAppVersion))
+            ContactUsCell(
                 viewModel: viewModel,
-                id: Texts.App.contactUs(),
+                id: .appContactUs,
                 link: DeveloperInfo.contactLink
             )
         }
