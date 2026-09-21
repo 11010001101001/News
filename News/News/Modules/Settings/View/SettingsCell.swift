@@ -7,19 +7,23 @@
 
 import SwiftUI
 
-struct SettingsCell: View {
+struct SettingsCell<T: DisplayName>: View {
     @Bindable var viewModel: SettingsViewModel
-    let id: String
+    let model: T
+
+    private var id: String {
+        model.rawValue
+    }
 
     var body: some View {
         HorStack(spacing: Constants.padding) {
             ImageProvider.image(id)
                 .padding(.leading, Constants.padding)
-                         
-            DesignedText(text: viewModel.displayName(for: id))
+
+            DesignedText(text: model.displayName)
                 .font(.headline)
                 .frame(maxHeight: .infinity, alignment: .leading)
-                         
+
             Spacer()
         }
         .glassCard()
@@ -32,4 +36,3 @@ struct SettingsCell: View {
         }
     }
 }
-

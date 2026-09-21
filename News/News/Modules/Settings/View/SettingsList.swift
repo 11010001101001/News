@@ -16,7 +16,7 @@ struct SettingsList: View {
             Tab(.loaderTitle, systemImage: LoaderConfiguration.tabImage) {
                 buildContentScroll {
                     ForEach(LoaderConfiguration.allCases) { loader in
-                        LoaderSettingsCell(viewModel: viewModel, id: loader.rawValue)
+                        LoaderSettingsCell(viewModel: viewModel, loader: loader)
                     }
                 }
             }
@@ -25,7 +25,7 @@ struct SettingsList: View {
                 buildContentScroll {
                     VerStack(spacing: Constants.padding) {
                         ForEach(NewsCategory.allCases) { category in
-                            SettingsCell(viewModel: viewModel, id: category.rawValue)
+                            SettingsCell(viewModel: viewModel, model: category)
                         }
                         KeywordCell(viewModel: viewModel, keyword: viewModel.keyword)
                     }
@@ -35,7 +35,7 @@ struct SettingsList: View {
             Tab(.soundTitle, systemImage: SoundTheme.tabImage) {
                 buildContentScroll {
                     ForEach(SoundTheme.allCases) { theme in
-                        SettingsCell(viewModel: viewModel, id: theme.rawValue)
+                        SettingsCell(viewModel: viewModel, model: theme)
                     }
                 }
             }
@@ -44,7 +44,7 @@ struct SettingsList: View {
                 Tab(.appIconTitle, systemImage: AppIconConfiguration.tabImage) {
                     buildContentScroll {
                         ForEach(AppIconConfiguration.allCases) { theme in
-                            AppIconSettingsCell(viewModel: viewModel, id: theme.rawValue)
+                            AppIconSettingsCell(viewModel: viewModel, theme: theme)
                         }
                     }
                 }

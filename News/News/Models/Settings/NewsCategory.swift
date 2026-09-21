@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum NewsCategory: String, CaseIterable, Identifiable {
+enum NewsCategory: String, CaseIterable, Identifiable, DisplayName {
     var id: Self { self }
 
     static var tabImage: String { SFSymbols.listBullet.rawValue }
@@ -24,7 +24,7 @@ enum NewsCategory: String, CaseIterable, Identifiable {
     case sports
     case technology
 
-    var localizedResource: LocalizedStringResource {
+    var displayName: LocalizedStringResource {
         switch self {
         case .business: LocalizedStringResource("Category.business")
         case .entertainment: LocalizedStringResource("Category.entertainment")

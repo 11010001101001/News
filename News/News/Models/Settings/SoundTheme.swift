@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum SoundTheme: String, CaseIterable, Identifiable {
+enum SoundTheme: String, CaseIterable, Identifiable, DisplayName {
     var id: Self { return self }
 
     static var tabImage: String { SFSymbols.musicNote.rawValue }
@@ -26,13 +26,22 @@ enum SoundTheme: String, CaseIterable, Identifiable {
             "empty"
         }
     }
-    
+
     var image: Image {
-        let systemName: SFSymbols = switch self {
-        case .starwars: .starFill
-        case .silentMode: .powersleep
-        case .cats: .catFill
-        }
+        let systemName: SFSymbols =
+            switch self {
+            case .starwars: .starFill
+            case .silentMode: .powersleep
+            case .cats: .catFill
+            }
         return Image(systemName: systemName.rawValue)
+    }
+
+    var displayName: LocalizedStringResource {
+        switch self {
+        case .starwars: LocalizedStringResource("Sound.starwars")
+        case .cats: LocalizedStringResource("Sound.cats")
+        case .silentMode: LocalizedStringResource("Sound.silentMode")
+        }
     }
 }

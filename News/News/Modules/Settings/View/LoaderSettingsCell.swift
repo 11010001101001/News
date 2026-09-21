@@ -10,7 +10,11 @@ import SwiftUI
 
 struct LoaderSettingsCell: View {
     @Bindable var viewModel: SettingsViewModel
-    let id: String
+    let loader: LoaderConfiguration
+    
+    private var id: String {
+        loader.rawValue
+    }
 
     private var isEnabled: Bool {
         viewModel.checkIsEnabled(id)
@@ -32,7 +36,7 @@ struct LoaderSettingsCell: View {
             }
 
             HorStack {
-                DesignedText(text: viewModel.displayName(for: id))
+                DesignedText(text: loader.displayName)
                     .font(.system(size: 18, weight: .regular))
                     .padding(.leading, 100)
 

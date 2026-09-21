@@ -125,7 +125,7 @@ extension TopicsList {
                 HorStack(spacing: 16) {
                     Text(">>")
                     DesignedText(
-                        text: NewsCategory.init(rawValue: viewModel.category)!.localizedResource
+                        text: NewsCategory.init(rawValue: viewModel.category)!.displayName
                     )
                     Spacer()
                 }

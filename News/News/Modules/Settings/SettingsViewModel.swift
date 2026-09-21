@@ -101,38 +101,6 @@ extension SettingsViewModel {
         ].first(where: { $0 == settingName }) != nil
     }
 
-    func displayName(for id: String) -> LocalizedStringResource {
-        switch id {
-        case NewsCategory.business.rawValue: .categoryBusiness
-        case NewsCategory.entertainment.rawValue: .categoryEntertainment
-        case NewsCategory.general.rawValue: .categoryGeneral
-        case NewsCategory.health.rawValue: .categoryHealth
-        case NewsCategory.science.rawValue: .categoryScience
-        case NewsCategory.sports.rawValue: .categorySports
-        case NewsCategory.technology.rawValue: .categoryTechnology
-
-        case SoundTheme.starwars.rawValue: .soundStarwars
-        case SoundTheme.cats.rawValue: .soundCats
-        case SoundTheme.silentMode.rawValue: .soundSilentMode
-
-        case LoaderConfiguration.rocket.rawValue: .loaderRocket
-        case LoaderConfiguration.hourGlass.rawValue: .loaderHourglass
-        case LoaderConfiguration.astronaut.rawValue: .loaderAstronaut
-        case LoaderConfiguration.hamster.rawValue: .loaderHamster
-        case LoaderConfiguration.kitten.rawValue: .loaderKitten
-
-        case AppIconConfiguration.globe.rawValue: .appIconGlobe
-        case AppIconConfiguration.cat.rawValue: .appIconCat
-        case AppIconConfiguration.dart.rawValue: .appIconDart
-
-        case AppLanguage.english.rawValue: .init(stringLiteral: AppLanguage.english.title)
-        case AppLanguage.russian.rawValue: .init(stringLiteral: AppLanguage.russian.title)
-        case AppLanguage.indonesian.rawValue: .init(stringLiteral: AppLanguage.indonesian.title)
-
-        default: .init(stringLiteral: id.capitalizingFirstLetter())
-        }
-    }
-
     func applySettings(_ key: String) {
         switch key {
         case let name

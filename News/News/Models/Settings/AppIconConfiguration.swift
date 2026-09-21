@@ -32,4 +32,12 @@ enum AppIconConfiguration: String, CaseIterable, Identifiable {
         case .dart: .red
         }
     }
+    
+    var displayName: LocalizedStringResource {
+        switch self {
+        case .globe: LocalizedStringResource("AppIcon.globe")
+        case .cat: LocalizedStringResource("AppIcon.cat")
+        case .dart: LocalizedStringResource("AppIcon.dart")
+        }
+    }
 }

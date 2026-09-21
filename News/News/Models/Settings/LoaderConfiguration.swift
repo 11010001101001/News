@@ -28,4 +28,14 @@ enum LoaderConfiguration: String, CaseIterable, Identifiable {
         case .kitten: .indigo
         }
     }
+
+    var displayName: LocalizedStringResource {
+        switch self {
+        case .rocket: LocalizedStringResource("Loader.rocket")
+        case .hourGlass: LocalizedStringResource("Loader.hourglass")
+        case .astronaut: LocalizedStringResource("Loader.astronaut")
+        case .hamster: LocalizedStringResource("Loader.hamster")
+        case .kitten: LocalizedStringResource("Loader.kitten")
+        }
+    }
 }
