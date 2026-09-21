@@ -51,8 +51,12 @@ extension MainView {
                     destination: { ModuleBuilder.shared.build(.settings) }
                 )
         }
-        .onAppear { onAppear() }
-        .task { configureTips() }
+        .onAppear { loadSettings() }
+        .task {
+            configureTips()
+            viewModel.loadNews()
+            viewModel.configureNotifications()
+        }
         .onChange(of: phase) { _, phase in handleScenePhase(phase) }
         .onChange(of: viewModel.settingsShortcutItemTapped) { _, _ in
             needOpenSettings.toggle()
@@ -61,17 +65,13 @@ extension MainView {
         .onChange(of: viewModel.settingsShortcutItemTapped) { _, _ in
             imageWrapper = ContentWrapper(link: .empty, description: DeveloperInfo.shareInfo)
         }
+        .onChange(of: viewModel.category) { _, _ in
+            viewModel.loadNews()
+        }
     }
 }
 
-// MARK: - Private
 extension MainView {
-    fileprivate func onAppear() {
-        loadSettings()
-        viewModel.loadNews()
-        viewModel.configureNotifications()
-    }
-
     // MARK: - Settings
     fileprivate func loadSettings() {
         if savedSettings.isEmpty {
