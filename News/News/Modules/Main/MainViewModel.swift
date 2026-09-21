@@ -15,11 +15,6 @@ final class MainViewModel {
     var loadingState = LoadingState.loading
     var news = [Article]()
 
-    /// For redraw loader on content view after settings loaded: render loader -> settings loaded -> redraw
-    //    var loaderId: Int?
-    var settingsShortcutItemTapped = false
-    var shareShortcutItemTapped = false
-
     var loader: String {
         get { settingsManager.loader }
         set { settingsManager.save(loader: newValue) }
@@ -152,17 +147,6 @@ extension MainViewModel {
             }
         }
         WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
-    }
-
-    func handleShortcutItemTap(_ name: String) {
-        switch name {
-        case ShortcutItem.settings.rawValue:
-            settingsShortcutItemTapped.toggle()
-        case ShortcutItem.share.rawValue:
-            shareShortcutItemTapped.toggle()
-        default:
-            break
-        }
     }
 
     func addShortcutItems() {

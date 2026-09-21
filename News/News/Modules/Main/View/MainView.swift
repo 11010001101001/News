@@ -21,7 +21,11 @@ struct MainView: View {
 
     var body: some View {
         content
-            .environment(\.locale, Locale(identifier: savedSettings.first?.language ?? Constants.DefaultSettings.language))
+            .environment(
+                \.locale,
+                Locale(
+                    identifier: savedSettings.first?.language ?? Constants.DefaultSettings.language)
+            )
     }
 }
 
@@ -48,20 +52,8 @@ extension MainView {
                 )
         }
         .onAppear { onAppear() }
-        .onChange(of: viewModel.shareShortcutItemTapped) { _, needShare in
-            guard needShare else { return }
-            self.imageWrapper = ContentWrapper(link: .empty, description: DeveloperInfo.shareInfo)
-        }
-        .onChange(of: viewModel.settingsShortcutItemTapped) { _, needOpen in
-            guard needOpen else { return }
-            needOpenSettings.toggle()
-        }
-        .task {
-            configureTips()
-        }
-        .onChange(of: phase) { _, phase in
-            handleScenePhase(phase)
-        }
+        .task { configureTips() }
+        .onChange(of: phase) { _, phase in handleScenePhase(phase) }
     }
 }
 
@@ -73,6 +65,7 @@ extension MainView {
         viewModel.configureNotifications()
     }
 
+    // MARK: - Settings
     fileprivate func loadSettings() {
         if savedSettings.isEmpty {
             let defaultModel = SettingsModel()
@@ -84,11 +77,23 @@ extension MainView {
         }
     }
 
+    // MARK: - Shortcuts
     fileprivate func handleScenePhase(_ phase: ScenePhase) {
         switch phase {
         case .active:
-            if let itemName = ShortcutItem.selectedAction?.userInfo?["name"] as? String {
-                viewModel.handleShortcutItemTap(itemName)
+            guard let action = ShortcutItem.selectedAction else { return }
+            defer { ShortcutItem.selectedAction = nil }
+            
+            if let name = action.userInfo?["name"] as? String {
+                switch name {
+                case ShortcutItem.settings.rawValue:
+                    needOpenSettings.toggle()
+                case ShortcutItem.share.rawValue:
+                    imageWrapper = ContentWrapper(
+                        link: .empty, description: DeveloperInfo.shareInfo)
+                default:
+                    break
+                }
             }
         case .background:
             viewModel.addShortcutItems()
@@ -99,6 +104,7 @@ extension MainView {
         }
     }
 
+    // MARK: - Tips
     fileprivate func configureTips() {
         try? Tips.configure(
             [
@@ -112,7 +118,7 @@ extension MainView {
 // MARK: - Navigation bar
 extension TopicsList {
     fileprivate func navbar() -> some View {
-        self.toolbar {
+        toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 NavButton(type: .settings(isDefault: viewModel.isDefaultSettings), action: nil)
             }
@@ -120,7 +126,9 @@ extension TopicsList {
             ToolbarItem(placement: .principal) {
                 HorStack(spacing: 16) {
                     Text(">>")
-                    DesignedText(text: NewsCategory.init(rawValue: viewModel.category)!.localizedResource)
+                    DesignedText(
+                        text: NewsCategory.init(rawValue: viewModel.category)!.localizedResource
+                    )
                     Spacer()
                 }
                 .font(.title)
