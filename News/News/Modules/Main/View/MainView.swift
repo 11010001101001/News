@@ -54,6 +54,13 @@ extension MainView {
         .onAppear { onAppear() }
         .task { configureTips() }
         .onChange(of: phase) { _, phase in handleScenePhase(phase) }
+        .onChange(of: viewModel.settingsShortcutItemTapped) { _, _ in
+            needOpenSettings.toggle()
+                            
+        }
+        .onChange(of: viewModel.settingsShortcutItemTapped) { _, _ in
+            imageWrapper = ContentWrapper(link: .empty, description: DeveloperInfo.shareInfo)
+        }
     }
 }
 
@@ -83,17 +90,8 @@ extension MainView {
         case .active:
             guard let action = ShortcutItem.selectedAction else { return }
             defer { ShortcutItem.selectedAction = nil }
-            
             if let name = action.userInfo?["name"] as? String {
-                switch name {
-                case ShortcutItem.settings.rawValue:
-                    needOpenSettings.toggle()
-                case ShortcutItem.share.rawValue:
-                    imageWrapper = ContentWrapper(
-                        link: .empty, description: DeveloperInfo.shareInfo)
-                default:
-                    break
-                }
+                viewModel.handleShortcutItemTap(name)
             }
         case .background:
             viewModel.addShortcutItems()

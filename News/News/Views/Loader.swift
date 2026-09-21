@@ -15,6 +15,7 @@ struct Loader: View {
     var body: some View {
         LottieView(animation: .named(loaderName))
             .playing(loopMode: .loop)
+            .id(loaderName)
             .scaleEffect(0.30)
             .gloss(color: shadowColor, numberOfLayers: 1)
     }

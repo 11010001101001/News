@@ -14,10 +14,16 @@ final class MainViewModel {
     // MARK: Internal variables
     var loadingState = LoadingState.loading
     var news = [Article]()
+    var settingsShortcutItemTapped = false
+    var shareShortcutItemTapped = false
 
     var loader: String {
         get { settingsManager.loader }
         set { settingsManager.save(loader: newValue) }
+    }
+
+    var loaderShadowColor: Color {
+        settingsManager.loaderShadowColor
     }
 
     var soundTheme: String {
@@ -41,10 +47,6 @@ final class MainViewModel {
     var watchedTopics: Set<String> {
         get { settingsManager.watchedTopics }
         set { settingsManager.save(watchedTopics: newValue) }
-    }
-
-    var loaderShadowColor: Color {
-        settingsManager.loaderShadowColor
     }
 
     var isDefaultSettings: Bool {
@@ -151,6 +153,17 @@ extension MainViewModel {
 
     func addShortcutItems() {
         UIApplication.shared.shortcutItems = ShortcutItem.allItems
+    }
+
+    func handleShortcutItemTap(_ name: String) {
+        switch name {
+        case ShortcutItem.settings.rawValue:
+            settingsShortcutItemTapped.toggle()
+        case ShortcutItem.share.rawValue:
+            shareShortcutItemTapped.toggle()
+        default:
+            break
+        }
     }
 
     /// sound theme can change - do it during every app launch and sound changing

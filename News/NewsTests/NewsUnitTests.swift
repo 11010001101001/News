@@ -71,7 +71,7 @@ private final class MockNetworkManager: NetworkManagerProtocol, @unchecked Senda
     func loadNews(category: String) async throws -> [Article] {
         loadedCategory = category
         if shouldFail {
-            throw ApiError.noConnection(msg: Errors.noConnection)
+            throw ApiError.noConnection(msg: .errorsNoConnection)
         }
         return articlesToReturn
     }
