@@ -79,6 +79,7 @@ final class MainViewModel {
     private let notificationManager: NotificationManagerProtocol
     private let settingsManager: SettingsManagerProtocol
     private let networkManager: NetworkManagerProtocol
+    private var loadNewsTask: Task<Void, Never>?
 
     // MARK: Init
     init(
@@ -109,16 +110,21 @@ extension MainViewModel {
             loadingState = .loading
         }
 
-        Task {
+        loadNewsTask?.cancel()
+        loadNewsTask = Task {
             do {
                 let loadedArticles = try await networkManager.loadNews(category: category)
+                guard !Task.isCancelled else { return }
                 let sortedNews = sortIsRead(loadedArticles)
                 self.news = sortedNews
                 self.loadingState = .loaded(data: sortedNews)
                 WidgetsManager.shared.updateArticles(sortedNews)
                 WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
                 notificationOccurred(.success)
+            } catch is CancellationError {
+                return
             } catch let error as ApiError {
+                guard !Task.isCancelled else { return }
                 let message: LocalizedStringResource =
                     switch error {
                     case .noConnection(let msg): msg
@@ -129,6 +135,7 @@ extension MainViewModel {
                 notificationOccurred(.error)
                 playError()
             } catch {
+                guard !Task.isCancelled else { return }
                 self.loadingState = .error(message: .errorsUndefinedError)
                 notificationOccurred(.error)
                 playError()
