@@ -240,34 +240,33 @@ struct NewsUnitTests {
         // 1. Проверяем английский
         var settingsLanguageEn = LocalizedStringResource.settingsLanguage
         settingsLanguageEn.locale = Locale(identifier: "en")
-        
+
         var categoryBusinessEn = LocalizedStringResource.categoryBusiness
         categoryBusinessEn.locale = Locale(identifier: "en")
-        
+
         #expect(String(localized: settingsLanguageEn) == "Language")
         #expect(String(localized: categoryBusinessEn) == "Business")
 
         // 2. Проверяем русский
         var settingsLanguageRu = LocalizedStringResource.settingsLanguage
         settingsLanguageRu.locale = Locale(identifier: "ru")
-        
+
         var categoryBusinessRu = LocalizedStringResource.categoryBusiness
         categoryBusinessRu.locale = Locale(identifier: "ru")
-        
+
         #expect(String(localized: settingsLanguageRu) == "Язык")
         #expect(String(localized: categoryBusinessRu) == "Бизнес")
 
         // 3. Проверяем индонезийский
         var settingsLanguageId = LocalizedStringResource.settingsLanguage
         settingsLanguageId.locale = Locale(identifier: "id")
-        
+
         var categoryBusinessId = LocalizedStringResource.categoryBusiness
         categoryBusinessId.locale = Locale(identifier: "id")
-        
+
         #expect(String(localized: settingsLanguageId) == "Bahasa")
         #expect(String(localized: categoryBusinessId) == "Bisnis")
     }
-
 
     // MARK: 5. SettingsManager Tests
     @Test("SettingsManager provides default values and saves updates")

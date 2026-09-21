@@ -21,10 +21,8 @@ struct ConditionalView<Content: View>: View {
     }
 
     var body: some View {
-        Group {
-            if condition {
-                content()
-            }
+        if condition {
+            content()
         }
     }
 }
