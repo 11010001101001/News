@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WidgetKit
+import ModelsKit
 
 @main
 struct NewsWidgetsBundle: WidgetBundle {
