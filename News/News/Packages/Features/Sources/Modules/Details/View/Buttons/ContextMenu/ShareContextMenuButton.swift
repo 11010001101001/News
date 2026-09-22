@@ -1,0 +1,35 @@
+//
+//  ShareButton.swift
+//  News
+//
+//  Created by Ярослав Куприянов on 10.04.2024.
+//
+
+import Foundation
+import SwiftUI
+import CoreKit
+import ModelsKit
+import DesignSystem
+
+struct ShareContextMenuButton: View {
+    @Binding var imageWrapper: ContentWrapper?
+
+    let data: ButtonMetaData
+    let viewModel: DetailsViewModel
+
+    var body: some View {
+        CustomButton(
+            action: {
+                viewModel.impactOccured(.light)
+
+                imageWrapper = ContentWrapper(
+                    link: (URL(string: data.article.url.orEmpty)?.absoluteString).orEmpty,
+                    description: DeveloperInfo.shareInfo
+                )
+            },
+            title: data.title,
+            iconName: data.iconName,
+            isGlass: false
+        )
+    }
+}

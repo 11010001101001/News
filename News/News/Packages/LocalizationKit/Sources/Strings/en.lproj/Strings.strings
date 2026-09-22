@@ -1,0 +1,93 @@
+/* 
+  Strings.strings
+  News
+
+  Created by Yaroslav Kupriyanov on 17.11.2024.
+  
+*/
+
+"notification.title" = "Mmmmm, nice-ey";
+"notification.body" = "News carriage arrived, unload please 🦥";
+
+"share.info" = "Link to News app in appStore 🦾: stay informed!👨🏻‍🔧";
+
+"errors.topicLabelNoInfo" = "No description. It's not an error, press button below for more";
+"errors.badRequest" = "Error 400\n\nBad request, please try again later";
+"errors.unauthorized" ="Error 401\n\nRequest autorization failed, please try again later";
+"errors.tooManyRequests" = "Error 429\n\nRequests number per day exceeded, see you tommorow";
+"errors.serverError" = "Error 500\n\nServer error, please try again later";
+"errors.timeout" = "Time - out\nerror\n\nServer problem or internet connection broken";
+"errors.mappingError" = "mappingError";
+"errors.invalidUrl" = "invalidUrl";
+"errors.responseError" = "responseError";
+"errors.undefinedError" = "undefinedError";
+"errors.imageLoadingError" = "Image loading failed";
+"errors.loadingFailed" = "Loading failed";
+"errors.noConnection" = "No connection";
+"errors.unhandled" = "Ups, unhandled error";
+"loading.state.ok" = "ok";
+
+"app.version" = "app version: %@";
+"app.contactUs" = "contact us";
+"app.telegram" = "https://t.me/Yaroslav_Kupriyanov";
+"app.apiKey1" = "8f825354e7354c71829cfb4cb15c4893";
+"app.apiKey2" = "eb4bc5c32bdd40ca937aa8f94ff2673a";
+
+"tip.settings.title" = "Tip";
+"tip.settings.message" = "Don't forget to check settings 🦥";
+
+"screen.details.title" = "Details";
+"screen.settings.title" = "Settings";
+"screen.more.title" = "More";
+
+"state.noDescription" = "No description 👀";
+
+"Actions.share" = "Share";
+"Actions.open" = "Open";
+"Actions.reload" = "Reload";
+
+"Favorites.screen.title" = "Favorites";
+"Favorites.empty" = "Nothing added yet";
+"Favorites.add" = "Add";
+
+"ContextMenu.addToFavorites" = "Add to favorites";
+"ContextMenu.removeFromFavorites" = "Remove from favorites";
+"ContextMenu.share" = "Share";
+"ContextMenu.copy" = "Copy";
+"ContextMenu.markAsRead" = "Mark as read";
+"ContextMenu.markAsUnread" = "Mark as unread";
+
+"Widgets.levels" = "App widget levels";
+"Widgets.instuction" = "Add app widgets and try to become a tech ninja!\nRead more topics to level up";
+"Widgets.range" = "Range: %@";
+
+"Settings.language" = "Language";
+"Settings.selectLanguage" = "Select language";
+
+"Category.title" = "Category";
+"Category.business" = "Business";
+"Category.entertainment" = "Entertainment";
+"Category.general" = "General";
+"Category.health" = "Health";
+"Category.science" = "Science";
+"Category.sports" = "Sports";
+"Category.technology" = "Technology";
+
+"Sound.title" = "Sound";
+"Sound.silentMode" = "Silent mode";
+"Sound.starwars" = "Star Wars";
+"Sound.cats" = "Cats meow";
+
+"Loader.title" = "Loader";
+"Loader.hourglass" = "Hourglass";
+"Loader.rocket" = "Rocket";
+"Loader.astronaut" = "Astronaut";
+"Loader.hamster" = "Hamster";
+"Loader.kitten" = "Kitten";
+
+"AppIcon.title" = "App icon";
+"AppIcon.globe" = "Globe";
+"AppIcon.cat" = "Cat";
+"AppIcon.dart" = "Dart";
+
+"Info.title" = "Info";

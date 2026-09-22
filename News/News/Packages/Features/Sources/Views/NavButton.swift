@@ -1,0 +1,52 @@
+//
+//  ConditionalView.swift
+//  News
+//
+//  Created by Yaroslav Kupriyanov on 16.11.2024.
+//
+
+import Foundation
+import SwiftUI
+import DesignSystem
+
+struct NavButton: View {
+    let type: NavButtonType
+    let action: (() -> Void)?
+
+    var body: some View {
+        Button {
+            action?()
+        } label: {
+            buildContent()
+        }
+    }
+}
+
+// MARK: Contents
+extension NavButton {
+    @ViewBuilder
+    fileprivate func buildContent() -> some View {
+        switch type {
+        case .settings:
+            NavigationLink {
+                ModuleBuilder.shared.build(.settings)
+            } label: {
+                image
+            }
+        case .favorites:
+            NavigationLink {
+                ModuleBuilder.shared.build(.favorites)
+            } label: {
+                image
+            }
+        default:
+            image
+        }
+    }
+
+    fileprivate var image: some View {
+        Image(systemName: type.imageName)
+            .tint(.primary)
+            .frame(width: 24, height: 24)
+    }
+}
