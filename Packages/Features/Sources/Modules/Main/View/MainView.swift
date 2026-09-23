@@ -65,7 +65,7 @@ extension MainView {
             needOpenSettings.toggle()
                             
         }
-        .onChange(of: viewModel.settingsShortcutItemTapped) { _, _ in
+        .onChange(of: viewModel.shareShortcutItemTapped) { _, _ in
             imageWrapper = ContentWrapper(link: .empty, description: DeveloperInfo.shareInfo)
         }
         .onChange(of: viewModel.category) { _, _ in
