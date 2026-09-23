@@ -33,10 +33,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     ) -> UIInterfaceOrientationMask {
         .portrait
     }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        WidgetsManager.shared.stop()
-    }
 }
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {

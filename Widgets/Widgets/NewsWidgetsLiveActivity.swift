@@ -6,26 +6,12 @@
 //
 
 import ActivityKit
+import ModelsKit
 import SwiftUI
 import WidgetKit
 
-public struct NewsWidgetsAttributes: ActivityAttributes, Sendable {
-    public struct ContentState: Codable & Hashable, Sendable {
-        let level: Level
-        let procents: Int
-        
-        public init(level: Level, procents: Int) {
-            self.level = level
-            self.procents = procents
-        }
-    }
-    
-    public init() {}
-}
-
-public struct NewsWidgetsLiveActivity: Widget {
-    public init() {}
-    public var body: some WidgetConfiguration {
+struct NewsWidgetsLiveActivity: Widget {
+    var body: some WidgetConfiguration {
         ActivityConfiguration(for: NewsWidgetsAttributes.self) { context in
             blockOrExpandedView(procents: context.state.procents)
         } dynamicIsland: { context in
@@ -128,10 +114,4 @@ extension NewsWidgetsLiveActivity {
         Text(lvl.image)
             .shadow(color: lvl.color, radius: 7)
     }
-}
-
-#Preview("test", as: .content, using: NewsWidgetsAttributes()) {
-    NewsWidgetsLiveActivity()
-} contentStates: {
-    NewsWidgetsAttributes.ContentState(level: .loopMaster, procents: 60)
 }

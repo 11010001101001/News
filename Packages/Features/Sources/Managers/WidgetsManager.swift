@@ -1,5 +1,5 @@
 //
-//  ActivityManager.swift
+//  WidgetsManager.swift
 //  News
 //
 //  Created by Ярослав Куприянов on 02.11.2025.
@@ -20,11 +20,24 @@ public final class WidgetsManager {
     private var oldActivitiesEnded = false
 
     func start() {
-        guard ActivityAuthorizationInfo().areActivitiesEnabled, currentActivity == nil else {
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
+            print("Live activities are not enabled in system settings or Info.plist")
             return
         }
 
-        endOldActivities()
+        let activeActivity = Activity<NewsWidgetsAttributes>.activities.first {
+            $0.activityState == .active
+        }
+
+        if let activeActivity {
+            currentActivity = activeActivity
+            endOldActivities(excluding: activeActivity.id)
+            return
+        }
+
+        guard currentActivity == nil || currentActivity?.activityState == .ended else {
+            return
+        }
 
         let attributes = NewsWidgetsAttributes()
         let contentState = NewsWidgetsAttributes.ContentState(level: currentLevel, procents: .zero)
@@ -32,11 +45,12 @@ public final class WidgetsManager {
         do {
             let activity = try Activity<NewsWidgetsAttributes>.request(
                 attributes: attributes,
-                content: .init(state: contentState, staleDate: .distantFuture),
+                content: .init(state: contentState, staleDate: nil),
                 pushType: nil
             )
             currentActivity = activity
             print("Activity started: \(activity.id)")
+            endOldActivities(excluding: activity.id)
         } catch {
             print("Failed to start activity: \(error)")
         }
@@ -57,12 +71,22 @@ public final class WidgetsManager {
 
         let newState = NewsWidgetsAttributes.ContentState(level: level, procents: procents)
 
-        guard let activity = currentActivity else { return }
-        
-        let content = ActivityContent(state: newState, staleDate: .distantFuture)
+        if currentActivity == nil || currentActivity?.activityState == .ended {
+            start()
+        }
+
+        let activeActivity = Activity<NewsWidgetsAttributes>.activities.first {
+            $0.activityState == .active
+        }
+
+        guard let activity = currentActivity ?? activeActivity else {
+            return
+        }
+
+        currentActivity = activity
+        let content = ActivityContent(state: newState, staleDate: nil)
 
         nonisolated(unsafe) let unsafeActivity = activity
-
         Task {
             await unsafeActivity.update(content)
         }
@@ -74,41 +98,26 @@ public final class WidgetsManager {
         updateStaticWidget()
     }
 
-    public func stop() {
-        let semaphore = DispatchSemaphore(value: 0)
-
-        Task {
-            for activity in Activity<NewsWidgetsAttributes>.activities {
-                await activity.end(nil, dismissalPolicy: .immediate)
-            }
-            semaphore.signal()
-        }
-
-        semaphore.wait()
-    }
-
     func updateStaticWidget() {
         WidgetCenter.shared.reloadTimelines(ofKind: "NewsWidget")
     }
 
-    func endOldActivities() {
+    func endOldActivities(excluding currentId: String? = nil) {
         guard !oldActivitiesEnded else { return }
         oldActivitiesEnded = true
 
         Task {
             for activity in Activity<NewsWidgetsAttributes>.activities {
-                await activity.end(nil, dismissalPolicy: .immediate)
+                if let currentId, activity.id == currentId {
+                    continue
+                }
+                nonisolated(unsafe) let unsafeActivity = activity
+                await unsafeActivity.end(nil, dismissalPolicy: .immediate)
             }
         }
     }
 
     public func getLevel(for procents: Int) -> Level {
-        switch procents {
-        case (0..<25): .newbie
-        case (25..<75): .curiousObserver
-        case (75..<100): .loopMaster
-        case (100...): .techNinja
-        default: .unrecognized
-        }
+        Level.getLevel(for: procents)
     }
 }

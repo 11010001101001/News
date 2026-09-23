@@ -51,3 +51,15 @@ public enum Level: String, Sendable {
 }
 
 extension Level: Codable {}
+
+extension Level {
+    public static func getLevel(for procents: Int) -> Level {
+        switch procents {
+        case (0..<25): .newbie
+        case (25..<75): .curiousObserver
+        case (75..<100): .loopMaster
+        case (100...): .techNinja
+        default: .unrecognized
+        }
+    }
+}

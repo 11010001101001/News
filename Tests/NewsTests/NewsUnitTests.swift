@@ -12,6 +12,7 @@ import CoreKit
 import Features
 import ModelsKit
 import LocalizationKit
+import DesignSystem
 
 @testable import News
 

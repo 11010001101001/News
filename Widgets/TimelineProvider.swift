@@ -10,7 +10,6 @@ import SwiftData
 import WidgetKit
 import ModelsKit
 import CoreKit
-import Features
 
 struct Provider: TimelineProvider {
     let container = try? ModelContainer(
@@ -73,7 +72,7 @@ struct Provider: TimelineProvider {
         }
 
         let procents = watched.count * 100 / articles.count
-        return await WidgetsManager.shared.getLevel(for: procents)
+        return Level.getLevel(for: procents)
     }
 
     @MainActor
