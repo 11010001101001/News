@@ -8,6 +8,7 @@ struct NewsWidgets: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: "NewsWidget", provider: Provider()) { entry in
             NewsWidgetEntryView(entry: entry)
+                .containerBackground(.background, for: .widget)
         }
         .configurationDisplayName(Strings.widgetsTitle)
         .description(Strings.widgetsMotivation)
