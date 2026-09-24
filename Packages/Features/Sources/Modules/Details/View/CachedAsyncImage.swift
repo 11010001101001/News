@@ -32,7 +32,7 @@ struct CachedAsyncImage: View {
             .task {
                 cachedImage = await viewModel.getCachedImage(key: key)
             }
-            .onAppear { viewModel.markAsRead(article.key) }
+            .onAppear { viewModel.markAsRead(article) }
     }
 }
 

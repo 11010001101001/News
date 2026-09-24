@@ -11,7 +11,7 @@ let package = Package(
         .library(
             name: "DesignSystem",
             targets: ["DesignSystem"]
-        ),
+        )
     ],
     dependencies: [
         .package(path: "../LocalizationKit"),
@@ -30,9 +30,8 @@ let package = Package(
                 .process("Sounds")
             ],
             swiftSettings: [
-                .enableUpcomingFeature("ApproachableConcurrency"),
-            ],
-        ),
-
+                .enableUpcomingFeature("ApproachableConcurrency")
+            ]
+        )
     ]
 )

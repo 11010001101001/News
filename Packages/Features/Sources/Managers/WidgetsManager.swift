@@ -9,6 +9,7 @@ import ActivityKit
 import Foundation
 import WidgetKit
 import ModelsKit
+import CoreKit
 
 @MainActor
 public final class WidgetsManager {
@@ -45,7 +46,7 @@ public final class WidgetsManager {
         do {
             let activity = try Activity<NewsWidgetsAttributes>.request(
                 attributes: attributes,
-                content: .init(state: contentState, staleDate: nil),
+                content: .init(state: contentState, staleDate: Date().hour),
                 pushType: nil
             )
             currentActivity = activity
@@ -84,22 +85,22 @@ public final class WidgetsManager {
         }
 
         currentActivity = activity
-        let content = ActivityContent(state: newState, staleDate: nil)
+        let content = ActivityContent(state: newState, staleDate: Date().hour)
 
         nonisolated(unsafe) let unsafeActivity = activity
         Task {
             await unsafeActivity.update(content)
         }
 
+        updateStaticWidget()
+
         guard level != currentLevel else { return }
 
         currentLevel = level
-
-        updateStaticWidget()
     }
 
     func updateStaticWidget() {
-        WidgetCenter.shared.reloadTimelines(ofKind: "NewsWidget")
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     func endOldActivities(excluding currentId: String? = nil) {

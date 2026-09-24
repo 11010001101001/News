@@ -10,13 +10,16 @@ import WidgetKit
 
 public struct Entry: TimelineEntry {
     public var date: Date
-
-    public let category: String
+    public let category: LocalizedStringResource
     public let level: Level
+    public let procentsToNextLevel: Int
+    public let lastViewedTitle: String
 
-    public init(category: String, level: Level) {
+    public init(category: LocalizedStringResource, level: Level, procentsToNextLevel: Int, lastViewedTitle: String) {
         self.date = Date()
         self.level = level
-        self.category = category.capitalized
+        self.category = category
+        self.procentsToNextLevel = procentsToNextLevel
+        self.lastViewedTitle = lastViewedTitle
     }
 }

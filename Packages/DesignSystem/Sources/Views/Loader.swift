@@ -11,7 +11,7 @@ import SwiftUI
 public struct Loader: View {
     let loaderName: String
     let shadowColor: Color
-    
+
     public init(loaderName: String, shadowColor: Color) {
         self.loaderName = loaderName
         self.shadowColor = shadowColor

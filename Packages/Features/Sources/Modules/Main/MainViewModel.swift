@@ -157,6 +157,7 @@ extension MainViewModel {
                 let isViewed = checkIsRead($0.key)
                 guard !isViewed else { return }
                 watchedTopics.insert($0.key)
+                settingsManager.save(lastViewedTitle: $0.title.orEmpty)
             }
         }
         WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
@@ -216,20 +217,6 @@ extension MainViewModel {
 
     fileprivate func checkIsRead(_ key: String) -> Bool {
         watchedTopics.contains(where: { $0 == key })
-    }
-
-    fileprivate func markAsUnread(_ key: String) {
-        watchedTopics.remove(key)
-        WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
-    }
-
-    fileprivate func markAsRead(_ key: String) {
-        let isViewed = checkIsRead(key)
-
-        guard !isViewed else { return }
-
-        watchedTopics.insert(key)
-        WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
     }
 
     fileprivate func notificationOccurred(

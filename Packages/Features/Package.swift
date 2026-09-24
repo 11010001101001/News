@@ -11,7 +11,7 @@ let package = Package(
         .library(
             name: "Features",
             targets: ["Features"]
-        ),
+        )
     ],
     dependencies: [
         .package(path: "../ModelsKit"),
@@ -29,9 +29,8 @@ let package = Package(
                 .product(name: "LocalizationKit", package: "LocalizationKit")
             ],
             swiftSettings: [
-                .enableUpcomingFeature("ApproachableConcurrency"),
-            ],
-        ),
-
+                .enableUpcomingFeature("ApproachableConcurrency")
+            ]
+        )
     ]
 )

@@ -14,7 +14,7 @@ public enum Strings {
         LocalizedStringResource(">>", bundle: .atURL(Bundle.module.bundleURL))
     }
     public static var userLevel: LocalizedStringResource {
-        LocalizedStringResource("lvl:", bundle: .atURL(Bundle.module.bundleURL))
+        LocalizedStringResource("lvl:", defaultValue: "lvl:", bundle: .atURL(Bundle.module.bundleURL))
     }
 
     // MARK: - Actions
@@ -164,6 +164,22 @@ public enum Strings {
         LocalizedStringResource("Keyword.title", bundle: .atURL(Bundle.module.bundleURL))
     }
 
+    // MARK: - Level
+    // swiftlint:disable inclusive_language
+    public static var levelLoopMaster: LocalizedStringResource {
+        LocalizedStringResource("Level.loopMaster", defaultValue: "Loop Master", bundle: .atURL(Bundle.module.bundleURL))
+    }
+    // swiftlint:enable inclusive_language
+    public static var levelNewbie: LocalizedStringResource {
+        LocalizedStringResource("Level.newbie", defaultValue: "Newbie", bundle: .atURL(Bundle.module.bundleURL))
+    }
+    public static var levelNinja: LocalizedStringResource {
+        LocalizedStringResource("Level.ninja", defaultValue: "Ninja", bundle: .atURL(Bundle.module.bundleURL))
+    }
+    public static var levelObserver: LocalizedStringResource {
+        LocalizedStringResource("Level.observer", defaultValue: "Observer", bundle: .atURL(Bundle.module.bundleURL))
+    }
+
     // MARK: - Loaders
     public static var loaderAstronaut: LocalizedStringResource {
         LocalizedStringResource("Loader.astronaut", bundle: .atURL(Bundle.module.bundleURL))
@@ -238,11 +254,24 @@ public enum Strings {
     public static var tipSettingsTitle: LocalizedStringResource {
         LocalizedStringResource("tip.settings.title", bundle: .atURL(Bundle.module.bundleURL))
     }
+    public static var widgetsCategory: LocalizedStringResource {
+        LocalizedStringResource("Widgets.category", bundle: .atURL(Bundle.module.bundleURL))
+    }
     public static var widgetsInstuction: LocalizedStringResource {
-        LocalizedStringResource("Widgets.instuction", bundle: .atURL(Bundle.module.bundleURL))
+        LocalizedStringResource(
+            "Widgets.instruction",
+            defaultValue: "Add app widgets and try to become a tech ninja!\nRead more topics to level up",
+            bundle: .atURL(Bundle.module.bundleURL)
+        )
     }
     public static var widgetsLevels: LocalizedStringResource {
         LocalizedStringResource("Widgets.levels", bundle: .atURL(Bundle.module.bundleURL))
+    }
+    public static var widgetsLvl: LocalizedStringResource {
+        LocalizedStringResource("Widgets.lvl", bundle: .atURL(Bundle.module.bundleURL))
+    }
+    public static var widgetsMotivation: LocalizedStringResource {
+        LocalizedStringResource("Widgets.motivation", bundle: .atURL(Bundle.module.bundleURL))
     }
     public static func widgetsRange(_ range: String) -> LocalizedStringResource {
         LocalizedStringResource(
@@ -250,5 +279,14 @@ public enum Strings {
             defaultValue: "Range: \(range)",
             bundle: .atURL(Bundle.module.bundleURL)
         )
+    }
+    public static var widgetsTitle: LocalizedStringResource {
+        LocalizedStringResource("Widgets.title", bundle: .atURL(Bundle.module.bundleURL))
+    }
+    public static var widgetsLatest: LocalizedStringResource {
+        LocalizedStringResource("Widgets.latest", bundle: .atURL(Bundle.module.bundleURL))
+    }
+    public static var widgetsProgress: LocalizedStringResource {
+        LocalizedStringResource("Widgets.progress", bundle: .atURL(Bundle.module.bundleURL))
     }
 }

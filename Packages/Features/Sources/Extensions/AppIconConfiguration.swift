@@ -12,7 +12,7 @@ import SwiftUI
 
 extension AppIconConfiguration {
     static var tabImage: String { SFSymbols.photo.rawValue }
-    
+
     public var shadowColor: Color {
         switch self {
         case .globe: .cyan

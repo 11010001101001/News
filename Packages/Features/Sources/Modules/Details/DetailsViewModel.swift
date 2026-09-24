@@ -62,17 +62,18 @@ extension DetailsViewModel {
         await cacheManager.getCachedImage(key: key)
     }
 
-    func markAsRead(_ key: String) {
-        let isViewed = checkIsRead(key)
+    func markAsRead(_ article: Article) {
+        let isViewed = checkIsRead(article.key)
 
         guard !isViewed else { return }
 
-        watchedTopics.insert(key)
+        watchedTopics.insert(article.key)
+        settingsManager.save(lastViewedTitle: article.title.orEmpty)
         WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
     }
 
-    func markAsUnread(_ key: String) {
-        watchedTopics.remove(key)
+    func markAsUnread(_ article: Article) {
+        watchedTopics.remove(article.key)
         WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
     }
 

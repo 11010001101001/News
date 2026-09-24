@@ -29,7 +29,7 @@ struct FavoritesEmptyView: View {
 // MARK: - Content
 extension FavoritesEmptyView {
     fileprivate var titleView: some View {
-        DesignedText(text: Strings.favoritesEmpty)
+        DesignedText(Strings.favoritesEmpty)
             .labelStyle(.titleOnly)
             .foregroundStyle(.white)
             .multilineTextAlignment(.center)

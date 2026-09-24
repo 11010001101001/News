@@ -30,8 +30,7 @@ struct NewsApp: App {
         } catch {
             let fallbackConfig = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
             if let inMemoryContainer = try? ModelContainer(
-                for: schema, configurations: [fallbackConfig])
-            {
+                for: schema, configurations: [fallbackConfig]) {
                 return inMemoryContainer
             }
             fatalError("Could not create ModelContainer: \(error)")

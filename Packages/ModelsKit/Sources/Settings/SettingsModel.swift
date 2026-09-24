@@ -19,6 +19,7 @@ public final class SettingsModel {
     public var favoriteTopics: [FavoriteArticle] = []
     public var keyword: String = ""
     public var language: String? = DefaultSettings.language
+    public var lastViewedTitle: String? = DefaultSettings.lastViewedTitle
 
     public init(
         category: String = DefaultSettings.category,

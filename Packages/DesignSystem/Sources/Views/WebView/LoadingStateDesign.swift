@@ -11,7 +11,7 @@ public enum LoadingStateDesign {
     case loading
     case loaded
     case error(message: LocalizedStringResource?)
-    
+
     public var loaderOpacity: CGFloat {
         switch self {
         case .loading: 1

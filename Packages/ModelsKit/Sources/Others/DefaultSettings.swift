@@ -13,4 +13,5 @@ public enum DefaultSettings {
     public static let loader = LoaderConfiguration.hourGlass.rawValue
     public static let appIcon = AppIconConfiguration.globe.rawValue
     public static let language = "en"
+    public static let lastViewedTitle = "..."
 }

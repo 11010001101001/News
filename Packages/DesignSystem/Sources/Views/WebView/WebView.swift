@@ -11,7 +11,7 @@ import WebKit
 
 public struct WebView: UIViewRepresentable {
     @Bindable var viewModel: WebViewModel
-    
+
     public init(viewModel: WebViewModel) {
         self.viewModel = viewModel
     }
@@ -63,8 +63,7 @@ extension WebView {
             }
         }
 
-        public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!)
-        {
+        public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
             Task { @MainActor in
                 viewModel.loadingState = .loaded
             }
@@ -86,8 +85,7 @@ extension WebView {
             decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
         ) {
             if navigationResponse.isForMainFrame,
-                let httpResponse = navigationResponse.response as? HTTPURLResponse
-            {
+                let httpResponse = navigationResponse.response as? HTTPURLResponse {
                 if httpResponse.statusCode == 403 {
                     Task { @MainActor [weak self] in
                         self?.viewModel.loadingState = .error(message: "Access denied")

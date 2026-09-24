@@ -13,7 +13,7 @@ public struct ContentWrapper: Identifiable {
     public let id = UUID()
     let link: String
     let description: String
-    
+
     public init(link: String, description: String) {
         self.link = link
         self.description = description
@@ -22,7 +22,7 @@ public struct ContentWrapper: Identifiable {
 
 public struct ActivityViewController: UIViewControllerRepresentable {
     public let contentWrapper: ContentWrapper
-    
+
     public init(contentWrapper: ContentWrapper) {
         self.contentWrapper = contentWrapper
     }

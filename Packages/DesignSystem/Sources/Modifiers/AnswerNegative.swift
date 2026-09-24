@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct AnswerNegative: ViewModifier {
     let execute: (() -> Void)?
-    
+
     public init(execute: @escaping () -> Void) {
         self.execute = execute
     }

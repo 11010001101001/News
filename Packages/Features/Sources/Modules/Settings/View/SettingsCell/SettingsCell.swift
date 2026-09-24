@@ -22,7 +22,7 @@ struct SettingsCell<T: DisplayName>: View {
             ImageProvider.image(id)
                 .padding(.leading, Constants.padding)
 
-            DesignedText(text: model.displayName)
+            DesignedText(model.displayName)
                 .font(.headline)
                 .frame(maxHeight: .infinity, alignment: .leading)
 

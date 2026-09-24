@@ -29,7 +29,7 @@ extension KeywordCell {
         HorStack(spacing: Constants.padding) {
             Image(systemName: SFSymbols.lightMax.rawValue)
                 .padding(.leading, Constants.padding)
-            DesignedText(text: Strings.keywordTitle)
+            DesignedText(Strings.keywordTitle)
                 .font(.headline)
                 .frame(maxHeight: .infinity, alignment: .leading)
             Spacer()

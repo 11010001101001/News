@@ -100,10 +100,11 @@ extension SettingsViewModel {
             category,
             loader,
             appIcon,
-            language,
+            language
         ].first(where: { $0 == settingName }) != nil
     }
 
+    // swiftlint: disable cyclomatic_complexity
     public func applySettings(_ key: String) {
         switch key {
         case let name
@@ -158,6 +159,7 @@ extension SettingsViewModel {
             break
         }
     }
+    // swiftlint: enable cyclomatic_complexity
 
     func applyKeyword(_ value: String) {
         playBubble()

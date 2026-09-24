@@ -6,15 +6,27 @@
 //
 
 import Foundation
+import LocalizationKit
 import SwiftUI
 
-public enum Level: String, Sendable {
-    case techNinja = "Tech Ninja"
-    case loopMaster = "Loop Master"
-    case curiousObserver = "Observer"
-    case newbie = "Newbie"
-    case error
-    case unrecognized
+public enum Level: Sendable {
+    case techNinja
+    case loopMaster
+    case curiousObserver
+    case newbie
+
+    public static var allCases: [Level] {
+        [.newbie, .curiousObserver, .loopMaster, .techNinja]
+    }
+
+    public var name: LocalizedStringResource {
+        switch self {
+        case .techNinja: Strings.levelNinja
+        case .loopMaster: Strings.levelLoopMaster
+        case .curiousObserver: Strings.levelObserver
+        case .newbie: Strings.levelNewbie
+        }
+    }
 
     public var color: Color {
         switch self {
@@ -22,8 +34,6 @@ public enum Level: String, Sendable {
         case .loopMaster: .cyan
         case .curiousObserver: .green
         case .newbie: .orange
-        case .error: .red
-        case .unrecognized: .red
         }
     }
 
@@ -33,8 +43,6 @@ public enum Level: String, Sendable {
         case .loopMaster: "👨🏽‍🎓"
         case .curiousObserver: "💁🏻‍♂️"
         case .newbie: "👶🏻"
-        case .error: "🚫"
-        case .unrecognized: "⁉️"
         }
     }
 
@@ -44,8 +52,6 @@ public enum Level: String, Sendable {
         case .loopMaster: "50% - 75%"
         case .curiousObserver: "25% - 50%"
         case .newbie: "0% - 25%"
-        case .error: .empty
-        case .unrecognized: .empty
         }
     }
 }
@@ -59,7 +65,16 @@ extension Level {
         case (25..<75): .curiousObserver
         case (75..<100): .loopMaster
         case (100...): .techNinja
-        default: .unrecognized
+        default: .newbie
+        }
+    }
+
+    public func maxLevelProcent() -> Int {
+        switch self {
+        case .techNinja: 100
+        case .loopMaster: 75
+        case .curiousObserver: 50
+        case .newbie: 25
         }
     }
 }

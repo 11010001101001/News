@@ -12,7 +12,7 @@ import DesignSystem
 
 extension NewsCategory {
     static var tabImage: String { SFSymbols.listBullet.rawValue }
-    
+
     public var image: Image {
         let systemName: SFSymbols =
             switch self {
@@ -27,4 +27,3 @@ extension NewsCategory {
         return Image(systemName: systemName.rawValue)
     }
 }
-

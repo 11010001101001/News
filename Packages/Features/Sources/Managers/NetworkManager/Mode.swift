@@ -13,7 +13,7 @@ public enum Mode {
     case keyword(_: String)
     case category(_: String)
 
-    //swiftlint:disable all
+    // swiftlint:disable all
     public var urlString: String {
         switch self {
         case .keyword(let keyword):
@@ -22,5 +22,5 @@ public enum Mode {
             "https://newsapi.org/v2/top-headlines?country=us&category=\(category)&pageSize=\(Constants.newsCount)&apiKey=\(DeveloperInfo.apiKey)"
         }
     }
-    //swiftlint:enable all
+    // swiftlint:enable all
 }

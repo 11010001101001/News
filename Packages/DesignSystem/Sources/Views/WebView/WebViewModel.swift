@@ -24,8 +24,7 @@ public final class WebViewModel {
 
     func bind(to webView: WKWebView) {
         progressObservation?.invalidate()
-        progressObservation = webView.observe(\.estimatedProgress, options: [.new]) {
-            [weak self] _, change in
+        progressObservation = webView.observe(\.estimatedProgress, options: [.new]) { [weak self] _, change in
             guard let progress = change.newValue else { return }
             Task { @MainActor [weak self] in
                 self?.estimatedProgress = progress

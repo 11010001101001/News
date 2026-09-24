@@ -16,9 +16,9 @@ public protocol CacheManagerProtocol: Sendable {
 // MARK: - CacheManagerProtocol
 public actor CacheManager: CacheManagerProtocol {
     private let cache = NSCache<AnyObject, AnyObject>()
-    
+
     public init() { }
-    
+
     public func getCachedImage(key: AnyObject & Sendable) -> Image? {
         (get(key: key) as? CachedImage)?.image
     }

@@ -31,9 +31,12 @@ struct MarkAsReadContextMenuButton: View {
     var body: some View {
         CustomButton(
             action: {
-                let key = article.key
                 viewModel.impactOccured(.light)
-                isRead ? viewModel.markAsUnread(key) : viewModel.markAsRead(key)
+                if isRead {
+                    viewModel.markAsUnread(article)
+                } else {
+                    viewModel.markAsRead(article)
+                }
             },
             title: title,
             iconName: iconName,

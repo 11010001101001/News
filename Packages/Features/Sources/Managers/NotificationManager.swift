@@ -25,7 +25,7 @@ final class NotificationManager: NotificationManagerProtocol, Sendable {
         guard pending.isEmpty else { return }
 
         let options: UNAuthorizationOptions = [
-            .alert, .badge, .carPlay, .providesAppNotificationSettings, .sound,
+            .alert, .badge, .carPlay, .providesAppNotificationSettings, .sound
         ]
 
         do {

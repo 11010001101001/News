@@ -30,6 +30,7 @@ public protocol SettingsManagerProtocol: Sendable {
     func save(watchedTopics: Set<String>)
     func save(favorites: [FavoriteArticle])
     func save(keyword: String)
+    func save(lastViewedTitle: String)
 
     func loadSettings(_ settings: [SettingsModel])
 }
@@ -118,6 +119,10 @@ final class SettingsManager: SettingsManagerProtocol {
         savedSettings?.first?.keyword = keyword
     }
 
+    func save(lastViewedTitle: String) {
+        savedSettings?.first?.lastViewedTitle = lastViewedTitle
+    }
+
     private func computeFavorites(_ favorites: [FavoriteArticle]) -> [FavoriteArticle] {
         var read = [FavoriteArticle]()
         var notRead = [FavoriteArticle]()
@@ -125,7 +130,11 @@ final class SettingsManager: SettingsManagerProtocol {
         favorites.forEach {
             let key = ($0.url).or(($0.title).orEmpty)
             let isRead = watchedTopics.contains(where: { $0 == key })
-            isRead ? read.append($0) : notRead.append($0)
+            if isRead {
+                read.append($0)
+            } else {
+                notRead.append($0)
+            }
         }
 
         return notRead + read

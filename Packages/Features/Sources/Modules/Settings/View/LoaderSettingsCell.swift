@@ -13,7 +13,7 @@ import ModelsKit
 struct LoaderSettingsCell: View {
     @Bindable var viewModel: SettingsViewModel
     let loader: LoaderConfiguration
-    
+
     private var id: String {
         loader.rawValue
     }
@@ -38,7 +38,7 @@ struct LoaderSettingsCell: View {
             }
 
             HorStack {
-                DesignedText(text: loader.displayName)
+                DesignedText(loader.displayName)
                     .font(.system(size: 18, weight: .regular))
                     .padding(.leading, 100)
 

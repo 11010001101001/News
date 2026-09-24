@@ -41,7 +41,7 @@ actor NetworkManager: NetworkManagerProtocol {
         }
 
         let statusCode = httpResponse.statusCode
-        
+
         guard statusCode == HttpStatusCodes.ok.rawValue else {
             let message = HttpStatusCodes(rawValue: statusCode)?.message ?? Strings.errorsUnhandled
             throw ApiError.definite(msg: message)

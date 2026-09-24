@@ -19,7 +19,7 @@ struct ContactUsCell: View {
         HorStack(spacing: Constants.padding) {
             Image(systemName: SFSymbols.paperplaneFill.rawValue)
                 .padding(.leading, Constants.padding)
-            DesignedText(text: id)
+            DesignedText(id)
                 .font(.headline)
                 .frame(maxHeight: .infinity, alignment: .leading)
             Spacer()

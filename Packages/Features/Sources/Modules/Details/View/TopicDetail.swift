@@ -25,7 +25,7 @@ struct TopicDetail: View {
         .toolbarRole(.editor)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                DesignedText(text: Strings.screenDetailsTitle)
+                DesignedText(Strings.screenDetailsTitle)
                     .font(.title)
             }
         }
@@ -49,9 +49,9 @@ extension TopicDetail {
     fileprivate var description: some View {
         Group {
             if let description = article.description, !description.isEmpty {
-                DesignedText(text: .init(stringLiteral: description))
+                DesignedText(.init(stringLiteral: description))
             } else {
-                DesignedText(text: Strings.stateNoDescription)
+                DesignedText(Strings.stateNoDescription)
             }
         }
         .padding(.all, Constants.padding)

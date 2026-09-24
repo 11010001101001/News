@@ -22,7 +22,7 @@ public enum AppIconConfiguration: String, CaseIterable, Identifiable {
         case .dart: "DartIcon"
         }
     }
-    
+
     public var displayName: LocalizedStringResource {
         switch self {
         case .globe: Strings.appIconGlobe

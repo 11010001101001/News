@@ -13,7 +13,7 @@ public protocol SoundManagerProtocol: Sendable {
 
 public final class SoundManager: SoundManagerProtocol, Sendable {
     private let engine: SoundEngineProtocol = SoundEngine()
-    
+
     public init() {}
 
     public func play(_ name: String) {

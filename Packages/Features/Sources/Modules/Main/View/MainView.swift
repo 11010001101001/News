@@ -63,7 +63,6 @@ extension MainView {
         .onChange(of: phase) { _, phase in handleScenePhase(phase) }
         .onChange(of: viewModel.settingsShortcutItemTapped) { _, _ in
             needOpenSettings.toggle()
-                            
         }
         .onChange(of: viewModel.shareShortcutItemTapped) { _, _ in
             imageWrapper = ContentWrapper(link: .empty, description: DeveloperInfo.shareInfo)
@@ -110,7 +109,7 @@ extension MainView {
         try? Tips.configure(
             [
                 .displayFrequency(.immediate),
-                .datastoreLocation(.applicationDefault),
+                .datastoreLocation(.applicationDefault)
             ]
         )
     }
@@ -127,9 +126,7 @@ extension TopicsList {
             ToolbarItem(placement: .principal) {
                 HorStack(spacing: 16) {
                     Text(">>")
-                    DesignedText(
-                        text: NewsCategory.init(rawValue: viewModel.category)!.displayName
-                    )
+                    DesignedText(NewsCategory.init(rawValue: viewModel.category)!.displayName)
                     Spacer()
                 }
                 .font(.title)

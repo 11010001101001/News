@@ -12,7 +12,7 @@ public struct CustomButton: View {
     var title: LocalizedStringResource?
     var iconName: String?
     var isGlass = true
-    
+
     public init(
         action: @escaping () -> Void,
         title: LocalizedStringResource? = nil,
@@ -36,7 +36,7 @@ public struct CustomButton: View {
         )
 
         ConditionalView(isGlass) {
-            OptionalView(action) { action in
+            OptionalView(action) { _ in
                 button
                     .buttonStyle(.glass)
             }
@@ -58,7 +58,7 @@ extension CustomButton {
 
     fileprivate var titleView: some View {
         OptionalView(title) {
-            DesignedText(text: $0)
+            DesignedText($0)
                 .foregroundStyle(.white)
         }
     }

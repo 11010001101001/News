@@ -24,7 +24,7 @@ extension FavoritesView {
         FavoritesTopicsList(viewModel: viewModel)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    DesignedText(text: Strings.favoritesScreenTitle)
+                    DesignedText(Strings.favoritesScreenTitle)
                         .font(.title)
                 }
 

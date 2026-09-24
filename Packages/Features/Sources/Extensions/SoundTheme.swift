@@ -12,7 +12,7 @@ import SwiftUI
 
 extension SoundTheme {
     static var tabImage: String { SFSymbols.musicNote.rawValue }
-    
+
     public var image: Image {
         let systemName: SFSymbols =
             switch self {

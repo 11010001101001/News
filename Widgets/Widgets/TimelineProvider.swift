@@ -10,6 +10,7 @@ import SwiftData
 import WidgetKit
 import ModelsKit
 import CoreKit
+import LocalizationKit
 
 struct Provider: TimelineProvider {
     let container = try? ModelContainer(
@@ -23,11 +24,11 @@ struct Provider: TimelineProvider {
     )
 
     func placeholder(in context: Context) -> Entry {
-        Entry(category: "", level: .newbie)
+        Entry(category: "", level: .newbie, procentsToNextLevel: 0, lastViewedTitle: .empty)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (Entry) -> Void) {
-        let entry = Entry(category: "Category", level: .newbie)
+        let entry = Entry(category: Strings.widgetsCategory, level: .newbie, procentsToNextLevel: 0, lastViewedTitle: .empty)
         completion(entry)
     }
 
@@ -35,10 +36,15 @@ struct Provider: TimelineProvider {
         Task {
             guard
                 let settings = try? await loadSettings(),
-                let level = try? await getUserLevel(settings)
+                let (level, procentsToNextLevel) = try? await getUserLevel(settings)
             else { return }
 
-            let entry = Entry(category: settings.category, level: level)
+            let entry = Entry(
+                category: NewsCategory.init(rawValue: settings.category)!.displayName,
+                level: level,
+                procentsToNextLevel: procentsToNextLevel,
+                lastViewedTitle: settings.lastViewedTitle.orEmpty
+            )
 
             guard
                 let nextUpdate = Calendar.current.date(
@@ -50,18 +56,16 @@ struct Provider: TimelineProvider {
         }
     }
 
-    func getUserLevel(_ settings: SettingsModel?) async throws -> Level? {
-        guard let category = settings?.category else { return .error }
+    func getUserLevel(_ settings: SettingsModel?) async throws -> (Level, Int)? {
+        guard let category = settings?.category else { return (.newbie, 0) }
 
-        // swiftlint:disable line_length
         let link =
             "https://newsapi.org/v2/top-headlines?country=us&category=\(category)&pageSize=100&apiKey=8f825354e7354c71829cfb4cb15c4893"
-        // swiftlint:enable line_length
 
         guard let url = URL(string: link),
             let watchedTopics = settings?.watchedTopics
         else {
-            return .error
+            return (.newbie, 0)
         }
 
         let (data, _) = try await URLSession.shared.data(from: url)
@@ -72,7 +76,9 @@ struct Provider: TimelineProvider {
         }
 
         let procents = watched.count * 100 / articles.count
-        return Level.getLevel(for: procents)
+        let level = Level.getLevel(for: procents)
+        let procentsToNextLevel = procents * 100 / level.maxLevelProcent()
+        return (level, procentsToNextLevel)
     }
 
     @MainActor

@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import WidgetKit
+import DesignSystem
 
 struct NewsWidgetEntryView: View {
     @Environment(\.widgetFamily) var family
@@ -16,16 +17,17 @@ struct NewsWidgetEntryView: View {
 
     @ViewBuilder
     var body: some View {
-        VStack {
+        VerStack {
             switch family {
-            case .systemSmall: SmallView(entry: entry)
+            case .systemSmall: SystemSmallView(entry: entry)
+            case .systemMedium: SystemMediumView(entry: entry)
+            case .systemLarge: SystemLargeView(entry: entry)
+            case .systemExtraLarge, .systemExtraLargePortrait:
+                Text("Need implement for VisionOS and Ipad")
             case .accessoryCircular: AccessoryCircularView(entry: entry)
             case .accessoryInline: AccessoryInlineView(entry: entry)
             case .accessoryRectangular: AccessoryRectangularView(entry: entry)
-            case .systemMedium: SystemMediumView(entry: entry)
-            case .systemLarge: SystemLargeView(entry: entry)
-            case .systemExtraLarge: SystemExtraLargeView(entry: entry)
-            default:
+            @unknown default:
                 Text("Need configure")
                     .fontDesign(.monospaced)
                     .font(.headline)

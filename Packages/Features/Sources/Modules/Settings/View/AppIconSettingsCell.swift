@@ -12,7 +12,7 @@ import DesignSystem
 struct AppIconSettingsCell: View {
     @Bindable var viewModel: SettingsViewModel
     let theme: AppIconConfiguration
-    
+
     private var id: String {
         theme.rawValue
     }
@@ -41,7 +41,7 @@ struct AppIconSettingsCell: View {
             }
 
             HorStack {
-                DesignedText(text: theme.displayName)
+                DesignedText(theme.displayName)
                     .font(.system(size: 18, weight: .regular))
                     .padding(.leading, 130)
 

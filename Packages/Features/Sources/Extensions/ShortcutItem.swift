@@ -33,7 +33,7 @@ public enum ShortcutItem: String {
             localizedSubtitle: nil,
             icon: UIApplicationShortcutIcon(
                 systemImageName: ShortcutItem.settings.systemImageName),
-            userInfo: settingsInfo),
+            userInfo: settingsInfo)
     ]
 
     case settings

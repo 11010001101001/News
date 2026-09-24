@@ -54,15 +54,15 @@ extension TopicCell {
     fileprivate var texts: some View {
         HorStack {
             VerStack {
-                DesignedText(text: .init(stringLiteral: article.title.orEmpty))
+                DesignedText(.init(stringLiteral: article.title.orEmpty))
                     .multilineTextAlignment(.leading)
                     .padding(.bottom)
                     .font(.headline)
                     .foregroundStyle(Color.primary)
-                DesignedText(text: .init(stringLiteral: (article.publishedAt?.toReadableDate()).orEmpty))
+                DesignedText(.init(stringLiteral: (article.publishedAt?.toReadableDate()).orEmpty))
                     .font(.subheadline)
                     .foregroundStyle(Color.secondary)
-                DesignedText(text: .init(stringLiteral: (article.source?.name).orEmpty))
+                DesignedText(.init(stringLiteral: (article.source?.name).orEmpty))
                     .font(.subheadline)
                     .foregroundStyle(Color.secondary)
             }

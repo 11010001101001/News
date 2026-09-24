@@ -11,7 +11,7 @@ public enum LoadingStateModel {
     case loading
     case loaded(data: [Article])
     case error(message: LocalizedStringResource?)
-    
+
     public var loaderOpacity: CGFloat {
         switch self {
         case .loading: 1
@@ -25,7 +25,7 @@ public enum LoadingStateModel {
         case .error, .loading: 0
         }
     }
-    
+
     public var errorOpacity: CGFloat {
         switch self {
         case .loading, .loaded: 0

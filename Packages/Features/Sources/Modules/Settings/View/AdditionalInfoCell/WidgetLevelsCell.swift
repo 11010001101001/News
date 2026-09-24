@@ -5,10 +5,10 @@
 //  Created by Ярослав Куприянов on 02.04.2024.
 //
 
-import SwiftUI
 import DesignSystem
 import LocalizationKit
 import ModelsKit
+import SwiftUI
 
 struct WidgetLevelsCell: View {
     let id: String
@@ -28,7 +28,7 @@ struct WidgetLevelsCell: View {
 // MARK: - Private
 extension WidgetLevelsCell {
     fileprivate var title: some View {
-        DesignedText(text: Strings.widgetsLevels)
+        DesignedText(Strings.widgetsLevels)
             .font(.headline)
             .foregroundStyle(.foreground)
             .frame(maxHeight: .infinity, alignment: .leading)
@@ -51,17 +51,20 @@ extension WidgetLevelsCell {
     }
 
     fileprivate var instruction: some View {
-        DesignedText(text: Strings.widgetsInstuction)
+        DesignedText(Strings.widgetsInstuction)
             .font(.headline)
     }
 
     fileprivate func buildDescription(level: Level) -> some View {
         VerStack(spacing: 8) {
-            DesignedText(text: .init(stringLiteral: level.image + .spacer + level.rawValue))
-                .font(.headline)
-                .shadow(color: level.color, radius: 7)
+            HorStack {
+                DesignedText(.init(stringLiteral: level.image + .spacer))
+                DesignedText(level.name)
+            }
+            .font(.headline)
+            .shadow(color: level.color, radius: 7)
 
-            DesignedText(text: Strings.widgetsRange(level.range))
+            DesignedText(Strings.widgetsRange(level.range))
                 .font(.subheadline)
         }
         .padding(.leading, 8)

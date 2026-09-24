@@ -11,7 +11,7 @@ import LocalizationKit
 public struct ErrorView: View {
     var title: LocalizedStringResource?
     let action: (() -> Void)?
-    
+
     public init(title: LocalizedStringResource? = nil, action: (() -> Void)?) {
         self.title = title
         self.action = action
@@ -34,7 +34,7 @@ public struct ErrorView: View {
 extension ErrorView {
     fileprivate var errorTitle: some View {
         OptionalView(title) {
-            DesignedText(text: $0)
+            DesignedText($0)
                 .labelStyle(.titleOnly)
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)

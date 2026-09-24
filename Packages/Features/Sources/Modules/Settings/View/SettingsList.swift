@@ -61,7 +61,7 @@ struct SettingsList: View {
         .toolbarRole(.editor)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                DesignedText(text: Strings.screenSettingsTitle)
+                DesignedText(Strings.screenSettingsTitle)
                     .font(.title)
             }
         }

@@ -16,7 +16,7 @@ struct LanguageCell: View {
         HorStack(spacing: Constants.padding) {
             Image(systemName: SFSymbols.globe.rawValue)
                 .padding(.leading, Constants.padding)
-            DesignedText(text: Strings.settingsLanguage)
+            DesignedText(Strings.settingsLanguage)
                 .font(.headline)
                 .frame(maxHeight: .infinity, alignment: .leading)
             Spacer()

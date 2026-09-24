@@ -48,7 +48,7 @@ extension VibrateManager {
             .heavy: heavy,
             .medium: medium,
             .soft: soft,
-            .rigid: rigid,
+            .rigid: rigid
         ]
 
         impactGens?.values.forEach { $0.prepare() }

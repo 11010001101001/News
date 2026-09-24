@@ -12,7 +12,7 @@ import SwiftUI
 
 extension LoaderConfiguration {
     static var tabImage: String { SFSymbols.hourglass.rawValue }
-    
+
     public var shadowColor: Color {
         switch self {
         case .rocket: .orange

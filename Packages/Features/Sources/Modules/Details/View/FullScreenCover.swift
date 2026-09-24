@@ -20,7 +20,7 @@ struct SheetNavigationContainer<Content: View>: View {
                 .ignoresSafeArea(.all, edges: .bottom)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
-                        DesignedText(text: title)
+                        DesignedText(title)
                             .font(.title)
                     }
 
