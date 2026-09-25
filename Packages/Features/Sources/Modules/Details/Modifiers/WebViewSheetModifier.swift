@@ -5,16 +5,15 @@
 //  Created by Yaroslav Kupriyanov on 11.02.2025.
 //
 
-import SwiftUI
 import DesignSystem
 import LocalizationKit
+import SwiftUI
 
 struct WebViewSheetModifier: ViewModifier {
     @Bindable private var viewModel: DetailsViewModel
-    @State var webViewModel = WebViewModel()
-
     @Binding private var webViewPresented: Bool
-    @State private var opacity = 1.0
+
+    private let webViewModel = WebViewModel()
 
     init(
         viewModel: DetailsViewModel,
@@ -29,17 +28,15 @@ struct WebViewSheetModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .sheet(isPresented: $webViewPresented) {
-                SheetNavigationContainer(
-                    title: Strings.screenMoreTitle,
-                ) {
-                    VerStack {
-                        estimatedProgressView
-                        buildCoverContents()
-                    }
+                buildCoverContents()
+                    .ignoresSafeArea(.all, edges: .bottom)
+                    .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
+                    .modifier(HideSystemGrabberModifier())
                     .overlay(alignment: .top) {
-                        scrollProgressView
+                        grabber
+                            .padding(.top, 5)
                     }
-                }
             }
     }
 }
@@ -79,28 +76,26 @@ extension WebViewSheetModifier {
 
     fileprivate var estimatedProgressView: some View {
         ProgressView(value: webViewModel.estimatedProgress)
-            .scaleEffect(.init(width: 1.0, height: 0.3))
+            .frame(width: 60, height: 5)
             .tint(.white)
-            .offset(y: 1)
             .gloss(color: .white)
             .animation(.smooth, value: webViewModel.estimatedProgress)
-            .onChange(of: webViewModel.estimatedProgress) { _, progress in
-                guard progress == 1.0 else { return }
-                Task {
-                    try? await Task.sleep(for: .seconds(0.7))
-                    withAnimation {
-                        opacity = .leastNonzeroMagnitude
-                    }
-                }
-            }
-            .opacity(opacity)
+            .opacity(webViewModel.estimatedProgress <= 0.85 ? 1 : 0)
     }
 
     fileprivate var scrollProgressView: some View {
         ProgressView(value: webViewModel.scrollProgress)
-            .scaleEffect(.init(width: 1.0, height: 20))
-            .tint(Color.gray.opacity(0.5))
-            .offset(y: -40)
+            .frame(width: 60, height: 5)
+            .tint(.blue)
             .animation(.smooth, value: webViewModel.scrollProgress)
+    }
+
+    fileprivate var grabber: some View {
+        ZStack {
+            scrollProgressView
+            estimatedProgressView
+        }
+        .background(Color.white, in: Capsule())
+        .glassEffect(.regular)
     }
 }

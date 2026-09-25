@@ -8,11 +8,11 @@
 import Foundation
 import SwiftUI
 
-struct OptionalView<T, Content: View>: View {
+public struct OptionalView<T, Content: View>: View {
     let optional: T?
     let content: (T) -> Content
 
-    init(
+    public init(
         _ optional: T?,
         @ViewBuilder content: @escaping (T) -> Content
     ) {
@@ -20,7 +20,7 @@ struct OptionalView<T, Content: View>: View {
         self.content = content
     }
 
-    var body: some View {
+    public var body: some View {
         if let optional {
             content(optional)
         }

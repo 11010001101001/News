@@ -17,7 +17,11 @@ public struct WebView: UIViewRepresentable {
     }
 
     public func makeUIView(context: Context) -> some WKWebView {
-        let webView = WKWebView()
+        let config = WKWebViewConfiguration()
+        config.mediaTypesRequiringUserActionForPlayback = .all
+        config.allowsInlineMediaPlayback = false
+        config.allowsPictureInPictureMediaPlayback = false
+        let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = context.coordinator
         webView.scrollView.delegate = context.coordinator
 

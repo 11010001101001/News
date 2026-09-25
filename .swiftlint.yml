@@ -17,6 +17,7 @@ analyzer_rules: # rules run by `swiftlint analyze`
 
 disabled_rules:
   - inclusive_language
+  - opening_brace
 
 included: # case-sensitive paths to include during linting. `--path` is ignored if present
   - App
