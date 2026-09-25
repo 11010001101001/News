@@ -84,7 +84,6 @@ extension WebViewSheetModifier {
         ProgressView(value: webViewModel.estimatedProgress)
             .frame(width: 60, height: 5)
             .tint(.white)
-            .gloss(color: .white)
             .animation(.smooth, value: webViewModel.estimatedProgress)
             .opacity(webViewModel.estimatedProgress <= 0.85 ? 1 : 0)
     }
