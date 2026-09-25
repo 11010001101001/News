@@ -77,8 +77,7 @@ struct Provider: TimelineProvider {
 
         let procents = watched.count * 100 / articles.count
         let level = Level.getLevel(for: procents)
-        let procentsToNextLevel = procents * 100 / level.maxLevelProcent()
-        return (level, procentsToNextLevel)
+        return (level, level.progressInLevel(for: procents))
     }
 
     @MainActor

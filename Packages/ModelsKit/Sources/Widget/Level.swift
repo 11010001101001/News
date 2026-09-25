@@ -69,12 +69,28 @@ extension Level {
         }
     }
 
+    public func progressInLevel(for procents: Int) -> Int {
+        let minMaxDiff = maxLevelProcent() - minLevelProcent()
+        guard minMaxDiff > 0 else { return 100 }
+        let progress = (procents - minLevelProcent()) * 100 / minMaxDiff
+        return min(max(progress, 0), 100)
+    }
+
     public func maxLevelProcent() -> Int {
         switch self {
         case .techNinja: 100
+        case .loopMaster: 99
+        case .curiousObserver: 74
+        case .newbie: 24
+        }
+    }
+
+    public func minLevelProcent() -> Int {
+        switch self {
+        case .techNinja: 100
         case .loopMaster: 75
-        case .curiousObserver: 50
-        case .newbie: 25
+        case .curiousObserver: 25
+        case .newbie: 0
         }
     }
 }
