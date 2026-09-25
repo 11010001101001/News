@@ -35,7 +35,7 @@ struct WebViewSheetModifier: ViewModifier {
                     .modifier(HideSystemGrabberModifier())
                     .overlay(alignment: .top) {
                         grabber
-                            .padding(.top, 5)
+                            .padding(.top, 6)
                     }
             }
     }
