@@ -101,7 +101,6 @@ extension WebViewSheetModifier {
             scrollProgressView
             estimatedProgressView
         }
-        .background(Color.white, in: Capsule())
         .glassEffect(.regular)
     }
 }
