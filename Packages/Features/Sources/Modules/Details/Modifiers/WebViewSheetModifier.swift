@@ -37,6 +37,12 @@ struct WebViewSheetModifier: ViewModifier {
                         grabber
                             .padding(.top, 6)
                     }
+                    .onDisappear {
+                        if !webViewPresented {
+                            webViewModel.estimatedProgress = 0
+                            webViewModel.scrollProgress = 0
+                        }
+                    }
             }
     }
 }
