@@ -22,7 +22,7 @@ struct BlockOrExpandedView: View {
                     startPoint: .leading, endPoint: .trailing
                 )
                 .mask(
-                    ProgressView(value: Float(procents) / 100)
+                    ProgressView(value: Level.visualProgress(for: procents))
                         .progressViewStyle(.linear)
                 )
             }
@@ -31,14 +31,14 @@ struct BlockOrExpandedView: View {
 
             levels
         }
-        .padding(.horizontal, 40)
+        .padding(.horizontal, 20)
     }
 
     var levels: some View {
         let isNewbieActive = procents >= 0
         let isObserverActive = procents >= 25
-        let isLooperActive = procents >= 75
-        let isNinjaActive = procents >= 100
+        let isLooperActive = procents >= 50
+        let isNinjaActive = procents >= 75
 
         return HorStack {
             Circle()

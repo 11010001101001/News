@@ -61,36 +61,35 @@ extension Level: Codable {}
 extension Level {
     public static func getLevel(for procents: Int) -> Level {
         switch procents {
-        case (0..<25): .newbie
-        case (25..<75): .curiousObserver
-        case (75..<100): .loopMaster
-        case (100...): .techNinja
+        case (..<25): .newbie
+        case (25..<50): .curiousObserver
+        case (50..<75): .loopMaster
+        case (75...): .techNinja
         default: .newbie
         }
     }
 
     public func progressInLevel(for procents: Int) -> Int {
-        let minMaxDiff = maxLevelProcent() - minLevelProcent()
-        guard minMaxDiff > 0 else { return 100 }
-        let progress = (procents - minLevelProcent()) * 100 / minMaxDiff
+        let levelStep = 25
+        let progress = (procents - minLevelProcent()) * 100 / levelStep
         return min(max(progress, 0), 100)
-    }
-
-    public func maxLevelProcent() -> Int {
-        switch self {
-        case .techNinja: 100
-        case .loopMaster: 99
-        case .curiousObserver: 74
-        case .newbie: 24
-        }
     }
 
     public func minLevelProcent() -> Int {
         switch self {
-        case .techNinja: 100
-        case .loopMaster: 75
+        case .techNinja: 75
+        case .loopMaster: 50
         case .curiousObserver: 25
         case .newbie: 0
+        }
+    }
+
+    public static func visualProgress(for procents: Int) -> Float {
+        switch procents {
+        case 0..<25: Float(procents) / 25.0 * 0.333
+        case 25..<50: 0.333 + Float(procents - 25) / 25.0 * 0.333
+        case 50..<75: 0.666 + Float(procents - 50) / 25.0 * 0.334
+        default: 1.0
         }
     }
 }
