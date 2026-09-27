@@ -5,10 +5,10 @@
 //  Created by Ярослав Куприянов on 26.03.2024.
 //
 
-import SwiftUI
+import DesignSystem
 import LocalizationKit
 import ModelsKit
-import DesignSystem
+import SwiftUI
 
 struct SettingsList: View {
     @Bindable var viewModel: SettingsViewModel
@@ -73,7 +73,7 @@ struct SettingsList: View {
 // MARK: - Private
 extension SettingsList {
     func buildContentScroll(content: @escaping () -> some View) -> some View {
-        ScrollView {
+        GradientScrollView {
             VerStack(spacing: Constants.padding) {
                 content()
             }

@@ -5,8 +5,8 @@
 //  Created by Ярослав Куприянов on 26.03.2024.
 //
 
-import SwiftUI
 import LocalizationKit
+import SwiftUI
 
 public struct ErrorView: View {
     var title: LocalizedStringResource?
@@ -18,15 +18,19 @@ public struct ErrorView: View {
     }
 
     public var body: some View {
-        VerStack(alignment: .center) {
-            Group {
-                errorTitle
-                errorImage
-                reloadButton
+        HorStack {
+            Spacer()
+            VerStack(alignment: .center) {
+                Group {
+                    errorTitle
+                    errorImage
+                    reloadButton
+                }
+                .padding(Constants.padding)
             }
-            .padding(Constants.padding)
+            .glassClearInteractive()
+            Spacer()
         }
-        .glassClearInteractive()
     }
 }
 
@@ -36,11 +40,8 @@ extension ErrorView {
         OptionalView(title) {
             DesignedText($0)
                 .labelStyle(.titleOnly)
-                .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
                 .font(.headline)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, CGFloat.sideInsets)
         }
     }
 
@@ -48,7 +49,6 @@ extension ErrorView {
         Images.errorCat
             .resizable()
             .frame(width: 170, height: 170)
-            .gloss(numberOfLayers: 1)
             .scaledToFill()
             .padding(.horizontal)
     }

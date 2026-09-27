@@ -1,40 +1,26 @@
-import SwiftUI
 import DesignSystem
+import LocalizationKit
+import SwiftUI
 
 struct TopicsList: View {
     @Bindable var viewModel: MainViewModel
 
     var body: some View {
-        ZStack {
-            list
-            gradient
-
-            Loader(
-                loaderName: viewModel.loader,
-                shadowColor: viewModel.loaderShadowColor
-            )
-            .opacity(viewModel.loadingState.loaderOpacity)
-
-            ErrorView(
-                title: viewModel.loadingState.errorMessage,
-                action: {
-                    viewModel.impactOccured(.light)
-                    viewModel.loadNews()
-                }
-            )
-            .padding(.horizontal, CGFloat.sideInsets)
-            .opacity(viewModel.loadingState.errorOpacity)
-        }
-    }
-}
-
-// MARK: - Private
-extension TopicsList {
-    fileprivate var list: some View {
-        ScrollView(.vertical) {
-            VerStack {
-                ForEach(viewModel.news, id: \.self) {
-                    ModuleBuilder.shared.build(.details($0))
+        GradientScrollView {
+            Group {
+                switch viewModel.loadingState {
+                case .loading:
+                    loader
+                case .loaded:
+                    list
+                case .error(let message):
+                    ErrorView(
+                        title: message,
+                        action: {
+                            viewModel.impactOccured(.light)
+                            viewModel.loadNews()
+                        }
+                    )
                 }
             }
             .padding(.top, Constants.padding)
@@ -43,21 +29,30 @@ extension TopicsList {
             viewModel.impactOccured(.light)
             viewModel.refresh()
         }
-        .opacity(viewModel.loadingState.contentOpacity)
+    }
+}
+
+// MARK: - Private
+extension TopicsList {
+    fileprivate var list: some View {
+        VerStack {
+            ForEach(viewModel.news, id: \.self) {
+                ModuleBuilder.shared.build(.details($0))
+            }
+        }
     }
 
-    fileprivate var gradient: some View {
-        VerStack {
+    fileprivate var loader: some View {
+        VerStack(alignment: .center) {
             Spacer()
-            LinearGradient(
-                gradient: Gradient(colors: [.clear, .black]),
-                startPoint: .top,
-                endPoint: .bottom
+            Loader(
+                loaderName: viewModel.loader,
+                shadowColor: viewModel.loaderShadowColor
             )
-            .frame(height: Constants.gradientHeight)
-            .opacity(viewModel.loadingState.contentOpacity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            Spacer()
         }
-        .ignoresSafeArea()
-        .allowsHitTesting(false)
+        .frame(maxWidth: .infinity)
+        .containerRelativeFrame(.vertical)
     }
 }

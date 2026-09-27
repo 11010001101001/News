@@ -34,7 +34,6 @@ struct AppIconSettingsCell: View {
                     .clipShape(
                         RoundedRectangle(cornerRadius: Constants.cornerRadius, style: .continuous)
                     )
-                    .gloss(isEnabled: isEnabled, color: shadowColor, isBorderHighlighted: true)
                     .padding(.all, Constants.padding + 7)
 
                 Spacer()

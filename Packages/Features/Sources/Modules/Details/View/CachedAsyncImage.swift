@@ -10,6 +10,7 @@ import SwiftUI
 import ModelsKit
 import DesignSystem
 import CoreKit
+import LocalizationKit
 
 struct CachedAsyncImage: View {
     let article: Article
@@ -28,7 +29,6 @@ struct CachedAsyncImage: View {
 
     var body: some View {
         buildCachedAsyncImage()
-            .padding()
             .task {
                 cachedImage = await viewModel.getCachedImage(key: key)
             }
@@ -43,23 +43,17 @@ extension CachedAsyncImage {
         if let cachedImage {
             cachedImage
                 .toFrame()
-                .glassClearInteractive()
         } else {
-            asyncImage
-        }
-    }
-
-    fileprivate var asyncImage: some View {
-        AsyncImage(url: URL(string: url)) { phase in
-            if let image = phase.image {
-                image
-                    .toFrame()
-                    .onAppear { cache(image) }
-            } else if phase.error != nil {
-                let error = String(phase.error?.localizedDescription.prefix(40) ?? "") + "..."
-                buildError(title: error)
-            } else {
-                loader
+            AsyncImage(url: URL(string: url)) { phase in
+                if let image = phase.image {
+                    image
+                        .toFrame()
+                        .onAppear { cache(image) }
+                } else if phase.error != nil {
+                    ErrorView(title: Strings.errorsImageLoadingError, action: nil)
+                } else {
+                    loader
+                }
             }
         }
     }
@@ -69,12 +63,6 @@ extension CachedAsyncImage {
             loaderName: viewModel.loader,
             shadowColor: viewModel.loaderShadowColor
         )
-        .frame(height: Constants.imageHeight)
-    }
-
-    fileprivate func buildError(title: String) -> some View {
-        ErrorView(title: .init(stringLiteral: title), action: nil)
-            .frame(height: Constants.imageHeight)
     }
 }
 
@@ -90,12 +78,7 @@ extension Image {
     @MainActor fileprivate func toFrame() -> some View {
         self
             .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(
-                width: CGFloat.screenWidth - 32,
-                height: Constants.imageHeight,
-                alignment: .center
-            )
+            .aspectRatio(contentMode: .fit)
             .clipped()
             .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius, style: .continuous))
             .glassClearInteractive()

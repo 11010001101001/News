@@ -42,16 +42,16 @@ extension MainView {
             TopicsList(viewModel: viewModel)
                 .navbar()
                 .navigationBarTitleDisplayMode(.inline)
+                .navigationDestination(
+                    isPresented: $needOpenSettings,
+                    destination: { ModuleBuilder.shared.build(.settings) }
+                )
                 .sheet(
                     item: $imageWrapper,
                     content: { content in
                         ActivityViewController(contentWrapper: content)
                             .presentationDetents([.medium])
                     }
-                )
-                .navigationDestination(
-                    isPresented: $needOpenSettings,
-                    destination: { ModuleBuilder.shared.build(.settings) }
                 )
         }
         .onAppear { loadSettings() }

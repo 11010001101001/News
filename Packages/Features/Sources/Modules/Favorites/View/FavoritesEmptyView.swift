@@ -5,24 +5,28 @@
 //  Created by Ярослав Куприянов on 13.10.2025.
 //
 
-import SwiftUI
 import DesignSystem
-import ModelsKit
 import LocalizationKit
+import ModelsKit
+import SwiftUI
 
 struct FavoritesEmptyView: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        VerStack(alignment: .center) {
-            Group {
-                titleView
-                image
-                reloadButton
+        HorStack {
+            Spacer()
+            VerStack(alignment: .center) {
+                Group {
+                    titleView
+                    image
+                    reloadButton
+                }
+                .padding(Constants.padding)
             }
-            .padding(Constants.padding)
+            .glassClearInteractive()
+            Spacer()
         }
-        .glassClearInteractive()
     }
 }
 
@@ -42,7 +46,6 @@ extension FavoritesEmptyView {
         Images.favoritesEmptyCat
             .resizable()
             .frame(width: 170, height: 170)
-            .gloss(numberOfLayers: 1)
             .scaledToFill()
             .padding(.horizontal)
     }

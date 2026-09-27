@@ -18,10 +18,14 @@ public struct Loader: View {
     }
 
     public var body: some View {
-        LottieView(animation: .named(loaderName, bundle: .designSystem))
-            .playing(loopMode: .loop)
-            .id(loaderName)
-            .scaleEffect(0.30)
-            .gloss(color: shadowColor, numberOfLayers: 1)
+        HorStack {
+            Spacer()
+            LottieView(animation: .named(loaderName, bundle: .designSystem))
+                .playing(loopMode: .loop)
+                .id(loaderName)
+                .scaleEffect(0.70)
+                .frame(maxWidth: 170, maxHeight: 170)
+            Spacer()
+        }
     }
 }

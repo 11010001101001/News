@@ -13,14 +13,18 @@ import LocalizationKit
 
 struct TopicDetail: View {
     @Bindable var viewModel: DetailsViewModel
-    @Environment(\.dismiss) var dismiss
 
     let article: Article
 
     var body: some View {
-        VerStack(alignment: .center) {
-            CachedAsyncImage(article: article, viewModel: viewModel)
-            otherContent
+        ScrollView {
+            VerStack(spacing: Constants.padding) {
+                CachedAsyncImage(article: article, viewModel: viewModel)
+                description
+                buttons
+                Spacer()
+            }
+            .padding()
         }
         .toolbarRole(.editor)
         .toolbar {
@@ -35,17 +39,6 @@ struct TopicDetail: View {
 
 // MARK: - Content
 extension TopicDetail {
-    fileprivate var otherContent: some View {
-        VerStack(alignment: .leading, spacing: Constants.padding) {
-            description
-            buttons
-                .padding(.leading)
-            Spacer()
-        }
-        .padding([.top, .horizontal])
-        .frame(height: CGFloat.screenHeight / 2)
-    }
-
     fileprivate var description: some View {
         Group {
             if let description = article.description, !description.isEmpty {

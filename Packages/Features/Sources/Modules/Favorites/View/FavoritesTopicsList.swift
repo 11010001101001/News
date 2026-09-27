@@ -5,17 +5,20 @@
 //  Created by Ярослав Куприянов on 13.10.2025.
 //
 
+import DesignSystem
 import Foundation
 import SwiftUI
-import DesignSystem
 
 struct FavoritesTopicsList: View {
     @Bindable var viewModel: FavoritesViewModel
 
     var body: some View {
-        ZStack {
-            list
-            emptyView
+        GradientScrollView {
+            Group {
+                list
+                emptyView
+            }
+            .padding(.top, Constants.padding)
         }
     }
 }
@@ -24,11 +27,8 @@ struct FavoritesTopicsList: View {
 extension FavoritesTopicsList {
     fileprivate var list: some View {
         ConditionalView(!viewModel.favoriteTopics.isEmpty) {
-            ScrollView(.vertical) {
-                ForEach(viewModel.favoriteTopics, id: \.self) { article in
-                    ModuleBuilder.shared.build(.details(article.article))
-                }
-                .padding(.top, Constants.padding)
+            ForEach(viewModel.favoriteTopics, id: \.self) { article in
+                ModuleBuilder.shared.build(.details(article.article))
             }
         }
     }
@@ -36,7 +36,6 @@ extension FavoritesTopicsList {
     fileprivate var emptyView: some View {
         ConditionalView(viewModel.favoriteTopics.isEmpty) {
             FavoritesEmptyView()
-                .padding(.horizontal, CGFloat.sideInsets)
         }
     }
 }

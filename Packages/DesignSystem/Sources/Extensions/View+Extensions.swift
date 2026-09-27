@@ -60,40 +60,4 @@ public extension View {
             }
         }
     }
-
-    @ViewBuilder
-    func gloss(
-        isEnabled: Bool = true,
-        color: Color = .shadowHighlight,
-        radius: CGFloat = 10.0,
-        numberOfLayers: Int = 4,
-        isBorderHighlighted: Bool = false
-    ) -> some View {
-        if isEnabled {
-            self
-                .overlay {
-                    ZStack {
-                        ForEach(0..<numberOfLayers, id: \.self) { _ in
-                            self
-                                .shadow(
-                                    color: color,
-                                    radius: radius
-                                )
-                        }
-
-                        ConditionalView(isBorderHighlighted) {
-                            ForEach(0..<5) { _ in
-                                self
-                                    .shadow(
-                                        color: .white,
-                                        radius: 2
-                                    )
-                            }
-                        }
-                    }
-                }
-        } else {
-            self
-        }
-    }
 }
