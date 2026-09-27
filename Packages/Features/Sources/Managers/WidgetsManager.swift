@@ -21,16 +21,20 @@ final class WidgetsManager: WidgetsManagerProtocol {
     private var articles = [Article]()
 
     func start() {
-        endOldActivities()
+        Task {
+            for activity in Activity<NewsWidgetsAttributes>.activities {
+                await activity.end(nil, dismissalPolicy: .immediate)
+            }
 
-        _ = try? Activity<NewsWidgetsAttributes>.request(
-            attributes: NewsWidgetsAttributes(),
-            content: .init(
-                state: NewsWidgetsAttributes.ContentState(level: .newbie, procents: .zero),
-                staleDate: Date().hour
-            ),
-            pushType: nil
-        )
+            _ = try? Activity<NewsWidgetsAttributes>.request(
+                attributes: NewsWidgetsAttributes(),
+                content: .init(
+                    state: NewsWidgetsAttributes.ContentState(level: .newbie, procents: .zero),
+                    staleDate: Date().hour
+                ),
+                pushType: nil
+            )
+        }
     }
 
     func updateArticles(_ articles: [Article]) {
@@ -62,13 +66,5 @@ final class WidgetsManager: WidgetsManagerProtocol {
 
     func updateStaticWidget() {
         WidgetCenter.shared.reloadAllTimelines()
-    }
-
-    func endOldActivities() {
-        Task {
-            for activity in Activity<NewsWidgetsAttributes>.activities {
-                await activity.end(nil, dismissalPolicy: .immediate)
-            }
-        }
     }
 }
