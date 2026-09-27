@@ -55,9 +55,7 @@ extension TopicDetail {
             }
         }
         .padding(.all, Constants.padding)
-        .glassEffect(
-            .clear.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius)
-        )
+        .glassClearInteractive()
         .contextMenu { contextMenu }
     }
 

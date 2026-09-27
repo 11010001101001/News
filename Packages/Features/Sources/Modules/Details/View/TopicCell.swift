@@ -34,7 +34,7 @@ struct TopicCell: View {
             .padding(Constants.padding)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .glassCard()
+        .glassClearInteractive()
         .markAsReadOrHighlight(isRead: isRead, isShadowEnabled: isShadowEnabled)
         .padding([.bottom, .horizontal], Constants.padding)
         .contentShape(.rect)

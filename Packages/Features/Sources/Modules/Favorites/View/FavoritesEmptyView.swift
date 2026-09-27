@@ -22,7 +22,7 @@ struct FavoritesEmptyView: View {
             }
             .padding(Constants.padding)
         }
-        .glassCard()
+        .glassClearInteractive()
     }
 }
 

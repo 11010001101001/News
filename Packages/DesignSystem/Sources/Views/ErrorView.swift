@@ -26,7 +26,7 @@ public struct ErrorView: View {
             }
             .padding(Constants.padding)
         }
-        .glassCard()
+        .glassClearInteractive()
     }
 }
 

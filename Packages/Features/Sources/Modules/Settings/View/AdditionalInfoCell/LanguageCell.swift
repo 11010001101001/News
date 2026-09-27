@@ -23,7 +23,7 @@ struct LanguageCell: View {
             menu
 
         }
-        .glassCard()
+        .glassClearInteractive()
         .frame(height: 70)
     }
 }

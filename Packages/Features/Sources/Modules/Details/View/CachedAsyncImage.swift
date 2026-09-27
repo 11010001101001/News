@@ -43,7 +43,7 @@ extension CachedAsyncImage {
         if let cachedImage {
             cachedImage
                 .toFrame()
-                .glassCard()
+                .glassClearInteractive()
         } else {
             asyncImage
         }
@@ -98,6 +98,6 @@ extension Image {
             )
             .clipped()
             .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius, style: .continuous))
-            .glassCard()
+            .glassClearInteractive()
     }
 }

@@ -48,7 +48,7 @@ struct AppIconSettingsCell: View {
                 Spacer()
             }
         }
-        .glassCard()
+        .glassClearInteractive()
         .markIsSelected(viewModel, id)
         .applyOrNotSettingsModifier(
             isEnabled: viewModel.checkIsEnabled(id.lowercased())

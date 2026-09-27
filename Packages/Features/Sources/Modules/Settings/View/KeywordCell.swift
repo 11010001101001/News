@@ -19,7 +19,7 @@ struct KeywordCell: View {
             textField
         }
         .padding(.vertical, Constants.padding)
-        .glassCard()
+        .glassClearInteractive()
     }
 }
 

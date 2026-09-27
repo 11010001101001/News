@@ -28,7 +28,7 @@ struct SettingsCell<T: DisplayName>: View {
 
             Spacer()
         }
-        .glassCard()
+        .glassClearInteractive()
         .markIsSelected(viewModel, id)
         .frame(height: 70)
         .applyOrNotSettingsModifier(

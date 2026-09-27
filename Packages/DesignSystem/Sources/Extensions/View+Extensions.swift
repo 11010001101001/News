@@ -10,17 +10,22 @@ import SwiftUI
 
 public extension View {
     /// more glassy
-    func glassCard() -> some View {
+    func glassClearInteractive() -> some View {
         self
             .glassEffect(
                 .clear.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
     }
 
     /// less glassy
-    func glassRegularCard() -> some View {
+    func glassRegularInteractive() -> some View {
         self
             .glassEffect(
                 .regular.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
+    }
+
+    func glassEffectRegular() -> some View {
+        self
+            .glassEffect(.regular)
     }
 
     @ViewBuilder

@@ -20,7 +20,7 @@ struct WidgetLevelsCell: View {
             group
             Spacer()
         }
-        .glassRegularCard()
+        .glassRegularInteractive()
         .frame(minHeight: 70)
     }
 }

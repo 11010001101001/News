@@ -100,6 +100,6 @@ extension WebViewSheetModifier {
             scrollProgressView
             estimatedProgressView
         }
-        .glassEffect(.regular)
+        .glassEffectRegular()
     }
 }

@@ -20,7 +20,7 @@ struct InfoCell: View {
                 .frame(maxHeight: .infinity, alignment: .leading)
             Spacer()
         }
-        .glassCard()
+        .glassClearInteractive()
         .frame(height: 70)
     }
 }
