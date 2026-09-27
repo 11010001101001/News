@@ -5,14 +5,14 @@
 //  Created by Yaroslav Kupriyanov on 19.09.2026.
 //
 
+import CoreKit
+import DesignSystem
+import Features
 import Foundation
+import LocalizationKit
+import ModelsKit
 import SwiftUI
 import Testing
-import CoreKit
-import Features
-import ModelsKit
-import LocalizationKit
-import DesignSystem
 
 @testable import News
 
@@ -56,6 +56,7 @@ private final class MockSettingsManager: SettingsManagerProtocol, @unchecked Sen
     var favoriteTopics: [FavoriteArticle] = []
     var loaderShadowColor: Color = .clear
     var keyword: String = ""
+    var lastViewedTitle: String = ""
 
     func save(category: String) { self.category = category }
     func save(soundTheme: String) { self.soundTheme = soundTheme }
@@ -65,6 +66,7 @@ private final class MockSettingsManager: SettingsManagerProtocol, @unchecked Sen
     func save(watchedTopics: Set<String>) { self.watchedTopics = watchedTopics }
     func save(favorites: [FavoriteArticle]) { self.favoriteTopics = favorites }
     func save(keyword: String) { self.keyword = keyword }
+    func save(lastViewedTitle: String) { self.lastViewedTitle = lastViewedTitle }
     func loadSettings(_ settings: [SettingsModel]) {}
 }
 
@@ -82,24 +84,30 @@ private final class MockNetworkManager: NetworkManagerProtocol, @unchecked Senda
     }
 }
 
+private final class MockWidgetsManager: WidgetsManagerProtocol, @unchecked Sendable {
+    func updateLevel(watchedTopics: Set<String>) {
+    }
+
+    func start() {
+    }
+
+    func updateArticles(_ articles: [ModelsKit.Article]) {
+    }
+}
+
 // MARK: - Tests
 @MainActor
 struct NewsUnitTests {
     // MARK: 1. MainViewModel Tests
     @Test("MainViewModel initializes with default state and binds managers")
     func testMainViewModelInit() {
-        let soundManager = MockSoundManager()
-        let vibrateManager = MockVibrateManager()
-        let notificationManager = MockNotificationManager()
-        let settingsManager = MockSettingsManager()
-        let networkManager = MockNetworkManager()
-
         let viewModel = MainViewModel(
-            soundManager: soundManager,
-            vibrateManager: vibrateManager,
-            notificationManager: notificationManager,
-            settingsManager: settingsManager,
-            networkManager: networkManager
+            soundManager: MockSoundManager(),
+            vibrateManager: MockVibrateManager(),
+            notificationManager: MockNotificationManager(),
+            settingsManager: MockSettingsManager(),
+            networkManager: MockNetworkManager(),
+            widgetsManager: MockWidgetsManager()
         )
 
         #expect(viewModel.loadingState == .loading)
@@ -114,7 +122,8 @@ struct NewsUnitTests {
             vibrateManager: MockVibrateManager(),
             notificationManager: MockNotificationManager(),
             settingsManager: MockSettingsManager(),
-            networkManager: networkManager
+            networkManager: networkManager,
+            widgetsManager: MockWidgetsManager()
         )
 
         viewModel.loadNews()
@@ -130,7 +139,8 @@ struct NewsUnitTests {
             vibrateManager: MockVibrateManager(),
             notificationManager: MockNotificationManager(),
             settingsManager: MockSettingsManager(),
-            networkManager: MockNetworkManager()
+            networkManager: MockNetworkManager(),
+            widgetsManager: MockWidgetsManager()
         )
 
         #expect(viewModel.settingsShortcutItemTapped == false)

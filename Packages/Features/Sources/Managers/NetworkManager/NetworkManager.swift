@@ -13,7 +13,7 @@ public protocol NetworkManagerProtocol: Sendable {
     func loadNews(category: String) async throws -> [Article]
 }
 
-actor NetworkManager: NetworkManagerProtocol {
+final actor NetworkManager: NetworkManagerProtocol {
     func loadNews(category: String) async throws -> [Article] {
         guard let url = URL(string: Mode.category(category).urlString) else {
             throw ApiError.mappingError(msg: Strings.errorsMapping)

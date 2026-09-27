@@ -83,6 +83,7 @@ public final class MainViewModel {
     private let notificationManager: NotificationManagerProtocol
     private let settingsManager: SettingsManagerProtocol
     private let networkManager: NetworkManagerProtocol
+    private let widgetsManager: WidgetsManagerProtocol
     private var loadNewsTask: Task<Void, Never>?
 
     // MARK: Init
@@ -91,15 +92,17 @@ public final class MainViewModel {
         vibrateManager: VibrateManagerProtocol,
         notificationManager: NotificationManagerProtocol,
         settingsManager: SettingsManagerProtocol,
-        networkManager: NetworkManagerProtocol
+        networkManager: NetworkManagerProtocol,
+        widgetsManager: WidgetsManagerProtocol
     ) {
         self.soundManager = soundManager
         self.vibrateManager = vibrateManager
         self.notificationManager = notificationManager
         self.settingsManager = settingsManager
         self.networkManager = networkManager
+        self.widgetsManager = widgetsManager
 
-        WidgetsManager.shared.start()
+        widgetsManager.start()
     }
 }
 
@@ -120,10 +123,10 @@ extension MainViewModel {
                 let loadedArticles = try await networkManager.loadNews(category: category)
                 guard !Task.isCancelled else { return }
                 let sortedNews = sortIsRead(loadedArticles)
-                self.news = sortedNews
-                self.loadingState = .loaded(data: sortedNews)
-                WidgetsManager.shared.updateArticles(sortedNews)
-                WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
+                news = sortedNews
+                loadingState = .loaded(data: sortedNews)
+                widgetsManager.updateArticles(sortedNews)
+                widgetsManager.updateLevel(watchedTopics: watchedTopics)
                 notificationOccurred(.success)
             } catch is CancellationError {
                 return
@@ -135,12 +138,12 @@ extension MainViewModel {
                     case .mappingError(let msg): msg
                     default: Strings.errorsUnhandled
                     }
-                self.loadingState = .error(message: message)
+                loadingState = .error(message: message)
                 notificationOccurred(.error)
                 playError()
             } catch {
                 guard !Task.isCancelled else { return }
-                self.loadingState = .error(message: Strings.errorsUndefinedError)
+                loadingState = .error(message: Strings.errorsUndefinedError)
                 notificationOccurred(.error)
                 playError()
             }
@@ -160,7 +163,7 @@ extension MainViewModel {
                 settingsManager.save(lastViewedTitle: $0.title.orEmpty)
             }
         }
-        WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
+        widgetsManager.updateLevel(watchedTopics: watchedTopics)
     }
 
     func addShortcutItems() {

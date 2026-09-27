@@ -28,11 +28,11 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         return configuration
     }
 
-    func application(
-        _ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?
-    ) -> UIInterfaceOrientationMask {
-        .portrait
-    }
+//    func application(
+//        _ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?
+//    ) -> UIInterfaceOrientationMask {
+//        .portrait
+//    }
 }
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {

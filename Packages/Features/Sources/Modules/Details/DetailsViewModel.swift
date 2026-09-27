@@ -43,16 +43,19 @@ final class DetailsViewModel {
     private let cacheManager: CacheManagerProtocol
     private let settingsManager: SettingsManagerProtocol
     private let vibrateManager: VibrateManagerProtocol
+    private let widgetsManager: WidgetsManagerProtocol
 
     // MARK: Init
     init(
         cacheManager: CacheManagerProtocol,
         settingsManager: SettingsManagerProtocol,
-        vibrateManager: VibrateManagerProtocol
+        vibrateManager: VibrateManagerProtocol,
+        widgetsManager: WidgetsManagerProtocol
     ) {
         self.cacheManager = cacheManager
         self.settingsManager = settingsManager
         self.vibrateManager = vibrateManager
+        self.widgetsManager = widgetsManager
     }
 }
 
@@ -69,12 +72,12 @@ extension DetailsViewModel {
 
         watchedTopics.insert(article.key)
         settingsManager.save(lastViewedTitle: article.title.orEmpty)
-        WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
+        widgetsManager.updateLevel(watchedTopics: watchedTopics)
     }
 
     func markAsUnread(_ article: Article) {
         watchedTopics.remove(article.key)
-        WidgetsManager.shared.updateLevel(watchedTopics: watchedTopics)
+        widgetsManager.updateLevel(watchedTopics: watchedTopics)
     }
 
     func cache(object: AnyObject & Sendable, key: AnyObject & Sendable) {
