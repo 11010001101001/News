@@ -11,19 +11,19 @@ import SwiftUI
 
 public enum Level: Sendable {
     case techNinja
-    case loopMaster
-    case curiousObserver
+    case insider
+    case observer
     case newbie
 
     public static var allCases: [Level] {
-        [.newbie, .curiousObserver, .loopMaster, .techNinja]
+        [.newbie, .observer, .insider, .techNinja]
     }
 
     public var name: LocalizedStringResource {
         switch self {
         case .techNinja: Strings.levelNinja
-        case .loopMaster: Strings.levelLoopMaster
-        case .curiousObserver: Strings.levelObserver
+        case .insider: Strings.levelInsider
+        case .observer: Strings.levelObserver
         case .newbie: Strings.levelNewbie
         }
     }
@@ -31,8 +31,8 @@ public enum Level: Sendable {
     public var color: Color {
         switch self {
         case .techNinja: .indigo
-        case .loopMaster: .cyan
-        case .curiousObserver: .green
+        case .insider: .cyan
+        case .observer: .green
         case .newbie: .orange
         }
     }
@@ -40,8 +40,8 @@ public enum Level: Sendable {
     public var image: String {
         switch self {
         case .techNinja: "🥷🏿"
-        case .loopMaster: "👨🏽‍🎓"
-        case .curiousObserver: "💁🏻‍♂️"
+        case .insider: "👨🏽‍🎓"
+        case .observer: "💁🏻‍♂️"
         case .newbie: "👶🏻"
         }
     }
@@ -49,8 +49,8 @@ public enum Level: Sendable {
     public var range: String {
         switch self {
         case .techNinja: "75% - 100%"
-        case .loopMaster: "50% - 75%"
-        case .curiousObserver: "25% - 50%"
+        case .insider: "50% - 75%"
+        case .observer: "25% - 50%"
         case .newbie: "0% - 25%"
         }
     }
@@ -62,8 +62,8 @@ extension Level {
     public static func getLevel(for procents: Int) -> Level {
         switch procents {
         case (..<25): .newbie
-        case (25..<50): .curiousObserver
-        case (50..<75): .loopMaster
+        case (25..<50): .observer
+        case (50..<75): .insider
         case (75...): .techNinja
         default: .newbie
         }
@@ -78,8 +78,8 @@ extension Level {
     public func minLevelProcent() -> Int {
         switch self {
         case .techNinja: 75
-        case .loopMaster: 50
-        case .curiousObserver: 25
+        case .insider: 50
+        case .observer: 25
         case .newbie: 0
         }
     }

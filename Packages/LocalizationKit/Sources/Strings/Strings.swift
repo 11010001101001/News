@@ -166,8 +166,8 @@ public enum Strings {
 
     // MARK: - Level
     // swiftlint:disable inclusive_language
-    public static var levelLoopMaster: LocalizedStringResource {
-        LocalizedStringResource("Level.loopMaster", defaultValue: "Loop Master", bundle: .atURL(Bundle.module.bundleURL))
+    public static var levelInsider: LocalizedStringResource {
+        LocalizedStringResource("Level.insider", defaultValue: "Insider", bundle: .atURL(Bundle.module.bundleURL))
     }
     // swiftlint:enable inclusive_language
     public static var levelNewbie: LocalizedStringResource {

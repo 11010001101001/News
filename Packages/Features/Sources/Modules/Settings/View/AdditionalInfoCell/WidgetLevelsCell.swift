@@ -40,8 +40,8 @@ extension WidgetLevelsCell {
                 instruction
                     .padding(.top, 16)
                 buildDescription(level: .techNinja)
-                buildDescription(level: .loopMaster)
-                buildDescription(level: .curiousObserver)
+                buildDescription(level: .insider)
+                buildDescription(level: .observer)
                 buildDescription(level: .newbie)
                     .padding(.bottom, 16)
             }

@@ -37,7 +37,7 @@ struct BlockOrExpandedView: View {
     var levels: some View {
         let isNewbieActive = procents >= 0
         let isObserverActive = procents >= 25
-        let isLooperActive = procents >= 50
+        let isInsiderActive = procents >= 50
         let isNinjaActive = procents >= 75
 
         return HorStack {
@@ -53,25 +53,25 @@ struct BlockOrExpandedView: View {
             Spacer()
 
             Circle()
-                .fill(isObserverActive ? Level.curiousObserver.color : .gray)
+                .fill(isObserverActive ? Level.observer.color : .gray)
                 .frame(width: 30, height: 30)
                 .shadow(
-                    color: isObserverActive ? Level.curiousObserver.color : .clear, radius: 7
+                    color: isObserverActive ? Level.observer.color : .clear, radius: 7
                 )
                 .overlay(alignment: .center) {
-                    Text(Level.curiousObserver.image)
+                    Text(Level.observer.image)
                         .grayscale(isObserverActive ? 0 : 1)
                 }
 
             Spacer()
 
             Circle()
-                .fill(isLooperActive ? Level.loopMaster.color : .gray)
+                .fill(isInsiderActive ? Level.insider.color : .gray)
                 .frame(width: 30, height: 30)
-                .shadow(color: isLooperActive ? Level.loopMaster.color : .clear, radius: 7)
+                .shadow(color: isInsiderActive ? Level.insider.color : .clear, radius: 7)
                 .overlay(alignment: .center) {
-                    Text(Level.loopMaster.image)
-                        .grayscale(isLooperActive ? 0 : 1)
+                    Text(Level.insider.image)
+                        .grayscale(isInsiderActive ? 0 : 1)
                 }
 
             Spacer()
