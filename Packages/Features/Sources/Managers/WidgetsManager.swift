@@ -56,11 +56,18 @@ final class WidgetsManager: WidgetsManagerProtocol {
             $0.activityState == .active
         }
 
-        guard let activeActivity else { return }
+        guard let activeActivity else {
+            start()
+            updateLevel(watchedTopics: watchedTopics)
+            return
+        }
+
         let content = ActivityContent(state: newState, staleDate: Date().hour)
+
         Task {
             await activeActivity.update(content)
         }
+
         updateStaticWidget()
     }
 
