@@ -27,8 +27,10 @@ struct FavoritesTopicsList: View {
 extension FavoritesTopicsList {
     fileprivate var list: some View {
         ConditionalView(!viewModel.favoriteTopics.isEmpty) {
-            ForEach(viewModel.favoriteTopics, id: \.self) { article in
-                ModuleBuilder.shared.build(.details(article.article))
+            VerStack {
+                ForEach(viewModel.favoriteTopics, id: \.self) { article in
+                    ModuleBuilder.shared.build(.details(article.article))
+                }
             }
         }
     }
