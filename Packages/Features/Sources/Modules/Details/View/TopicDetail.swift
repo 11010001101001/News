@@ -5,22 +5,22 @@
 //  Created by Ярослав Куприянов on 26.03.2024.
 //
 
-import SwiftUI
-import UIKit
-import ModelsKit
 import DesignSystem
 import LocalizationKit
+import ModelsKit
+import SwiftUI
+import UIKit
 
 struct TopicDetail: View {
     @Bindable var viewModel: DetailsViewModel
-
-    let article: Article
+    @State private var opinion = String.empty
 
     var body: some View {
         ScrollView {
             VerStack(spacing: Constants.padding) {
-                CachedAsyncImage(article: article, viewModel: viewModel)
+                CachedAsyncImage(viewModel: viewModel)
                 description
+                expertOpinion
                 buttons
                 Spacer()
             }
@@ -40,16 +40,21 @@ struct TopicDetail: View {
 // MARK: - Content
 extension TopicDetail {
     fileprivate var description: some View {
-        Group {
-            if let description = article.description, !description.isEmpty {
-                DesignedText(.init(stringLiteral: description))
-            } else {
-                DesignedText(Strings.stateNoDescription)
+        DesignedText(.init(stringLiteral: viewModel.description))
+            .padding(.all, Constants.padding)
+            .glassClearInteractive()
+            .contextMenu { contextMenu }
+            .task {
+                opinion = await viewModel.generateOpinion()
             }
+    }
+
+    fileprivate var expertOpinion: some View {
+        ConditionalView(!opinion.isEmpty) {
+            DesignedText(.init(stringLiteral: opinion))
+                .padding(.all, Constants.padding)
+                .glassClearInteractive()
         }
-        .padding(.all, Constants.padding)
-        .glassClearInteractive()
-        .contextMenu { contextMenu }
     }
 
     fileprivate var buttons: some View {
@@ -67,36 +72,24 @@ extension TopicDetail {
 
     fileprivate var shareButton: some View {
         ShareButton(
-            data: ButtonMetaData(
-                article: article,
-                title: nil,
-                iconName: SFSymbols.squareAndArrowUp.rawValue
-            ),
             viewModel: viewModel,
             isGlass: true
         )
     }
 
     fileprivate var linkButton: some View {
-        LinkButton(
-            viewModel: viewModel,
-            article: article
-        )
+        LinkButton(viewModel: viewModel)
     }
 
     fileprivate var favoriteButton: some View {
         FavoritesButton(
             viewModel: viewModel,
-            article: article,
             isGlass: true,
             title: nil
         )
     }
 
     fileprivate var contextMenu: some View {
-        CopyContextMenuButton(
-            text: article.description.or(String(localized: Strings.stateNoDescription)),
-            viewModel: viewModel
-        )
+        CopyContextMenuButton(viewModel: viewModel)
     }
 }

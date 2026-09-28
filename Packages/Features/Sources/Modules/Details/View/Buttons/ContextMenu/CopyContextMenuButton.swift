@@ -11,15 +11,11 @@ import DesignSystem
 import LocalizationKit
 
 struct CopyContextMenuButton: View {
-    let text: String
     let viewModel: DetailsViewModel
 
     var body: some View {
         CustomButton(
-            action: {
-                UIPasteboard.general.string = text
-                viewModel.impactOccured(.medium)
-            },
+            action: { viewModel.copyDescription() },
             title: Strings.contextMenuCopy,
             iconName: SFSymbols.documentOnDocument.rawValue,
             isGlass: false

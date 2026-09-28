@@ -11,8 +11,6 @@ import ModelsKit
 struct DetailsView: View {
     @State var viewModel: DetailsViewModel
 
-    let article: Article
-
     var body: some View {
         content
     }
@@ -21,9 +19,9 @@ struct DetailsView: View {
 extension DetailsView {
     fileprivate var content: some View {
         NavigationLink {
-            TopicDetail(viewModel: viewModel, article: article)
+            TopicDetail(viewModel: viewModel)
         } label: {
-            TopicCell(viewModel: viewModel, article: article).equatable()
+            TopicCell(viewModel: viewModel, article: viewModel.article).equatable()
         }
         .scrollTransition(
             topLeading: .identity,

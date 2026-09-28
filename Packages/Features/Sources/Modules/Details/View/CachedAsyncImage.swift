@@ -13,26 +13,16 @@ import CoreKit
 import LocalizationKit
 
 struct CachedAsyncImage: View {
-    let article: Article
-
     @Bindable var viewModel: DetailsViewModel
 
     @State private var cachedImage: Image?
 
-    private var url: String {
-        article.urlToImage.orEmpty
-    }
-
-    private var key: AnyObject & Sendable {
-        url as AnyObject & Sendable
-    }
-
     var body: some View {
         buildCachedAsyncImage()
             .task {
-                cachedImage = await viewModel.getCachedImage(key: key)
+                cachedImage = await viewModel.getCachedImage(key: viewModel.key)
             }
-            .onAppear { viewModel.markAsRead(article) }
+            .onAppear { viewModel.markAsRead(viewModel.article) }
     }
 }
 
@@ -44,7 +34,7 @@ extension CachedAsyncImage {
             cachedImage
                 .toFrame()
         } else {
-            AsyncImage(url: URL(string: url)) { phase in
+            AsyncImage(url: URL(string: viewModel.url)) { phase in
                 if let image = phase.image {
                     image
                         .toFrame()
@@ -70,7 +60,7 @@ extension CachedAsyncImage {
 extension CachedAsyncImage {
     fileprivate func cache(_ image: Image) {
         let object = CachedImage(image: image)
-        viewModel.cache(object: object, key: key)
+        viewModel.cache(object: object, key: viewModel.key)
     }
 }
 

@@ -73,7 +73,6 @@ extension TopicCell {
     fileprivate var favoriteButton: some View {
         FavoritesButton(
             viewModel: viewModel,
-            article: article,
             isGlass: false,
             title: nil
         )
@@ -101,10 +100,7 @@ extension TopicCell {
             article: article
         )
 
-        CopyContextMenuButton(
-            text: article.title.orEmpty,
-            viewModel: viewModel
-        )
+        CopyContextMenuButton(viewModel: viewModel)
     }
 }
 

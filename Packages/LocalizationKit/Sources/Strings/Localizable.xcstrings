@@ -880,6 +880,29 @@
         }
       }
     },
+    "Expert.promt" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Classify the news based ONLY on its content.\n        Return exactly one label:\n        COOL\n        WHO CARES\n        SUCKS"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klasifikasikan berita HANYA berdasarkan isinya.\nKembalikan tepat satu penilaian:\nKEREN\nSIAPA PEDULI\nJELEK\n"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Классифицируй новость, основываясь ТОЛЬКО на её содержании.\nВерни строго одну оценку:\nКРУТО\nКОМУ НЕ ВСЁ РАВНО\nОТСТОЙ\n"
+          }
+        }
+      }
+    },
     "Favorites.add" : {
       "extractionState" : "manual",
       "localizations" : {

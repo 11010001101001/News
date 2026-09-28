@@ -17,7 +17,8 @@ let package = Package(
         .package(path: "../ModelsKit"),
         .package(path: "../CoreKit"),
         .package(path: "../DesignSystem"),
-        .package(path: "../LocalizationKit")
+        .package(path: "../LocalizationKit"),
+        .package(path: "../AIKit")
     ],
     targets: [
         .target(
@@ -26,10 +27,12 @@ let package = Package(
                 .product(name: "ModelsKit", package: "ModelsKit"),
                 .product(name: "CoreKit", package: "CoreKit"),
                 .product(name: "DesignSystem", package: "DesignSystem"),
-                .product(name: "LocalizationKit", package: "LocalizationKit")
+                .product(name: "LocalizationKit", package: "LocalizationKit"),
+                .product(name: "AIKit", package: "AIKit")
             ],
             swiftSettings: [
-                .enableUpcomingFeature("ApproachableConcurrency")
+                .enableUpcomingFeature("ApproachableConcurrency"),
+                .interoperabilityMode(.Cxx)
             ]
         )
     ]

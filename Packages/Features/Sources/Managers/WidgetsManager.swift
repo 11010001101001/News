@@ -57,6 +57,7 @@ final class WidgetsManager: WidgetsManagerProtocol {
         }
 
         guard let activeActivity else {
+            // TODO: save to local variable and manage it after no .active exists
             start()
             updateLevel(watchedTopics: watchedTopics)
             return

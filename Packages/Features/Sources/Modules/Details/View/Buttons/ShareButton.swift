@@ -13,7 +13,6 @@ import CoreKit
 
 struct ShareButton: View {
     @State var imageWrapper: ContentWrapper?
-    let data: ButtonMetaData
     let viewModel: DetailsViewModel
     let isGlass: Bool
 
@@ -23,12 +22,12 @@ struct ShareButton: View {
                 viewModel.impactOccured(.light)
 
                 self.imageWrapper = ContentWrapper(
-                    link: (URL(string: data.article.url.orEmpty)?.absoluteString).orEmpty,
+                    link: (URL(string: viewModel.url)?.absoluteString).orEmpty,
                     description: DeveloperInfo.shareInfo
                 )
             },
-            title: data.title,
-            iconName: data.iconName,
+            title: nil,
+            iconName: SFSymbols.squareAndArrowUp.rawValue,
             isGlass: isGlass
         )
         .sheet(

@@ -289,4 +289,9 @@ public enum Strings {
     public static var widgetsProgress: LocalizedStringResource {
         LocalizedStringResource("Widgets.progress", bundle: .atURL(Bundle.module.bundleURL))
     }
+
+    // MARK: - AI Expert
+    public static var expertPromt: LocalizedStringResource {
+        LocalizedStringResource("Expert.promt", bundle: .atURL(Bundle.module.bundleURL))
+    }
 }

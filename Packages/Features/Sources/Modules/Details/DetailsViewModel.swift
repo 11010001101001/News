@@ -5,10 +5,12 @@
 //  Created by Ярослав Куприянов on 10.10.2025.
 //
 
-import Foundation
-import SwiftUI
-import ModelsKit
 import CoreKit
+import Foundation
+import LocalizationKit
+import ModelsKit
+import SwiftUI
+import DesignSystem
 
 @Observable
 @MainActor
@@ -39,23 +41,54 @@ final class DetailsViewModel {
         settingsManager.loaderShadowColor
     }
 
+    func generateOpinion() async -> String {
+        await expertManager.generateOpinion(from: description)
+    }
+
+    var url: String {
+        article.urlToImage.orEmpty
+    }
+
+    var key: AnyObject & Sendable {
+        url as AnyObject & Sendable
+    }
+
+    var description: String {
+        article.description ?? String(localized: Strings.stateNoDescription)
+    }
+
+    var isFavorite: Bool {
+        checkIsFavorite(article)
+    }
+
+    var favoriteIcon: String {
+        isFavorite ? SFSymbols.heartFill.rawValue : SFSymbols.heart.rawValue
+    }
+
     // MARK: Private variables
     private let cacheManager: CacheManagerProtocol
     private let settingsManager: SettingsManagerProtocol
     private let vibrateManager: VibrateManagerProtocol
     private let widgetsManager: WidgetsManagerProtocol
+    private let expertManager: ExpertManagerProtocol
+    // TODO: to private end fix all views to SOLID
+    let article: Article
 
     // MARK: Init
     init(
         cacheManager: CacheManagerProtocol,
         settingsManager: SettingsManagerProtocol,
         vibrateManager: VibrateManagerProtocol,
-        widgetsManager: WidgetsManagerProtocol
+        widgetsManager: WidgetsManagerProtocol,
+        expertManager: ExpertManagerProtocol,
+        article: Article
     ) {
         self.cacheManager = cacheManager
         self.settingsManager = settingsManager
         self.vibrateManager = vibrateManager
         self.widgetsManager = widgetsManager
+        self.expertManager = expertManager
+        self.article = article
     }
 }
 
@@ -101,5 +134,20 @@ extension DetailsViewModel {
 
     func checkIsFavorite(_ article: Article) -> Bool {
         favoriteTopics.contains(article.favorite)
+    }
+
+    func toggleFavorite() {
+        impactOccured(.light)
+
+        if isFavorite {
+            favoriteTopics.removeAll(where: { $0 == article.favorite })
+        } else {
+            favoriteTopics.append(article.favorite)
+        }
+    }
+
+    func copyDescription() {
+        UIPasteboard.general.string = description
+        impactOccured(.medium)
     }
 }

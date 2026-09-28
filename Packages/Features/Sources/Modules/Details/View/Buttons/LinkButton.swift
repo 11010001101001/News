@@ -14,7 +14,6 @@ struct LinkButton: View {
     @State private var webViewPresented = false
 
     let viewModel: DetailsViewModel
-    let article: Article
 
     var body: some View {
         CustomButton(
@@ -29,7 +28,7 @@ struct LinkButton: View {
             WebViewSheetModifier(
                 viewModel: viewModel,
                 webViewPresented: $webViewPresented,
-                url: article.url.orEmpty
+                url: viewModel.url
             )
         )
     }

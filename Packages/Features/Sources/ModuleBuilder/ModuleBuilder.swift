@@ -14,6 +14,7 @@ public struct ModuleBuilder {
     private let settingsManager: SettingsManagerProtocol = SettingsManager()
     private let networkManager: NetworkManagerProtocol = NetworkManager()
     private let widgetsManager: WidgetsManagerProtocol = WidgetsManager()
+    private let expertManager: ExpertManagerProtocol = ExpertManager()
 
     @ViewBuilder
     public func build(_ module: Module) -> some View {
@@ -34,9 +35,11 @@ public struct ModuleBuilder {
                 cacheManager: cacheManager,
                 settingsManager: settingsManager,
                 vibrateManager: vibrateManager,
-                widgetsManager: widgetsManager
+                widgetsManager: widgetsManager,
+                expertManager: expertManager,
+                article: article
             )
-            DetailsView(viewModel: viewModel, article: article)
+            DetailsView(viewModel: viewModel)
 
         case .settings:
             let viewModel = SettingsViewModel(
