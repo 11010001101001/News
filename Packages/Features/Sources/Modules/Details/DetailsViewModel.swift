@@ -46,7 +46,7 @@ final class DetailsViewModel {
     }
 
     var url: String {
-        article.urlToImage.orEmpty
+        article.url.orEmpty
     }
 
     var key: AnyObject & Sendable {
