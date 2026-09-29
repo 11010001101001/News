@@ -1,5 +1,5 @@
 //
-//  ShareButton.swift
+//  CopyContextMenuButton.swift
 //  News
 //
 //  Created by Ярослав Куприянов on 10.04.2024.

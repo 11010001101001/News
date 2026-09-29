@@ -38,7 +38,7 @@ public enum SFSymbols: String {
     case catFill = "cat.fill"
     case paperplaneFill = "paperplane.fill"
     case infoCircleFill = "info.circle.fill"
-    case link
+    case safari
     case documentOnDocument = "document.on.document"
     case lightMax = "light.max"
     case globe

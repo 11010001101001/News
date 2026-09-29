@@ -10,6 +10,7 @@ import SwiftUI
 import ModelsKit
 import DesignSystem
 import CoreKit
+import LocalizationKit
 
 struct ShareButton: View {
     @State var imageWrapper: ContentWrapper?

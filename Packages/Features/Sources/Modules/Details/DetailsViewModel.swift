@@ -41,7 +41,7 @@ final class DetailsViewModel {
         settingsManager.loaderShadowColor
     }
 
-    func generateOpinion() async -> String {
+    func generateOpinion() async -> Rating {
         await expertManager.generateOpinion(from: description)
     }
 

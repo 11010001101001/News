@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import ModelsKit
 import DesignSystem
+import LocalizationKit
 
 struct LinkButton: View {
     @State private var webViewPresented = false
@@ -22,7 +23,8 @@ struct LinkButton: View {
                 webViewPresented.toggle()
             },
             title: nil,
-            iconName: SFSymbols.link.rawValue
+            iconName: SFSymbols.safari.rawValue,
+            isGlass: false
         )
         .modifier(
             WebViewSheetModifier(

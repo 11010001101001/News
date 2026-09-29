@@ -11,7 +11,7 @@ import LocalizationKit
 import ModelsKit
 
 protocol ExpertManagerProtocol: Sendable {
-    func generateOpinion(from text: String) async -> String
+    func generateOpinion(from text: String) async -> Rating
 }
 
 actor ExpertManager: ExpertManagerProtocol {
@@ -34,7 +34,7 @@ actor ExpertManager: ExpertManagerProtocol {
         return engine.loadModel(path: modelPath)
     }
 
-    func generateOpinion(from text: String) -> String {
+    func generateOpinion(from text: String) -> Rating {
         let systemPrompt = String(localized: Strings.expertPromt)
 
         let fullPrompt =
@@ -45,9 +45,9 @@ actor ExpertManager: ExpertManagerProtocol {
         let result = engine.generate(fullPrompt)
 
         if let label = labels.first(where: { result.contains($0.rawValue) }) {
-            return label.rawValue
+            return label
         }
 
-        return .empty
+        return .loading
     }
 }
