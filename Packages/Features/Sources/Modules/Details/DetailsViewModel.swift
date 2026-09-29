@@ -53,6 +53,10 @@ final class DetailsViewModel {
         url as AnyObject & Sendable
     }
 
+    var imageUrl: String {
+        article.urlToImage.orEmpty
+    }
+
     var description: String {
         article.description ?? String(localized: Strings.stateNoDescription)
     }

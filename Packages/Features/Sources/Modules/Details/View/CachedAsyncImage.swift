@@ -34,7 +34,7 @@ extension CachedAsyncImage {
             cachedImage
                 .toFrame()
         } else {
-            AsyncImage(url: URL(string: viewModel.url)) { phase in
+            AsyncImage(url: URL(string: viewModel.imageUrl)) { phase in
                 if let image = phase.image {
                     image
                         .toFrame()
