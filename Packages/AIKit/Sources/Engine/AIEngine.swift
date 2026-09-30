@@ -5,7 +5,7 @@
 //  Created by Slava on 28.09.2026.
 //
 
-import AIEngineCpp
+import Bridge
 import Foundation
 
 public class Engine {

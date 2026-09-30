@@ -10,16 +10,14 @@ let package = Package(
     products: [
         .library(
             name: "AIKit",
-            targets: ["AIKit"]
+            targets: ["Engine"]
         )
     ],
     targets: [
         .target(
-            name: "AIEngineCpp",
-            dependencies: [
-                "llama"
-            ],
-            path: "Sources/AIEngineCpp",
+            name: "Bridge",
+            dependencies: [ "llama" ],
+            path: "Sources/Bridge",
             cxxSettings: [
                 .headerSearchPath("include"),
                 .headerSearchPath("../llama.xcframework/ios-arm64/llama.framework/Headers"),
@@ -27,17 +25,11 @@ let package = Package(
             ]
         ),
         .target(
-            name: "AIKit",
-            dependencies: [
-                "AIEngineCpp"
-            ],
-            path: "Sources/AIKit",
-            resources: [
-                .process("LLM")
-            ],
-            swiftSettings: [
-                .interoperabilityMode(.Cxx)
-            ]
+            name: "Engine",
+            dependencies: [ "Bridge" ],
+            path: "Sources/Engine",
+            resources: [ .process("../qwen2.5-1.5b-instruct-q4_k_m.gguf") ],
+            swiftSettings: [ .interoperabilityMode(.Cxx) ]
         ),
         .binaryTarget(
             name: "llama",

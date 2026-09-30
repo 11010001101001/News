@@ -5,7 +5,7 @@
 //  Created by Slava on 28.09.2026.
 //
 
-import AIKit
+import Engine
 import Foundation
 import LocalizationKit
 import ModelsKit
