@@ -25,10 +25,7 @@ actor ExpertManager: ExpertManagerProtocol {
 
     @discardableResult
     public func loadModel() async -> Bool {
-        guard
-            let modelPath = Bundle.main.path(
-                forResource: "qwen2.5-1.5b-instruct-q4_k_m", ofType: "gguf")
-        else {
+        guard let modelPath = engine.defaultModelPath else {
             return false
         }
         return engine.loadModel(path: modelPath)

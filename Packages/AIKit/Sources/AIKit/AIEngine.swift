@@ -6,6 +6,7 @@
 //
 
 import AIEngineCpp
+import Foundation
 
 public class Engine {
     private var llm = AIEngine.LocalLLM()
@@ -21,5 +22,11 @@ public class Engine {
         let cppPromt = std.string(promt)
         let result = llm.generate(cppPromt)
         return String(result)
+    }
+}
+
+public extension Engine {
+    var defaultModelPath: String? {
+        Bundle.module.path(forResource: "qwen2.5-1.5b-instruct-q4_k_m", ofType: "gguf")
     }
 }

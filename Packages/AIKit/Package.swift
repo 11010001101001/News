@@ -13,18 +13,16 @@ let package = Package(
             targets: ["AIKit"]
         )
     ],
-    dependencies: [
-        .package(url: "https://github.com/StanfordBDHG/llama.cpp", .upToNextMinor(from: "0.1.0"))
-    ],
     targets: [
         .target(
             name: "AIEngineCpp",
             dependencies: [
-                .product(name: "llama", package: "llama.cpp")
+                "llama"
             ],
             path: "Sources/AIEngineCpp",
             cxxSettings: [
                 .headerSearchPath("include"),
+                .headerSearchPath("../llama.xcframework/ios-arm64/llama.framework/Headers"),
                 .unsafeFlags(["-std=c++20"])
             ]
         ),
@@ -34,9 +32,16 @@ let package = Package(
                 "AIEngineCpp"
             ],
             path: "Sources/AIKit",
+            resources: [
+                .process("LLM")
+            ],
             swiftSettings: [
                 .interoperabilityMode(.Cxx)
             ]
+        ),
+        .binaryTarget(
+            name: "llama",
+            path: "Sources/llama.xcframework"
         )
     ],
     swiftLanguageModes: [.v6],

@@ -20,13 +20,11 @@ LocalLLM::~LocalLLM() {
 }
 
 bool LocalLLM::loadModel(const std::string &path, int ctxSize) {
-    //    llama_backend_init();
-
     auto mparams = llama_model_default_params();
 #if TARGET_OS_SIMULATOR
-    mparams.n_gpu_layers = 0; // На симуляторе Metal задизейблен, считаем на CPU
+    mparams.n_gpu_layers = 0;
 #else
-    mparams.n_gpu_layers = 99; // На девайсе грузим все слои в Metal
+    mparams.n_gpu_layers = 99;
 #endif
 
     model = llama_load_model_from_file(path.c_str(), mparams);
