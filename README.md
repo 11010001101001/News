@@ -5,7 +5,7 @@
 [![Swift](https://img.shields.io/badge/Swift-6.0-orange.svg?style=for-the-badge&logo=swift)](https://swift.org)
 [![SwiftUI](https://img.shields.io/badge/SwiftUI-Framework-purple.svg?style=for-the-badge&logo=swift)](https://developer.apple.com/xcode/swiftui/)
 [![Architecture](https://img.shields.io/badge/Architecture-Modular%20SPM-brightgreen.svg?style=for-the-badge&logo=swift)](https://swift.org/package-manager/)
-[![C++ Interop](https://img.shields.io/badge/C%2B%2B%20Interop-C%2B%2B20-blue.svg?style=for-the-badge&logo=c%2B%2B)](https://www.swift.org/documentation/cxx-interop/)
+[![C++ Interop](https://img.shields.io/badge/C%2B%2B_Interop-C%2B%2B20-blue.svg?style=for-the-badge&logo=cplusplus)](https://www.swift.org/documentation/cxx-interop/)
 [![On-Device LLM](https://img.shields.io/badge/On--Device%20LLM-Qwen%202.5-orange.svg?style=for-the-badge&logo=openai)](https://github.com/ggerganov/llama.cpp)
 [![SwiftData](https://img.shields.io/badge/SwiftData-Persistence-green.svg?style=for-the-badge&logo=apple)](https://developer.apple.com/documentation/swiftdata)
 [![ActivityKit](https://img.shields.io/badge/ActivityKit-Live%20Activities-red.svg?style=for-the-badge&logo=apple)](https://developer.apple.com/documentation/activitykit)
