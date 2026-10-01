@@ -22,7 +22,7 @@ actor ExpertManager: ExpertManagerProtocol {
     }
 
     // Thread starvation -> Glitches resolved by limiting cores & gpu_layers number in C++
-    // Batery drain & heating resolved by caching
+    // Battery drain & heating resolved by caching
     func generateOpinion(from text: String) -> Rating {
         guard !Task.isCancelled else { return .error }
 
