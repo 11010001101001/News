@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-public enum Rating: String, CaseIterable, Sendable {
+public enum Rating: String, Sendable {
     case cool = "COOL"
     case whoCares = "WHO CARES"
     case sucks = "SUCKS"
     case loading
+    case error
 
     public var iconName: String {
         switch self {
@@ -19,15 +20,21 @@ public enum Rating: String, CaseIterable, Sendable {
         case .whoCares: "face.dashed"
         case .sucks: "hand.thumbsdown.fill"
         case .loading: "sparkles"
+        case .error: "slash.circle"
         }
     }
 
     public var color: Color {
         switch self {
         case .cool: .green
-        case .whoCares: .gray
+        case .whoCares: .yellow
         case .sucks: .red
         case .loading: .white
+        case .error: .gray
         }
+    }
+
+    public static var validRatings: [Rating] {
+        [.cool, .whoCares, .sucks]
     }
 }

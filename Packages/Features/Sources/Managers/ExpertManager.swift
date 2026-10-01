@@ -38,13 +38,13 @@ actor ExpertManager: ExpertManagerProtocol {
             "<|im_start|>system\n" + "\(systemPrompt)\n" + "<|im_end|>\n" + "<|im_start|>user\n"
             + "\(text)\n" + "<|im_end|>\n" + "<|im_start|>assistant\n"
 
-        let labels = Rating.allCases
+        let labels = Rating.validRatings
         let result = engine.generate(fullPrompt)
 
         if let label = labels.first(where: { result.contains($0.rawValue) }) {
             return label
         }
 
-        return .loading
+        return .error
     }
 }
