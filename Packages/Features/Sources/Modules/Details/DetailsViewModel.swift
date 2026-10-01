@@ -6,18 +6,16 @@
 //
 
 import CoreKit
+import DesignSystem
 import Foundation
 import LocalizationKit
 import ModelsKit
 import SwiftUI
-import DesignSystem
 
 @Observable
 @MainActor
 final class DetailsViewModel {
-    // MARK: Internal variables
-    var imageCacheData: (image: AnyObject, key: AnyObject)?
-
+    // MARK: Public variables
     var loader: String {
         get { settingsManager.loader }
         set { settingsManager.save(loader: newValue) }
@@ -41,15 +39,23 @@ final class DetailsViewModel {
         settingsManager.loaderShadowColor
     }
 
-    func generateOpinion() async -> Rating {
-        await expertManager.generateOpinion(from: description)
+    var title: String {
+        article.title.orEmpty
+    }
+
+    var publishedAt: String {
+        (article.publishedAt?.toReadableDate()).orEmpty
+    }
+
+    var sourceName: String {
+        (article.source?.name).orEmpty
     }
 
     var url: String {
         article.url.orEmpty
     }
 
-    var key: AnyObject & Sendable {
+    var cacheKey: AnyObject & Sendable {
         url as AnyObject & Sendable
     }
 
@@ -62,11 +68,31 @@ final class DetailsViewModel {
     }
 
     var isFavorite: Bool {
-        checkIsFavorite(article)
+        favoriteTopics.contains(article.favorite)
     }
 
     var favoriteIcon: String {
         isFavorite ? SFSymbols.heartFill.rawValue : SFSymbols.heart.rawValue
+    }
+
+    var isReadTitle: LocalizedStringResource {
+        isRead ? Strings.contextMenuMarkAsUnread : Strings.contextMenuMarkAsRead
+    }
+
+    var isReadIcon: String {
+        isRead ? SFSymbols.checkmarkSealFill.rawValue : SFSymbols.checkmarkSeal.rawValue
+    }
+
+    var isRead: Bool {
+        checkIsRead(article.key)
+    }
+
+    var isShadowEnabled: Bool {
+        ((article.title?.lowercased()).orEmpty).contains(keyword.lowercased())
+    }
+
+    var favoritesContextMenuTitle: LocalizedStringResource {
+        isFavorite ? Strings.contextMenuRemoveFromFavorites : Strings.contextMenuAddToFavorites
     }
 
     // MARK: Private variables
@@ -75,8 +101,7 @@ final class DetailsViewModel {
     private let vibrateManager: VibrateManagerProtocol
     private let widgetsManager: WidgetsManagerProtocol
     private let expertManager: ExpertManagerProtocol
-    // TODO: to private end fix all views to SOLID
-    let article: Article
+    private let article: Article
 
     // MARK: Init
     init(
@@ -96,13 +121,25 @@ final class DetailsViewModel {
     }
 }
 
-// MARK: - Public
+// MARK: - Private
 extension DetailsViewModel {
-    func getCachedImage(key: AnyObject & Sendable) async -> Image? {
-        await cacheManager.getCachedImage(key: key)
+    fileprivate func markAsUnread() {
+        watchedTopics.remove(article.key)
+        widgetsManager.updateLevel(watchedTopics: watchedTopics)
     }
 
-    func markAsRead(_ article: Article) {
+    fileprivate func checkIsRead(_ key: String) -> Bool {
+        watchedTopics.contains(where: { $0 == key })
+    }
+}
+
+// MARK: - Public
+extension DetailsViewModel {
+    func getCachedImage() async -> Image? {
+        await cacheManager.getCachedImage(key: cacheKey)
+    }
+
+    func markAsRead() {
         let isViewed = checkIsRead(article.key)
 
         guard !isViewed else { return }
@@ -112,32 +149,12 @@ extension DetailsViewModel {
         widgetsManager.updateLevel(watchedTopics: watchedTopics)
     }
 
-    func markAsUnread(_ article: Article) {
-        watchedTopics.remove(article.key)
-        widgetsManager.updateLevel(watchedTopics: watchedTopics)
-    }
-
-    func cache(object: AnyObject & Sendable, key: AnyObject & Sendable) {
-        imageCacheData = (object, key)
-        Task {
-            await cacheManager.save(object: object, key: key)
-        }
-    }
-
-    func checkIsRead(_ key: String) -> Bool {
-        watchedTopics.contains(where: { $0 == key })
+    func cache(_ image: Image) async {
+        await cacheManager.save(object: CachedImage(image: image), key: cacheKey)
     }
 
     func impactOccured(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
         vibrateManager.vibrate(style)
-    }
-
-    func notificationOccurred(_ feedBackType: UINotificationFeedbackGenerator.FeedbackType) {
-        vibrateManager.vibrate(feedBackType)
-    }
-
-    func checkIsFavorite(_ article: Article) -> Bool {
-        favoriteTopics.contains(article.favorite)
     }
 
     func toggleFavorite() {
@@ -153,5 +170,18 @@ extension DetailsViewModel {
     func copyDescription() {
         UIPasteboard.general.string = description
         impactOccured(.medium)
+    }
+
+    func generateOpinion() async -> Rating {
+        await expertManager.generateOpinion(from: description)
+    }
+
+    func markAsReadOrUnread() {
+        impactOccured(.light)
+        if isRead {
+            markAsUnread()
+        } else {
+            markAsRead()
+        }
     }
 }

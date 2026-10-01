@@ -20,9 +20,9 @@ struct CachedAsyncImage: View {
     var body: some View {
         buildCachedAsyncImage()
             .task {
-                cachedImage = await viewModel.getCachedImage(key: viewModel.key)
+                cachedImage = await viewModel.getCachedImage()
             }
-            .onAppear { viewModel.markAsRead(viewModel.article) }
+            .onAppear { viewModel.markAsRead() }
     }
 }
 
@@ -38,7 +38,7 @@ extension CachedAsyncImage {
                 if let image = phase.image {
                     image
                         .toFrame()
-                        .onAppear { cache(image) }
+                        .task { await viewModel.cache(image) }
                 } else if phase.error != nil {
                     ErrorView(title: Strings.errorsImageLoadingError, action: nil)
                 } else {
@@ -53,14 +53,6 @@ extension CachedAsyncImage {
             loaderName: viewModel.loader,
             shadowColor: viewModel.loaderShadowColor
         )
-    }
-}
-
-// MARK: Cache
-extension CachedAsyncImage {
-    fileprivate func cache(_ image: Image) {
-        let object = CachedImage(image: image)
-        viewModel.cache(object: object, key: viewModel.key)
     }
 }
 

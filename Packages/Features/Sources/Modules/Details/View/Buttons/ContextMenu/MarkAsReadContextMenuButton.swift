@@ -14,32 +14,12 @@ import LocalizationKit
 
 struct MarkAsReadContextMenuButton: View {
     let viewModel: DetailsViewModel
-    let article: Article
-
-    private var isRead: Bool {
-        viewModel.checkIsRead(article.key)
-    }
-
-    private var iconName: String {
-        isRead ? SFSymbols.checkmarkSealFill.rawValue : SFSymbols.checkmarkSeal.rawValue
-    }
-
-    private var title: LocalizedStringResource {
-        isRead ? Strings.contextMenuMarkAsUnread : Strings.contextMenuMarkAsRead
-    }
 
     var body: some View {
         CustomButton(
-            action: {
-                viewModel.impactOccured(.light)
-                if isRead {
-                    viewModel.markAsUnread(article)
-                } else {
-                    viewModel.markAsRead(article)
-                }
-            },
-            title: title,
-            iconName: iconName,
+            action: { viewModel.markAsReadOrUnread() },
+            title: viewModel.isReadTitle,
+            iconName: viewModel.isReadIcon,
             isGlass: false
         )
     }

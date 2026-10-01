@@ -10,11 +10,11 @@ import SwiftUI
 import CoreKit
 import ModelsKit
 import DesignSystem
+import LocalizationKit
 
 struct ShareContextMenuButton: View {
     @Binding var imageWrapper: ContentWrapper?
 
-    let data: ButtonMetaData
     let viewModel: DetailsViewModel
 
     var body: some View {
@@ -23,12 +23,12 @@ struct ShareContextMenuButton: View {
                 viewModel.impactOccured(.light)
 
                 imageWrapper = ContentWrapper(
-                    link: (URL(string: data.article.url.orEmpty)?.absoluteString).orEmpty,
+                    link: (URL(string: viewModel.url)?.absoluteString).orEmpty,
                     description: DeveloperInfo.shareInfo
                 )
             },
-            title: data.title,
-            iconName: data.iconName,
+            title: Strings.contextMenuShare,
+            iconName: SFSymbols.squareAndArrowUp.rawValue,
             isGlass: false
         )
     }

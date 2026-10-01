@@ -13,29 +13,12 @@ import DesignSystem
 
 struct FavoritesContextMenuButton: View {
     @Bindable var viewModel: DetailsViewModel
-    let article: Article
-
-    private var isFavorite: Bool {
-        viewModel.checkIsFavorite(article)
-    }
-
-    private var title: LocalizedStringResource {
-        isFavorite ? Strings.contextMenuRemoveFromFavorites : Strings.contextMenuAddToFavorites
-    }
 
     var body: some View {
         CustomButton(
-            action: {
-                viewModel.impactOccured(.light)
-
-                if isFavorite {
-                    viewModel.favoriteTopics.removeAll(where: { $0 == article.favorite })
-                } else {
-                    viewModel.favoriteTopics.append(article.favorite)
-                }
-            },
-            title: title,
-            iconName: isFavorite ? SFSymbols.heartFill.rawValue : SFSymbols.heart.rawValue,
+            action: { viewModel.toggleFavorite() },
+            title: viewModel.favoritesContextMenuTitle,
+            iconName: viewModel.favoriteIcon,
             isGlass: false
         )
     }

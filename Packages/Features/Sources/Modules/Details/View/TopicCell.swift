@@ -15,16 +15,6 @@ struct TopicCell: View {
     @Bindable var viewModel: DetailsViewModel
     @State var imageWrapper: ContentWrapper?
 
-    let article: Article
-
-    var isRead: Bool {
-        viewModel.checkIsRead(article.key)
-    }
-
-    var isShadowEnabled: Bool {
-        ((article.title?.lowercased()).orEmpty).contains(viewModel.keyword.lowercased())
-    }
-
     var body: some View {
         Group {
             ZStack(alignment: .bottomTrailing) {
@@ -35,7 +25,7 @@ struct TopicCell: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .glassClearInteractive()
-        .markAsReadOrHighlight(isRead: isRead, isShadowEnabled: isShadowEnabled)
+        .markAsReadOrHighlight(isRead: viewModel.isRead, isShadowEnabled: viewModel.isShadowEnabled)
         .padding([.bottom, .horizontal], Constants.padding)
         .contentShape(.rect)
         .contextMenu { contextMenu }
@@ -54,15 +44,15 @@ extension TopicCell {
     fileprivate var texts: some View {
         HorStack {
             VerStack {
-                DesignedText(.init(stringLiteral: article.title.orEmpty))
+                DesignedText(.init(stringLiteral: viewModel.title))
                     .multilineTextAlignment(.leading)
                     .padding(.bottom)
                     .font(.headline)
                     .foregroundStyle(Color.primary)
-                DesignedText(.init(stringLiteral: (article.publishedAt?.toReadableDate()).orEmpty))
+                DesignedText(.init(stringLiteral: viewModel.publishedAt))
                     .font(.subheadline)
                     .foregroundStyle(Color.secondary)
-                DesignedText(.init(stringLiteral: (article.source?.name).orEmpty))
+                DesignedText(.init(stringLiteral: viewModel.sourceName))
                     .font(.subheadline)
                     .foregroundStyle(Color.secondary)
             }
@@ -80,32 +70,9 @@ extension TopicCell {
 
     @ViewBuilder
     fileprivate var contextMenu: some View {
-        FavoritesContextMenuButton(
-            viewModel: viewModel,
-            article: article
-        )
-
-        ShareContextMenuButton(
-            imageWrapper: $imageWrapper,
-            data: ButtonMetaData(
-                article: article,
-                title: Strings.contextMenuShare,
-                iconName: SFSymbols.squareAndArrowUp.rawValue
-            ),
-            viewModel: viewModel
-        )
-
-        MarkAsReadContextMenuButton(
-            viewModel: viewModel,
-            article: article
-        )
-
+        FavoritesContextMenuButton(viewModel: viewModel)
+        ShareContextMenuButton(imageWrapper: $imageWrapper, viewModel: viewModel)
+        MarkAsReadContextMenuButton(viewModel: viewModel)
         CopyContextMenuButton(viewModel: viewModel)
-    }
-}
-
-extension TopicCell: Equatable {
-    static func == (lhs: TopicCell, rhs: TopicCell) -> Bool {
-        lhs.article.key == rhs.article.key
     }
 }

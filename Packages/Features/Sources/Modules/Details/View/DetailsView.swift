@@ -21,7 +21,7 @@ extension DetailsView {
         NavigationLink {
             TopicDetail(viewModel: viewModel)
         } label: {
-            TopicCell(viewModel: viewModel, article: viewModel.article).equatable()
+            TopicCell(viewModel: viewModel)
         }
         .scrollTransition(
             topLeading: .identity,
