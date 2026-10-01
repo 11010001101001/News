@@ -8,29 +8,22 @@
 import Foundation
 import SwiftUI
 
-public protocol CacheManagerProtocol: Sendable {
-    func getCachedImage(key: AnyObject & Sendable) async -> Image?
-    func save(object: AnyObject & Sendable, key: AnyObject & Sendable) async
+public protocol CacheManagerProtocol {
+    func get(key: AnyObject) -> AnyObject?
+    func save(object: AnyObject, key: AnyObject)
 }
 
 // MARK: - CacheManagerProtocol
-public actor CacheManager: CacheManagerProtocol {
+public class CacheManager: CacheManagerProtocol {
     private let cache = NSCache<AnyObject, AnyObject>()
 
-    public init() { }
+    public init() {}
 
-    public func getCachedImage(key: AnyObject & Sendable) -> Image? {
-        (get(key: key) as? CachedImage)?.image
-    }
-
-    public func save(object: AnyObject & Sendable, key: AnyObject & Sendable) {
-        cache.setObject(object, forKey: key)
-    }
-}
-
-// MARK: - Private
-extension CacheManager {
-    fileprivate func get(key: AnyObject) -> AnyObject? {
+    public func get(key: AnyObject) -> AnyObject? {
         cache.object(forKey: key)
+    }
+
+    public func save(object: AnyObject, key: AnyObject) {
+        cache.setObject(object, forKey: key)
     }
 }

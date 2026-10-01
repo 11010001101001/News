@@ -18,33 +18,20 @@ actor ExpertManager: ExpertManagerProtocol {
     private let engine = Engine()
 
     init() {
-        Task {
-            await loadModel()
-        }
-    }
-
-    @discardableResult
-    public func loadModel() async -> Bool {
-        guard let modelPath = engine.defaultModelPath else {
-            return false
-        }
-        return engine.loadModel(path: modelPath)
+        engine.loadModel()
     }
 
     func generateOpinion(from text: String) -> Rating {
+        guard !Task.isCancelled else { return .error }
+
         let systemPrompt = String(localized: Strings.expertPromt)
 
         let fullPrompt =
             "<|im_start|>system\n" + "\(systemPrompt)\n" + "<|im_end|>\n" + "<|im_start|>user\n"
             + "\(text)\n" + "<|im_end|>\n" + "<|im_start|>assistant\n"
 
-        let labels = Rating.validRatings
         let result = engine.generate(fullPrompt)
 
-        if let label = labels.first(where: { result.contains($0.rawValue) }) {
-            return label
-        }
-
-        return .error
+        return Rating.validRatings.first(where: { result.contains($0.rawValue) }) ?? .error
     }
 }

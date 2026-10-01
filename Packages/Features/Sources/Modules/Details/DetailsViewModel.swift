@@ -135,8 +135,8 @@ extension DetailsViewModel {
 
 // MARK: - Public
 extension DetailsViewModel {
-    func getCachedImage() async -> Image? {
-        await cacheManager.getCachedImage(key: cacheKey)
+    func getCachedImage() -> Image? {
+        (cacheManager.get(key: cacheKey) as? CachedImage)?.image
     }
 
     func markAsRead() {
@@ -149,8 +149,8 @@ extension DetailsViewModel {
         widgetsManager.updateLevel(watchedTopics: watchedTopics)
     }
 
-    func cache(_ image: Image) async {
-        await cacheManager.save(object: CachedImage(image: image), key: cacheKey)
+    func cache(_ image: Image) {
+        cacheManager.save(object: CachedImage(image: image), key: cacheKey)
     }
 
     func impactOccured(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {

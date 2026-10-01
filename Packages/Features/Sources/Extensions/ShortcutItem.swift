@@ -8,8 +8,9 @@
 import UIKit
 import DesignSystem
 
+@MainActor
 public enum ShortcutItem: String {
-    @MainActor public static var selectedAction: UIApplicationShortcutItem?
+    public static var selectedAction: UIApplicationShortcutItem?
 
     static var shareInfo: [String: NSSecureCoding] {
         ["name": ShortcutItem.share.rawValue as NSSecureCoding]
@@ -19,7 +20,7 @@ public enum ShortcutItem: String {
         ["name": ShortcutItem.settings.rawValue as NSSecureCoding]
     }
 
-    @MainActor public static var allItems = [
+    public static var allItems = [
         UIMutableApplicationShortcutItem(
             type: ShortcutItem.share.rawValue,
             localizedTitle: ShortcutItem.share.title,

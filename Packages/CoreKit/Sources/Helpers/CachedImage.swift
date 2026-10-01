@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public final class CachedImage: Sendable {
+public final class CachedImage {
     public let image: Image
 
     public init(image: Image) {

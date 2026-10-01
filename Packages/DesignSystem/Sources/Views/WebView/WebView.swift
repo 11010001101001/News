@@ -54,23 +54,17 @@ extension WebView {
         }
 
         public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            Task { @MainActor in
-                viewModel.loadingState = .loaded
-            }
+            viewModel.loadingState = .loaded
         }
 
         public func webView(
             _ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error
         ) {
-            Task { @MainActor in
-                viewModel.loadingState = .error(message: .init(stringLiteral: error.localizedDescription))
-            }
+            viewModel.loadingState = .error(message: .init(stringLiteral: error.localizedDescription))
         }
 
         public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-            Task { @MainActor in
-                viewModel.loadingState = .loaded
-            }
+            viewModel.loadingState = .loaded
         }
 
         public func webView(
@@ -78,9 +72,7 @@ extension WebView {
             didFailProvisionalNavigation navigation: WKNavigation!,
             withError error: any Error
         ) {
-            Task { @MainActor in
-                viewModel.loadingState = .error(message: .init(stringLiteral: error.localizedDescription))
-            }
+            viewModel.loadingState = .error(message: .init(stringLiteral: error.localizedDescription))
         }
 
         private func webView(
@@ -91,9 +83,7 @@ extension WebView {
             if navigationResponse.isForMainFrame,
                 let httpResponse = navigationResponse.response as? HTTPURLResponse {
                 if httpResponse.statusCode == 403 {
-                    Task { @MainActor [weak self] in
-                        self?.viewModel.loadingState = .error(message: "Access denied")
-                    }
+                    viewModel.loadingState = .error(message: "Access denied")
                     decisionHandler(.cancel)
                     return
                 }
@@ -104,16 +94,12 @@ extension WebView {
         public func scrollViewDidScroll(_ scrollView: UIScrollView) {
             let height = scrollView.contentSize.height - scrollView.frame.height
             guard height > 0 else {
-                Task { @MainActor in
-                    viewModel.scrollProgress = 0
-                }
+                viewModel.scrollProgress = 0
                 return
             }
             let ratio = scrollView.contentOffset.y / height
             let scrollProgress = max(0, min(1, Double(ratio)))
-            Task { @MainActor in
-                viewModel.scrollProgress = scrollProgress
-            }
+            viewModel.scrollProgress = scrollProgress
         }
     }
 }

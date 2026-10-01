@@ -7,12 +7,12 @@
 
 import UIKit
 
-public protocol VibrateManagerProtocol: Sendable {
-    @MainActor func vibrate(_ style: UIImpactFeedbackGenerator.FeedbackStyle)
-    @MainActor func vibrate(_ type: UINotificationFeedbackGenerator.FeedbackType)
+@MainActor
+public protocol VibrateManagerProtocol {
+    func vibrate(_ style: UIImpactFeedbackGenerator.FeedbackStyle)
+    func vibrate(_ type: UINotificationFeedbackGenerator.FeedbackType)
 }
 
-@MainActor
 public final class VibrateManager: VibrateManagerProtocol {
     private var impactGens: [UIImpactFeedbackGenerator.FeedbackStyle: UIImpactFeedbackGenerator]?
     private var notificationGen: UINotificationFeedbackGenerator?
