@@ -21,10 +21,12 @@ actor ExpertManager: ExpertManagerProtocol {
         engine.loadModel()
     }
 
+    // Thread starvation -> Glitches resolved by limiting cores & gpu_layers number in C++
+    // Batery drain & heating resolved by caching
     func generateOpinion(from text: String) -> Rating {
         guard !Task.isCancelled else { return .error }
 
-        let systemPrompt = String(localized: Strings.expertPromt)
+        let systemPrompt = String(localized: Strings.expertPrompt)
 
         let fullPrompt =
             "<|im_start|>system\n" + "\(systemPrompt)\n" + "<|im_end|>\n" + "<|im_start|>user\n"

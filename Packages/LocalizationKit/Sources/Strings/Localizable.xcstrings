@@ -880,7 +880,7 @@
         }
       }
     },
-    "Expert.promt" : {
+    "Expert.prompt" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -995,7 +995,7 @@
         }
       }
     },
-    "Keyword.promt" : {
+    "Keyword.prompt" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {

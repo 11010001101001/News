@@ -157,8 +157,8 @@ public enum Strings {
     public static var infoTitle: LocalizedStringResource {
         LocalizedStringResource("Info.title", bundle: .atURL(Bundle.module.bundleURL))
     }
-    public static var keywordPromt: LocalizedStringResource {
-        LocalizedStringResource("Keyword.promt", bundle: .atURL(Bundle.module.bundleURL))
+    public static var keywordPrompt: LocalizedStringResource {
+        LocalizedStringResource("Keyword.prompt", bundle: .atURL(Bundle.module.bundleURL))
     }
     public static var keywordTitle: LocalizedStringResource {
         LocalizedStringResource("Keyword.title", bundle: .atURL(Bundle.module.bundleURL))
@@ -291,7 +291,7 @@ public enum Strings {
     }
 
     // MARK: - AI Expert
-    public static var expertPromt: LocalizedStringResource {
-        LocalizedStringResource("Expert.promt", bundle: .atURL(Bundle.module.bundleURL))
+    public static var expertPrompt: LocalizedStringResource {
+        LocalizedStringResource("Expert.prompt", bundle: .atURL(Bundle.module.bundleURL))
     }
 }

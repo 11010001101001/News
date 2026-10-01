@@ -48,7 +48,7 @@ extension KeywordCell {
     }
 
     fileprivate var subtitle: Text {
-        Text(Strings.keywordPromt)
+        Text(Strings.keywordPrompt)
             .font(.system(size: 14, design: .monospaced))
             .foregroundStyle(.background)
     }

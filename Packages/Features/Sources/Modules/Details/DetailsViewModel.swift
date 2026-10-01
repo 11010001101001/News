@@ -136,7 +136,7 @@ extension DetailsViewModel {
 // MARK: - Public
 extension DetailsViewModel {
     func getCachedImage() -> Image? {
-        (cacheManager.get(key: cacheKey) as? CachedImage)?.image
+        (cacheManager.get(key: cacheKey) as? CacheWrapper<Image>)?.data
     }
 
     func markAsRead() {
@@ -150,7 +150,7 @@ extension DetailsViewModel {
     }
 
     func cache(_ image: Image) {
-        cacheManager.save(object: CachedImage(image: image), key: cacheKey)
+        cacheManager.save(object: CacheWrapper(data: image), key: cacheKey)
     }
 
     func impactOccured(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
@@ -173,7 +173,15 @@ extension DetailsViewModel {
     }
 
     func generateOpinion() async -> Rating {
-        await expertManager.generateOpinion(from: description)
+        let key = article.key as AnyObject & Sendable
+
+        if let cached = (cacheManager.get(key: key) as? CacheWrapper<Rating>)?.data {
+            return cached
+        }
+
+        let result = await expertManager.generateOpinion(from: description)
+        cacheManager.save(object: CacheWrapper(data: result), key: key)
+        return result
     }
 
     func markAsReadOrUnread() {

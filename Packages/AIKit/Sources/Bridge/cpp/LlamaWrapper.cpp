@@ -6,7 +6,6 @@
 //
 
 #include "LlamaWrapper.hpp"
-#include <TargetConditionals.h>
 #include <iostream>
 
 namespace AIEngine {
@@ -21,11 +20,7 @@ LocalLLM::~LocalLLM() {
 
 bool LocalLLM::loadModel(const std::string &path, int ctxSize) {
     auto mparams = llama_model_default_params();
-#if TARGET_OS_SIMULATOR
     mparams.n_gpu_layers = 0;
-#else
-    mparams.n_gpu_layers = 99;
-#endif
 
     model = llama_load_model_from_file(path.c_str(), mparams);
     if (!model)
@@ -33,6 +28,8 @@ bool LocalLLM::loadModel(const std::string &path, int ctxSize) {
 
     auto cparams = llama_context_default_params();
     cparams.n_ctx = ctxSize;
+    cparams.n_threads = 2;
+    cparams.n_threads_batch = 2;
     ctx = llama_new_context_with_model(model, cparams);
 
     return ctx != nullptr;
