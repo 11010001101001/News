@@ -17,31 +17,69 @@ public protocol WidgetsManagerProtocol {
     func updateArticles(_ articles: [Article])
 }
 
-final class WidgetsManager: WidgetsManagerProtocol {
+final class WidgetsManager: WidgetsManagerProtocol, @unchecked Sendable {
+    private enum Actions {
+        case start
+        case updateArticles(_ articles: [Article])
+        case updateLevel(_ watchedTopics: Set<String>)
+    }
+
     private var articles = [Article]()
+    private let stream: AsyncStream<Actions>
+    private let continuation: AsyncStream<Actions>.Continuation
 
-    func start() {
-        Task {
-            for activity in Activity<NewsWidgetsAttributes>.activities {
-                await activity.end(nil, dismissalPolicy: .immediate)
+    init() {
+        let (stream, continuation) = AsyncStream.makeStream(of: Actions.self)
+        self.stream = stream
+        self.continuation = continuation
+
+        Task { [weak self, stream] in
+            for await action in stream {
+                guard let self else { return }
+                await self.process(action)
             }
-
-            _ = try? Activity<NewsWidgetsAttributes>.request(
-                attributes: NewsWidgetsAttributes(),
-                content: .init(
-                    state: NewsWidgetsAttributes.ContentState(level: .newbie, procents: .zero),
-                    staleDate: Date().hour
-                ),
-                pushType: nil
-            )
         }
     }
 
+    func start() {
+        continuation.yield(.start)
+    }
+
     func updateArticles(_ articles: [Article]) {
-        self.articles = articles
+        continuation.yield(.updateArticles(articles))
     }
 
     func updateLevel(watchedTopics: Set<String>) {
+        continuation.yield(.updateLevel(watchedTopics))
+    }
+
+    private func process(_ action: Actions) async {
+        switch action {
+        case .start:
+            await handleStart()
+        case .updateArticles(let articles):
+            self.articles = articles
+        case .updateLevel(let watchedTopics):
+            await handleUpdateLevel(watchedTopics: watchedTopics)
+        }
+    }
+
+    private func handleStart() async {
+        for activity in Activity<NewsWidgetsAttributes>.activities {
+            await activity.end(nil, dismissalPolicy: .immediate)
+        }
+
+        _ = try? Activity<NewsWidgetsAttributes>.request(
+            attributes: NewsWidgetsAttributes(),
+            content: .init(
+                state: NewsWidgetsAttributes.ContentState(level: .newbie, procents: .zero),
+                staleDate: Date().hour
+            ),
+            pushType: nil
+        )
+    }
+
+    private func handleUpdateLevel(watchedTopics: Set<String>) async {
         guard !articles.isEmpty else { return }
 
         let watched = articles.filter { article in
@@ -57,22 +95,13 @@ final class WidgetsManager: WidgetsManagerProtocol {
         }
 
         guard let activeActivity else {
-            // TODO: save to local variable and manage it after no .active exists
-            start()
-            updateLevel(watchedTopics: watchedTopics)
+            await handleStart()
+            await handleUpdateLevel(watchedTopics: watchedTopics)
             return
         }
 
         let content = ActivityContent(state: newState, staleDate: Date().hour)
-
-        Task {
-            await activeActivity.update(content)
-        }
-
-        updateStaticWidget()
-    }
-
-    func updateStaticWidget() {
+        await activeActivity.update(content)
         WidgetCenter.shared.reloadAllTimelines()
     }
 }
