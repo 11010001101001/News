@@ -15,7 +15,7 @@ extension View {
         _ id: String
     ) -> some View {
         if viewModel.checkIsEnabled(id.lowercased()) {
-            self.modifier(InnerShadowProvider())
+            self.modifier(PlasmaSelectionModifier())
         } else {
             self
         }

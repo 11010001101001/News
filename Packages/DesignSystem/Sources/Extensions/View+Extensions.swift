@@ -54,7 +54,7 @@ public extension View {
             self.opacity(opacity)
         case (false, true):
             if isShadowEnabled {
-                self.modifier(InnerShadowProvider())
+                self.modifier(PlasmaSelectionModifier())
             } else {
                 self
             }
