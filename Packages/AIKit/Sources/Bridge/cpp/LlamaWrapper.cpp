@@ -6,7 +6,9 @@
 //
 
 #include "LlamaWrapper.hpp"
+#include <chrono>
 #include <iostream>
+#include <thread>
 
 namespace AIEngine {
 
@@ -18,6 +20,10 @@ LocalLLM::~LocalLLM() {
     llama_backend_free();
 }
 
+// Thread starvation -> Glitches resolved by n_gpu_layers = 0;
+// Battery drain & heating resolved by caching in DetailsViewModel, limiting
+// cores & gpu_layers number to 1, setting QOS_CLASS_BACKGROUND and
+// std::this_thread::sleep_for(std::chrono::milliseconds(6));
 bool LocalLLM::loadModel(const std::string &path, int ctxSize) {
     auto mparams = llama_model_default_params();
     mparams.n_gpu_layers = 0;
@@ -28,8 +34,8 @@ bool LocalLLM::loadModel(const std::string &path, int ctxSize) {
 
     auto cparams = llama_context_default_params();
     cparams.n_ctx = ctxSize;
-    cparams.n_threads = 2;
-    cparams.n_threads_batch = 2;
+    cparams.n_threads = 1;
+    cparams.n_threads_batch = 1;
     ctx = llama_new_context_with_model(model, cparams);
 
     return ctx != nullptr;
@@ -38,6 +44,8 @@ bool LocalLLM::loadModel(const std::string &path, int ctxSize) {
 std::string LocalLLM::generate(const std::string &promt) {
     if (!ctx || !model)
         return "Error: Model not loaded";
+
+    pthread_set_qos_class_self_np(QOS_CLASS_BACKGROUND, 0);
 
     llama_kv_cache_clear(ctx);
 
@@ -94,6 +102,8 @@ std::string LocalLLM::generate(const std::string &promt) {
         if (llama_decode(ctx, batch) != 0) {
             break;
         }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(6));
     }
 
     return result.empty() ? "Error: Empty response" : result;

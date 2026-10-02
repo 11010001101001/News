@@ -21,8 +21,6 @@ actor ExpertManager: ExpertManagerProtocol {
         engine.loadModel()
     }
 
-    // Thread starvation -> Glitches resolved by limiting cores & gpu_layers number in C++
-    // Battery drain & heating resolved by caching
     func generateOpinion(from text: String) -> Rating {
         guard !Task.isCancelled else { return .error }
 
