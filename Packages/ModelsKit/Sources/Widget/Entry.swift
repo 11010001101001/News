@@ -22,4 +22,8 @@ public struct Entry: TimelineEntry {
         self.procentsToNextLevel = procentsToNextLevel
         self.lastViewedTitle = lastViewedTitle
     }
+
+    public var isMaxLevel: Bool {
+        level == .techNinja && procentsToNextLevel == 100
+    }
 }

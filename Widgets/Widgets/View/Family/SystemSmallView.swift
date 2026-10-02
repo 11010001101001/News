@@ -16,6 +16,29 @@ struct SystemSmallView: View {
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
+        if entry.isMaxLevel {
+            maxLevelView
+        } else {
+            regularView
+        }
+    }
+
+    var maxLevelView: some View {
+        VerStack(alignment: .center, spacing: 4) {
+            categoryWithIndicator
+
+            Text(entry.level.image)
+                .font(.system(size: 62))
+                .shadow(color: entry.level.color.opacity(0.8), radius: 4)
+
+            Text(entry.level.name)
+                .font(.system(.title3, design: .rounded, weight: .bold))
+                .foregroundStyle(.primary)
+        }
+        .padding(14)
+    }
+
+    var regularView: some View {
         VerStack {
             categoryWithIndicator
             Spacer()

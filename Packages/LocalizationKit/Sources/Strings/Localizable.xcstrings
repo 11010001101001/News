@@ -1786,6 +1786,29 @@
         }
       }
     },
+    "Widgets.maxLevel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MAX"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MAX"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MAX"
+          }
+        }
+      }
+    },
     "Widgets.motivation" : {
       "comment" : "Motivation text for a widget.",
       "extractionState" : "manual",

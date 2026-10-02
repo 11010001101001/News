@@ -267,6 +267,9 @@ public enum Strings {
     public static var widgetsLevels: LocalizedStringResource {
         LocalizedStringResource("Widgets.levels", bundle: .atURL(Bundle.module.bundleURL))
     }
+    public static var widgetsMaxLevel: LocalizedStringResource {
+        LocalizedStringResource("Widgets.maxLevel", bundle: .atURL(Bundle.module.bundleURL))
+    }
     public static var widgetsLvl: LocalizedStringResource {
         LocalizedStringResource("Widgets.lvl", bundle: .atURL(Bundle.module.bundleURL))
     }

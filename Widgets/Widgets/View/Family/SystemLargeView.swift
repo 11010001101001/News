@@ -37,7 +37,7 @@ struct SystemLargeView: View {
     var progressLine: some View {
         VerStack(spacing: 6) {
             HorStack {
-                Text(Strings.widgetsProgress)
+                Text(entry.isMaxLevel ? Strings.widgetsMaxLevel : Strings.widgetsProgress)
                     .font(.caption2)
                     .fontWeight(.bold)
                     .foregroundStyle(.secondary)
@@ -49,6 +49,7 @@ struct SystemLargeView: View {
             }
             ProgressView(value: Float(entry.procentsToNextLevel) / 100)
                 .tint(entry.level.color)
+                .shadow(color: entry.isMaxLevel ? entry.level.color.opacity(0.8) : .clear, radius: 4)
         }
         .padding(12)
         .background(color, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
