@@ -53,11 +53,7 @@ public extension View {
         case (true, false), (true, true):
             self.opacity(opacity)
         case (false, true):
-            if isShadowEnabled {
-                self.modifier(PlasmaSelectionModifier())
-            } else {
-                self
-            }
+            self.modifier(PlasmaSelectionModifier(isSelected: isShadowEnabled))
         }
     }
 }

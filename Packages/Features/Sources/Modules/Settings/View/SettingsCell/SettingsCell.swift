@@ -29,7 +29,7 @@ struct SettingsCell<T: DisplayName>: View {
             Spacer()
         }
         .glassClearInteractive()
-        .markIsSelected(viewModel, id)
+        .markIsSelected(viewModel.checkIsEnabled(id.lowercased()))
         .frame(height: 70)
         .applyOrNotSettingsModifier(
             isEnabled: viewModel.checkIsEnabled(id.lowercased())

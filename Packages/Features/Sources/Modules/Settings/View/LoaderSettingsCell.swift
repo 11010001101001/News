@@ -42,7 +42,7 @@ struct LoaderSettingsCell: View {
             }
         }
         .glassClearInteractive()
-        .markIsSelected(viewModel, id)
+        .markIsSelected(viewModel.checkIsEnabled(id.lowercased()))
         .applyOrNotSettingsModifier(
             isEnabled: viewModel.checkIsEnabled(id.lowercased())
         ) {
