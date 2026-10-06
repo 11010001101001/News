@@ -41,6 +41,7 @@ extension CachedAsyncImage {
                         .onAppear { viewModel.cache(image) }
                 } else if phase.error != nil {
                     ErrorView(title: Strings.errorsImageLoadingError, action: nil)
+                        .transition(.opacity)
                 } else {
                     loader
                 }
@@ -64,5 +65,6 @@ extension Image {
             .clipped()
             .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius, style: .continuous))
             .glassClearInteractive()
+            .transition(.opacity.animation(.easeInOut(duration: 0.15)))
     }
 }

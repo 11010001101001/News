@@ -19,7 +19,8 @@ struct TopicsList: View {
                         action: {
                             viewModel.impactOccured(.light)
                             viewModel.loadNews()
-                        }
+                        },
+                        isCard: true
                     )
                 }
             }

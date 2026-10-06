@@ -9,26 +9,25 @@ import LocalizationKit
 import SwiftUI
 
 public struct ErrorView: View {
-    var title: LocalizedStringResource?
-    let action: (() -> Void)?
+    private let title: LocalizedStringResource?
+    private let action: (() -> Void)?
+    private let isCard: Bool
 
-    public init(title: LocalizedStringResource? = nil, action: (() -> Void)?) {
+    public init(title: LocalizedStringResource? = nil, action: (() -> Void)?, isCard: Bool = false) {
         self.title = title
         self.action = action
+        self.isCard = isCard
     }
 
     public var body: some View {
         HorStack {
             Spacer()
-            VerStack(alignment: .center) {
-                Group {
-                    errorTitle
-                    errorImage
-                    reloadButton
-                }
-                .padding(Constants.padding)
+            if isCard {
+                content
+                    .glassClearInteractive()
+            } else {
+                content
             }
-            .glassClearInteractive()
             Spacer()
         }
     }
@@ -36,6 +35,17 @@ public struct ErrorView: View {
 
 // MARK: - Content
 extension ErrorView {
+    fileprivate var content: some View {
+        VerStack(alignment: .center) {
+            Group {
+                errorTitle
+                errorImage
+                reloadButton
+            }
+            .padding(Constants.padding)
+        }
+    }
+
     fileprivate var errorTitle: some View {
         OptionalView(title) {
             DesignedText($0)

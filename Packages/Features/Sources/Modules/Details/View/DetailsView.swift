@@ -24,6 +24,7 @@ struct DetailsView: View {
                 }
             )
             .onTapGesture {
+                viewModel.impactOccured(.light)
                 withAnimation(.spring(response: 0.2, dampingFraction: 0.7)) {
                     isCollapsed.toggle()
                 }
