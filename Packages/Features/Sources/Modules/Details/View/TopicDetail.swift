@@ -16,22 +16,14 @@ struct TopicDetail: View {
     @State private var rating = Rating.loading
 
     var body: some View {
-        ScrollView {
-            VerStack(spacing: Constants.padding) {
-                CachedAsyncImage(viewModel: viewModel)
-                description
-                Spacer()
-            }
-            .padding()
+        VerStack(spacing: Constants.padding) {
+            CachedAsyncImage(viewModel: viewModel)
+            description
         }
-        .toolbarRole(.editor)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                DesignedText(Strings.screenDetailsTitle)
-                    .font(.title)
-            }
+        .background {
+            Color.gray.opacity(0.1).clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius))
         }
-        .navigationBarTitleDisplayMode(.inline)
+        .padding(.bottom, Constants.padding)
         .task {
             let rating = await viewModel.generateOpinion()
             withAnimation(.spring(response: 0.4, dampingFraction: 0.58)) {
