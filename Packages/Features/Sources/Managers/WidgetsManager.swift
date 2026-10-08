@@ -58,7 +58,7 @@ extension WidgetsManager {
     }
 
     func getUserLevel(_ watchedTopics: Set<String>?) -> (level: Level, progressInLevel: Int) {
-        guard let watchedTopics else { return (.newbie, 0) }
+        guard let watchedTopics, !articles.isEmpty else { return (.newbie, 0) }
 
         let watched = articles.filter { article in
             watchedTopics.contains(where: { $0 == article.key })
