@@ -14,6 +14,7 @@ struct LoadersCarusel: View {
 
     @State private var scrolledID: LoaderConfiguration? = .rocket
     @State private var activeColor: Color = LoaderConfiguration.rocket.shadowColor
+    @State private var isPulsing = false
 
     var body: some View {
         GeometryReader { proxy in
@@ -23,7 +24,7 @@ struct LoadersCarusel: View {
             ScrollView(.horizontal) {
                 VerStack {
                     Spacer()
-                    HorStack(spacing: Constants.padding) {
+                    HorStack(spacing: Constants.padding * 2) {
                         ForEach(LoaderConfiguration.allCases) { loader in
                             LoaderCard(viewModel: viewModel, loader: loader)
                                 .frame(width: cardSize.width, height: cardSize.height)
@@ -45,7 +46,13 @@ struct LoadersCarusel: View {
                     .fill(activeColor)
                     .frame(width: 250, height: 250)
                     .blur(radius: 60)
-                    .opacity(0.35)
+                    .opacity(isPulsing ? 0.45 : 0.25)
+                    .scaleEffect(isPulsing ? 1.05 : 0.95)
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 3.0).repeatForever(autoreverses: true)) {
+                            isPulsing = true
+                        }
+                    }
             )
             .scrollPosition(id: $scrolledID)
             .sensoryFeedback(.selection, trigger: scrolledID)
