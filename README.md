@@ -12,7 +12,9 @@
 [![Metal](https://img.shields.io/badge/Metal-Shaders-black.svg?style=for-the-badge&logo=metal)](https://developer.apple.com/metal/)
 [![Tests](https://img.shields.io/badge/Tests-Unit%20%2B%20UI%20Coverage-success.svg?style=for-the-badge&logo=xcode)](https://developer.apple.com/documentation/testing)
 
-![demo](.github/assets/demo.gif)
+<p align="center">
+  <img src=".github/assets/demo.gif" width="320" alt="App Demo" />
+</p>
 
 **News** is an enterprise-grade, high-performance iOS news application built with a modern **Modular SPM Architecture (6 isolated packages)**, SwiftUI, on-device generative AI via Swift C++ Interoperability (`llama.cpp` + Qwen2.5-1.5B-Instruct), SwiftData, Swift 6 Concurrency (`ApproachableConcurrency`), Metal Shaders, and ActivityKit. Designed with a custom glassmorphism design system, instant runtime multi-language localization via native String Catalogs, and comprehensive Unit and UI test coverage.
 
