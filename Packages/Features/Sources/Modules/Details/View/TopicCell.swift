@@ -24,8 +24,8 @@ struct TopicCell: View {
             .padding(Constants.padding)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .glassClearInteractive()
         .markAsReadOrHighlight(isRead: viewModel.isRead, isShadowEnabled: viewModel.isShadowEnabled)
+        .glassClearInteractive()
         .padding([.bottom, .horizontal], Constants.padding)
         .contentShape(.rect)
         .contextMenu { contextMenu }

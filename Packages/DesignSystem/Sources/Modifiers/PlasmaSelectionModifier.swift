@@ -20,19 +20,12 @@ public struct PlasmaSelectionModifier: ViewModifier {
     public func body(content: Content) -> some View {
         content
             .overlay {
-                if isAnimating {
-                    timelineView
-                        .transition(
-                            .asymmetric(
-                                insertion: .push(from: .bottom),
-                                removal: .push(from: .top)
-                            )
-                        )
-                }
+                timelineView
+                    .scaleEffect(y: isAnimating ? 1.0 : 0.2, anchor: .bottom)
+                    .opacity(isAnimating ? 1 : 0)
             }
-            .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius))
             .onAppear {
-                withAnimation {
+                withAnimation(.snappy(duration: 0.25, extraBounce: 0.15)) {
                     isAnimating = isSelected
                 }
             }

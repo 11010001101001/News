@@ -28,8 +28,8 @@ struct SettingsCell<T: DisplayName>: View {
 
             Spacer()
         }
-        .glassClearInteractive()
         .markIsSelected(viewModel.checkIsEnabled(id.lowercased()))
+        .glassClearInteractive()
         .frame(height: 70)
         .applyOrNotSettingsModifier(
             isEnabled: viewModel.checkIsEnabled(id.lowercased())
