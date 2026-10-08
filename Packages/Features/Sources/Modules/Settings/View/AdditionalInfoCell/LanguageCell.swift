@@ -36,7 +36,7 @@ extension LanguageCell {
                 Button {
                     viewModel.applySettings(language.rawValue)
                 } label: {
-                    if viewModel.checkIsEnabled(language.rawValue) {
+                    if viewModel.language == language.rawValue {
                         Label(
                             "\(language.flag)  \(language.title)",
                             systemImage: "checkmark"

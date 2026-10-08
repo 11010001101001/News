@@ -94,17 +94,6 @@ extension SettingsViewModel {
         vibrateManager.vibrate(style)
     }
 
-    // TODO: cut
-    func checkIsEnabled(_ settingName: String) -> Bool {
-        [
-            soundTheme,
-            category,
-            loader,
-            appIcon,
-            language
-        ].first(where: { $0 == settingName }) != nil
-    }
-
     // swiftlint: disable cyclomatic_complexity
     public func applySettings(_ key: String) {
         switch key {

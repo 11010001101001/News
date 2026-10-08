@@ -11,24 +11,13 @@ import DesignSystem
 
 struct AppIconSettingsCell: View {
     @Bindable var viewModel: SettingsViewModel
+
     let theme: AppIconConfiguration
-
-    private var id: String {
-        theme.rawValue
-    }
-
-    private var shadowColor: Color {
-        AppIconConfiguration(rawValue: id)?.shadowColor ?? .shadowHighlight
-    }
-
-    private var isEnabled: Bool {
-        viewModel.checkIsEnabled(id.lowercased())
-    }
 
     var body: some View {
         ZStack {
             HorStack {
-                Image(id)
+                Image(theme.rawValue)
                     .resizable()
                     .frame(width: 80, height: 80)
                     .clipShape(
@@ -47,12 +36,12 @@ struct AppIconSettingsCell: View {
                 Spacer()
             }
         }
-        .markIsSelected(viewModel.checkIsEnabled(id.lowercased()))
+        .markIsSelected(viewModel.appIcon == theme.rawValue)
         .glassClearInteractive()
         .applyOrNotSettingsModifier(
-            isEnabled: viewModel.checkIsEnabled(id.lowercased())
+            isEnabled: viewModel.appIcon == theme.rawValue
         ) {
-            viewModel.applySettings(id.lowercased())
+            viewModel.applySettings(theme.rawValue)
         }
     }
 }

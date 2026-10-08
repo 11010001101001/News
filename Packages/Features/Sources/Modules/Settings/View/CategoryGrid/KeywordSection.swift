@@ -20,7 +20,7 @@ struct KeywordSection: View {
                 .foregroundStyle(.secondary)
                 .textCase(.uppercase)
 
-            HorStack {
+            HorStack(spacing: 8) {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.tertiary)
 
