@@ -19,7 +19,7 @@ public struct WebView: UIViewRepresentable {
     public func makeUIView(context: Context) -> some WKWebView {
         let config = WKWebViewConfiguration()
         config.mediaTypesRequiringUserActionForPlayback = .all
-        config.allowsInlineMediaPlayback = false
+        config.allowsInlineMediaPlayback = true
         config.allowsPictureInPictureMediaPlayback = false
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = context.coordinator
