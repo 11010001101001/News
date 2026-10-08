@@ -42,4 +42,5 @@ public enum SFSymbols: String {
     case documentOnDocument = "document.on.document"
     case lightMax = "light.max"
     case globe
+    case speakerWave3Fill = "speaker.wave.3.fill"
 }

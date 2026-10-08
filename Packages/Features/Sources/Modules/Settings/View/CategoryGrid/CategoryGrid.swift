@@ -1,5 +1,5 @@
 //
-//  CategoryView.swift
+//  CategoryGrid.swift
 //  Features
 //
 //  Created by Slava on 08.10.2026.
@@ -10,7 +10,7 @@ import SwiftUI
 import DesignSystem
 import ModelsKit
 
-struct CategoryView: View {
+struct CategoryGrid: View {
     @Bindable var viewModel: SettingsViewModel
 
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]

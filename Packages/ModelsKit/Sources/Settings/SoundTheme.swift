@@ -9,7 +9,7 @@ import SwiftUI
 import CoreKit
 import LocalizationKit
 
-public enum SoundTheme: String, CaseIterable, Identifiable, DisplayName {
+public enum SoundTheme: String, CaseIterable, Identifiable {
     public var id: Self { return self }
 
     case starwars = "star wars"

@@ -1,5 +1,5 @@
 //
-//  LoaderSettingsCarusel.swift
+//  LoadersCarusel.swift
 //  Features
 //
 //  Created by Slava on 08.10.2026.
@@ -9,7 +9,7 @@ import DesignSystem
 import ModelsKit
 import SwiftUI
 
-struct LoaderSettingsCarusel: View {
+struct LoadersCarusel: View {
     let viewModel: SettingsViewModel
 
     @State private var scrolledID: LoaderConfiguration? = .rocket
@@ -24,7 +24,7 @@ struct LoaderSettingsCarusel: View {
                     Spacer()
                     HorStack(spacing: Constants.padding) {
                         ForEach(LoaderConfiguration.allCases) { loader in
-                            LoaderSettingsCard(viewModel: viewModel, loader: loader)
+                            LoaderCard(viewModel: viewModel, loader: loader)
                         }
                         .scrollTransition(.interactive) { content, phase in
                             content

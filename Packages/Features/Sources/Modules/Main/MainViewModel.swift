@@ -60,14 +60,6 @@ public final class MainViewModel {
             && appIcon == DefaultSettings.appIcon
     }
 
-    var starwarsRefresh: String {
-        Set(["starwars_refresh", "starwars_refresh1"]).randomElement().orEmpty
-    }
-
-    var catsRefresh: String {
-        Set(["cats_refresh", "cats_refresh1"]).randomElement().orEmpty
-    }
-
     var isAllRead: Bool {
         guard !news.isEmpty else { return false }
         return news.allSatisfy { checkIsRead($0.key) }
@@ -234,9 +226,9 @@ extension MainViewModel {
         let refreshSound =
             switch SoundTheme(rawValue: soundTheme) {
             case .starwars:
-                starwarsRefresh
+                Set(["starwars_refresh", "starwars_refresh1"]).randomElement().orEmpty
             case .cats:
-                catsRefresh
+                Set(["cats_refresh", "cats_refresh1"]).randomElement().orEmpty
             default:
                 String.empty
             }

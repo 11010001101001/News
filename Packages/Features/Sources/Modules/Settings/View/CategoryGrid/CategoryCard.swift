@@ -16,8 +16,7 @@ struct CategoryCard: View {
 
     var body: some View {
         VerStack(alignment: .center, spacing: 8) {
-            ImageProvider
-                .image(category.rawValue)
+            Image(systemName: category.image.rawValue)
                 .font(.title2)
 
             DesignedText(category.displayName)

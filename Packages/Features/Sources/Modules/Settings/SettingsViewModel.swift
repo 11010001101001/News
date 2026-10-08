@@ -156,6 +156,21 @@ extension SettingsViewModel {
     ) {
         vibrateManager.vibrate(feedBackType)
     }
+
+    public func playRefresh(theme: SoundTheme) {
+        let refreshSound =
+            switch theme {
+            case .starwars:
+                Set(["starwars_refresh", "starwars_refresh1"]).randomElement().orEmpty
+            case .cats:
+                Set(["cats_refresh", "cats_refresh1"]).randomElement().orEmpty
+            default:
+                String.empty
+            }
+        if !refreshSound.isEmpty {
+            soundManager.play(refreshSound)
+        }
+    }
 }
 
 // MARK: - Private
@@ -168,23 +183,6 @@ extension SettingsViewModel {
             await notificationManager.configureNotifications(
                 with: notificationSound
             )
-        }
-    }
-
-    fileprivate func playError() {
-        guard soundTheme != SoundTheme.silentMode.rawValue else { return }
-
-        let errorSound =
-            switch SoundTheme(rawValue: soundTheme) {
-            case .starwars:
-                "starwars_error"
-            case .cats:
-                "cats_error"
-            default:
-                String.empty
-            }
-        if !errorSound.isEmpty {
-            soundManager.play(errorSound)
         }
     }
 }

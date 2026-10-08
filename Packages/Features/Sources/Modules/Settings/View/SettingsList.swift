@@ -16,27 +16,15 @@ struct SettingsList: View {
     var body: some View {
         TabView {
             Tab(Strings.loaderTitle, systemImage: LoaderConfiguration.tabImage) {
-                LoaderSettingsCarusel(viewModel: viewModel)
+                LoadersCarusel(viewModel: viewModel)
             }
 
             Tab(Strings.categoryTitle, systemImage: NewsCategory.tabImage) {
-//                buildContentScroll {
-//                    VerStack(spacing: Constants.padding) {
-//                        ForEach(NewsCategory.allCases) { category in
-//                            SettingsCell(viewModel: viewModel, model: category)
-//                        }
-//                        KeywordCell(viewModel: viewModel, keyword: viewModel.keyword)
-//                    }
-//                }
-                CategoryView(viewModel: viewModel)
+                CategoryGrid(viewModel: viewModel)
             }
 
             Tab(Strings.soundTitle, systemImage: SoundTheme.tabImage) {
-                buildContentScroll {
-                    ForEach(SoundTheme.allCases) { theme in
-                        SettingsCell(viewModel: viewModel, model: theme)
-                    }
-                }
+                SoundsGrid(viewModel: viewModel)
             }
 
             if UIApplication.shared.supportsAlternateIcons {

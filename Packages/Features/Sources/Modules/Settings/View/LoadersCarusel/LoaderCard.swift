@@ -1,5 +1,5 @@
 //
-//  LoaderSettingsCard.swift
+//  LoaderCard.swift
 //  News
 //
 //  Created by Ярослав Куприянов on 04.04.2024.
@@ -10,7 +10,7 @@ import SwiftUI
 import DesignSystem
 import ModelsKit
 
-struct LoaderSettingsCard: View {
+struct LoaderCard: View {
     @Bindable var viewModel: SettingsViewModel
 
     let loader: LoaderConfiguration

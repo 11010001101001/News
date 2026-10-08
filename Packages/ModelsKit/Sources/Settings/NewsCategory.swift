@@ -9,7 +9,7 @@ import CoreKit
 import Foundation
 import LocalizationKit
 
-public enum NewsCategory: String, CaseIterable, Identifiable, DisplayName {
+public enum NewsCategory: String, CaseIterable, Identifiable {
     public var id: Self { self }
 
     static var random: String {
