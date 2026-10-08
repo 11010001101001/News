@@ -11,15 +11,13 @@ import DesignSystem
 
 struct SettingsCell<T: DisplayName>: View {
     @Bindable var viewModel: SettingsViewModel
-    let model: T
 
-    private var id: String {
-        model.rawValue
-    }
+    let model: T
 
     var body: some View {
         HorStack(spacing: Constants.padding) {
-            ImageProvider.image(id)
+            ImageProvider
+                .image(model.rawValue)
                 .padding(.leading, Constants.padding)
 
             DesignedText(model.displayName)
@@ -28,13 +26,13 @@ struct SettingsCell<T: DisplayName>: View {
 
             Spacer()
         }
-        .markIsSelected(viewModel.checkIsEnabled(id.lowercased()))
+        .markIsSelected(viewModel.category == model.rawValue)
         .glassClearInteractive()
         .frame(height: 70)
         .applyOrNotSettingsModifier(
-            isEnabled: viewModel.checkIsEnabled(id.lowercased())
+            isEnabled: viewModel.category == model.rawValue
         ) {
-            viewModel.applySettings(id.lowercased())
+            viewModel.applySettings(model.rawValue)
         }
     }
 }

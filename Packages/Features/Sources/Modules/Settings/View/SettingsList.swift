@@ -20,14 +20,15 @@ struct SettingsList: View {
             }
 
             Tab(Strings.categoryTitle, systemImage: NewsCategory.tabImage) {
-                buildContentScroll {
-                    VerStack(spacing: Constants.padding) {
-                        ForEach(NewsCategory.allCases) { category in
-                            SettingsCell(viewModel: viewModel, model: category)
-                        }
-                        KeywordCell(viewModel: viewModel, keyword: viewModel.keyword)
-                    }
-                }
+//                buildContentScroll {
+//                    VerStack(spacing: Constants.padding) {
+//                        ForEach(NewsCategory.allCases) { category in
+//                            SettingsCell(viewModel: viewModel, model: category)
+//                        }
+//                        KeywordCell(viewModel: viewModel, keyword: viewModel.keyword)
+//                    }
+//                }
+                CategoryView(viewModel: viewModel)
             }
 
             Tab(Strings.soundTitle, systemImage: SoundTheme.tabImage) {

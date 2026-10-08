@@ -995,25 +995,25 @@
         }
       }
     },
-    "Keyword.prompt" : {
+    "Keyword.placeHolder" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Type to highlight points of interest"
+            "value" : "Enter keyword..."
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Ketik untuk menyoroti poin penting"
+            "state" : "translated",
+            "value" : "Masukkan kata kunci..."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Введите текст, чтобы выделить интересующие темы"
+            "value" : "Введите ключевое слово"
           }
         }
       }
@@ -1024,19 +1024,19 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Keyword"
+            "value" : "Keyword Highlight"
           }
         },
         "id" : {
           "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Kata Kunci"
+            "state" : "translated",
+            "value" : "Sorotan Kata Kunci"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ключевое слово"
+            "value" : "Хайлайт"
           }
         }
       }

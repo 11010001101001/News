@@ -12,19 +12,12 @@ import ModelsKit
 
 struct LoaderSettingsCard: View {
     @Bindable var viewModel: SettingsViewModel
+
     let loader: LoaderConfiguration
-
-    private var id: String {
-        loader.rawValue
-    }
-
-    private var isEnabled: Bool {
-        viewModel.checkIsEnabled(id)
-    }
 
     var body: some View {
         VerStack(alignment: .center) {
-            LottieView(animation: .named(id, bundle: .designSystem))
+            LottieView(animation: .named(loader.rawValue, bundle: .designSystem))
                 .playing(loopMode: .loop)
                 .frame(
                     width: Constants.loaderCardSize.width,
@@ -36,12 +29,12 @@ struct LoaderSettingsCard: View {
                 .foregroundStyle(.gray)
                 .padding(Constants.padding)
         }
-        .markIsSelected(viewModel.checkIsEnabled(id.lowercased()))
+        .markIsSelected(viewModel.loader == loader.rawValue)
         .glassClearInteractive()
         .applyOrNotSettingsModifier(
-            isEnabled: viewModel.checkIsEnabled(id.lowercased())
+            isEnabled: viewModel.loader == loader.rawValue
         ) {
-            viewModel.applySettings(id.lowercased())
+            viewModel.applySettings(loader.rawValue)
         }
     }
 }

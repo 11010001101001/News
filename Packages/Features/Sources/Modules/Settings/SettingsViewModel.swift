@@ -94,6 +94,7 @@ extension SettingsViewModel {
         vibrateManager.vibrate(style)
     }
 
+    // TODO: cut
     func checkIsEnabled(_ settingName: String) -> Bool {
         [
             soundTheme,
@@ -161,10 +162,10 @@ extension SettingsViewModel {
     }
     // swiftlint: enable cyclomatic_complexity
 
-    func applyKeyword(_ value: String) {
-        playBubble()
-        keyword = value
-        notificationOccurred(.success)
+    public func notificationOccurred(
+        _ feedBackType: UINotificationFeedbackGenerator.FeedbackType
+    ) {
+        vibrateManager.vibrate(feedBackType)
     }
 }
 
@@ -179,12 +180,6 @@ extension SettingsViewModel {
                 with: notificationSound
             )
         }
-    }
-
-    fileprivate func notificationOccurred(
-        _ feedBackType: UINotificationFeedbackGenerator.FeedbackType
-    ) {
-        vibrateManager.vibrate(feedBackType)
     }
 
     fileprivate func playError() {
@@ -202,10 +197,5 @@ extension SettingsViewModel {
         if !errorSound.isEmpty {
             soundManager.play(errorSound)
         }
-    }
-
-    fileprivate func playBubble() {
-        guard soundTheme != SoundTheme.silentMode.rawValue else { return }
-        soundManager.play("bubble")
     }
 }

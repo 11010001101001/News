@@ -157,8 +157,8 @@ public enum Strings {
     public static var infoTitle: LocalizedStringResource {
         LocalizedStringResource("Info.title", bundle: .atURL(Bundle.module.bundleURL))
     }
-    public static var keywordPrompt: LocalizedStringResource {
-        LocalizedStringResource("Keyword.prompt", bundle: .atURL(Bundle.module.bundleURL))
+    public static var keywordPlaceHolder: LocalizedStringResource {
+        LocalizedStringResource("Keyword.placeHolder", bundle: .atURL(Bundle.module.bundleURL))
     }
     public static var keywordTitle: LocalizedStringResource {
         LocalizedStringResource("Keyword.title", bundle: .atURL(Bundle.module.bundleURL))

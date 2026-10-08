@@ -53,8 +53,7 @@ struct LoaderSettingsCarusel: View {
                 guard let scrolledID,
                     let currentLoader = LoaderConfiguration.allCases.first(where: {
                         $0.id == scrolledID
-                    }
-                    )
+                    })
                 else { return }
 
                 withAnimation(.snappy(duration: 0.3)) {
