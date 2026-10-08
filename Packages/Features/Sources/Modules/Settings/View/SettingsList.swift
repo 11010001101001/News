@@ -29,11 +29,12 @@ struct SettingsList: View {
 
             if UIApplication.shared.supportsAlternateIcons {
                 Tab(Strings.appIconTitle, systemImage: AppIconConfiguration.tabImage) {
-                    buildContentScroll {
-                        ForEach(AppIconConfiguration.allCases) { theme in
-                            AppIconSettingsCell(viewModel: viewModel, theme: theme)
-                        }
-                    }
+//                    buildContentScroll {
+//                        ForEach(AppIconConfiguration.allCases) { theme in
+//                            AppIconSettingsCell(viewModel: viewModel, theme: theme)
+//                        }
+//                    }
+                    AppIconGrid(viewModel: viewModel)
                 }
             }
 
