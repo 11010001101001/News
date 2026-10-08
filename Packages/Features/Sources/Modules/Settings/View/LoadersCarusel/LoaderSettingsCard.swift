@@ -1,5 +1,5 @@
 //
-//  LoaderSettingsCell.swift
+//  LoaderSettingsCard.swift
 //  News
 //
 //  Created by Ярослав Куприянов on 04.04.2024.
@@ -10,7 +10,7 @@ import SwiftUI
 import DesignSystem
 import ModelsKit
 
-struct LoaderSettingsCell: View {
+struct LoaderSettingsCard: View {
     @Bindable var viewModel: SettingsViewModel
     let loader: LoaderConfiguration
 
@@ -23,23 +23,18 @@ struct LoaderSettingsCell: View {
     }
 
     var body: some View {
-        ZStack {
-            HorStack {
-                LottieView(animation: .named(id, bundle: .designSystem))
-                    .playing(loopMode: .loop)
-                    .frame(width: 150, height: 100)
-                    .padding(.leading, -20)
+        VerStack(alignment: .center) {
+            LottieView(animation: .named(id, bundle: .designSystem))
+                .playing(loopMode: .loop)
+                .frame(
+                    width: Constants.loaderCardSize.width,
+                    height: Constants.loaderCardSize.height
+                )
 
-                Spacer()
-            }
-
-            HorStack {
-                DesignedText(loader.displayName)
-                    .font(.system(size: 18, weight: .regular))
-                    .padding(.leading, 100)
-
-                Spacer()
-            }
+            DesignedText(loader.displayName)
+                .font(.callout)
+                .foregroundStyle(.gray)
+                .padding(Constants.padding)
         }
         .markIsSelected(viewModel.checkIsEnabled(id.lowercased()))
         .glassClearInteractive()

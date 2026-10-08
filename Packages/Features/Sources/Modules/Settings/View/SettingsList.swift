@@ -16,11 +16,7 @@ struct SettingsList: View {
     var body: some View {
         TabView {
             Tab(Strings.loaderTitle, systemImage: LoaderConfiguration.tabImage) {
-                buildContentScroll {
-                    ForEach(LoaderConfiguration.allCases) { loader in
-                        LoaderSettingsCell(viewModel: viewModel, loader: loader)
-                    }
-                }
+                LoaderSettingsCarusel(viewModel: viewModel)
             }
 
             Tab(Strings.categoryTitle, systemImage: NewsCategory.tabImage) {
