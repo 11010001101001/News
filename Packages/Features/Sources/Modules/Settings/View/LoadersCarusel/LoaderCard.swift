@@ -5,10 +5,10 @@
 //  Created by Ярослав Куприянов on 04.04.2024.
 //
 
-import Lottie
-import SwiftUI
 import DesignSystem
+import Lottie
 import ModelsKit
+import SwiftUI
 
 struct LoaderCard: View {
     @Bindable var viewModel: SettingsViewModel
@@ -19,10 +19,8 @@ struct LoaderCard: View {
         VerStack(alignment: .center) {
             LottieView(animation: .named(loader.rawValue, bundle: .designSystem))
                 .playing(loopMode: .loop)
-                .frame(
-                    width: Constants.loaderCardSize.width,
-                    height: Constants.loaderCardSize.height
-                )
+                .resizable()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             DesignedText(loader.displayName)
                 .font(.callout)

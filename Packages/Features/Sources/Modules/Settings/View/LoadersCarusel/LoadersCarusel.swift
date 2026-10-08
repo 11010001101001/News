@@ -17,7 +17,8 @@ struct LoadersCarusel: View {
 
     var body: some View {
         GeometryReader { proxy in
-            let sidePadding = (proxy.size.width - Constants.loaderCardSize.width) / 2
+            let cardSize = CGSize(width: proxy.size.width / 2, height: proxy.size.height / 2)
+            let sidePadding = (proxy.size.width - cardSize.width) / 2
 
             ScrollView(.horizontal) {
                 VerStack {
@@ -25,6 +26,7 @@ struct LoadersCarusel: View {
                     HorStack(spacing: Constants.padding) {
                         ForEach(LoaderConfiguration.allCases) { loader in
                             LoaderCard(viewModel: viewModel, loader: loader)
+                                .frame(width: cardSize.width, height: cardSize.height)
                         }
                         .scrollTransition(.interactive) { content, phase in
                             content

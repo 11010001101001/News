@@ -16,15 +16,11 @@ struct SoundCard: View {
     @State private var isPlaying = false
 
     var body: some View {
-        VerStack(alignment: .center, spacing: 10) {
+        VerStack(alignment: .center, spacing: Constants.padding) {
             Image(systemName: isPlaying ? SFSymbols.speakerWave3Fill.rawValue : sound.image.rawValue)
                 .font(.title2)
-                .foregroundStyle(.white)
-
-            Text(sound.displayName)
-                .font(.caption)
-                .bold()
-                .lineLimit(1)
+            DesignedText(sound.displayName)
+                .font(.callout)
         }
         .frame(height: 100)
         .frame(maxWidth: .infinity)

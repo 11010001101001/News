@@ -15,7 +15,7 @@ struct AppIconCard: View {
     let appIcon: AppIconConfiguration
 
     var body: some View {
-        VerStack(alignment: .center, spacing: 8) {
+        VerStack(alignment: .center, spacing: Constants.padding) {
             Image(appIcon.rawValue)
                 .resizable()
                 .scaledToFit()
@@ -27,8 +27,7 @@ struct AppIconCard: View {
                 )
 
             DesignedText(appIcon.displayName)
-                .font(.subheadline)
-                .fontWeight(.bold)
+                .font(.callout)
         }
         .frame(height: 130)
         .frame(maxWidth: .infinity)

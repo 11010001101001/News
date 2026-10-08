@@ -17,11 +17,9 @@ struct AppIconGrid: View {
 
     var body: some View {
         ScrollView {
-            VerStack(spacing: 30) {
-                LazyVGrid(columns: columns, spacing: 12) {
-                    ForEach(AppIconConfiguration.allCases) { appIcon in
-                        AppIconCard(viewModel: viewModel, appIcon: appIcon)
-                    }
+            LazyVGrid(columns: columns, spacing: 12) {
+                ForEach(AppIconConfiguration.allCases) { appIcon in
+                    AppIconCard(viewModel: viewModel, appIcon: appIcon)
                 }
             }
             .padding()

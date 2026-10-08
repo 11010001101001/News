@@ -15,7 +15,7 @@ struct KeywordSection: View {
 
     var body: some View {
         VerStack(spacing: 10) {
-            Label(Strings.keywordTitle, systemImage: "sparkles")
+            Label(Strings.keywordTitle, systemImage: SFSymbols.sparkles.rawValue)
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .textCase(.uppercase)

@@ -65,12 +65,23 @@ public final class SettingsViewModel {
         settingsManager.loaderShadowColor
     }
 
+    var entry: Entry {
+        let (lvl, procentsToNextLevel) = widgetsManager.getUserLevel(watchedTopics)
+        let name = NewsCategory(rawValue: category)!.displayName
+        return .init(
+            category: name,
+            level: lvl,
+            procentsToNextLevel: procentsToNextLevel,
+            lastViewedTitle: .empty
+        )
+    }
+
     // MARK: Private variables
     private let soundManager: SoundManagerProtocol
     private let vibrateManager: VibrateManagerProtocol
     private let notificationManager: NotificationManagerProtocol
     private let settingsManager: SettingsManagerProtocol
-    private let networkManager: NetworkManagerProtocol
+    private let widgetsManager: WidgetsManagerProtocol
 
     // MARK: Init
     public init(
@@ -78,13 +89,13 @@ public final class SettingsViewModel {
         vibrateManager: VibrateManagerProtocol,
         notificationManager: NotificationManagerProtocol,
         settingsManager: SettingsManagerProtocol,
-        networkManager: NetworkManagerProtocol
+        widgetsManager: WidgetsManagerProtocol
     ) {
         self.soundManager = soundManager
         self.vibrateManager = vibrateManager
         self.notificationManager = notificationManager
         self.settingsManager = settingsManager
-        self.networkManager = networkManager
+        self.widgetsManager = widgetsManager
     }
 }
 

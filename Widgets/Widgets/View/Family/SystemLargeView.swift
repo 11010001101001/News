@@ -20,7 +20,7 @@ struct SystemLargeView: View {
     }
 
     var body: some View {
-        VStack(spacing: 12) {
+        VerStack(spacing: 12) {
             mediumView
                 .padding(-12)
             progressLine

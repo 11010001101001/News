@@ -1,35 +1,33 @@
 //
-//  LanguageCell.swift
-//  News
+//  LanguageCard.swift
+//  Features
 //
-//  Created by Slava on 19.09.2026.
+//  Created by Slava on 08.10.2026.
 //
 
+import Foundation
 import SwiftUI
 import DesignSystem
+import ModelsKit
 import LocalizationKit
 
-struct LanguageCell: View {
-    @Bindable var viewModel: SettingsViewModel
+struct LanguageCard: View {
+    let viewModel: SettingsViewModel
 
     var body: some View {
-        HorStack(spacing: Constants.padding) {
+        VerStack(alignment: .center, spacing: Constants.padding) {
             Image(systemName: SFSymbols.globe.rawValue)
-                .padding(.leading, Constants.padding)
-            DesignedText(Strings.settingsLanguage)
-                .font(.headline)
-                .frame(maxHeight: .infinity, alignment: .leading)
-            Spacer()
-            menu
+                .font(.title2)
 
+            menu
         }
+        .frame(height: 100)
+        .frame(maxWidth: .infinity)
         .glassClearInteractive()
-        .frame(height: 70)
     }
 }
 
-// MARK: - Private
-extension LanguageCell {
+extension LanguageCard {
     fileprivate var menu: some View {
         Menu {
             ForEach(viewModel.availableLanguages) { language in
@@ -49,14 +47,15 @@ extension LanguageCell {
         } label: {
             HorStack(spacing: 6) {
                 Text(viewModel.currentLanguageItem.flag)
-                    .font(.subheadline)
+                    .font(.callout)
                 Text(viewModel.currentLanguageItem.title)
-                    .font(.subheadline)
+                    .font(.callout)
                 Image(systemName: "chevron.up.chevron.down")
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
-            .padding(.trailing, Constants.padding)
+            .padding(.horizontal, Constants.padding)
+            .lineLimit(1)
         }
         .tint(.primary)
     }

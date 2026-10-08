@@ -13,17 +13,16 @@ import DesignSystem
 struct SoundsGrid: View {
     let viewModel: SettingsViewModel
 
-    private let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 3)
+    private let columns = Array(repeating: GridItem(.flexible()), count: 3)
 
     var body: some View {
-        VerStack(spacing: 20) {
+        ScrollView {
             LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(SoundTheme.allCases) { sound in
                     SoundCard(viewModel: viewModel, sound: sound)
                 }
             }
-            Spacer()
+            .padding()
         }
-        .padding()
     }
 }

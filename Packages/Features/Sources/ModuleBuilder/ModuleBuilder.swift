@@ -47,7 +47,7 @@ public struct ModuleBuilder {
                 vibrateManager: vibrateManager,
                 notificationManager: notificationManager,
                 settingsManager: settingsManager,
-                networkManager: networkManager
+                widgetsManager: widgetsManager
             )
             SettingsView(viewModel: viewModel)
 

@@ -15,10 +15,11 @@ public protocol WidgetsManagerProtocol {
     func updateLevel(watchedTopics: Set<String>)
     func start()
     func updateArticles(_ articles: [Article])
+    func getUserLevel(_ watchedTopics: Set<String>?) -> (level: Level, progressInLevel: Int)
 }
 
 final class WidgetsManager: WidgetsManagerProtocol, @unchecked Sendable {
-    private enum Actions {
+    fileprivate enum Actions {
         case start
         case updateArticles(_ articles: [Article])
         case updateLevel(_ watchedTopics: Set<String>)
@@ -40,7 +41,10 @@ final class WidgetsManager: WidgetsManagerProtocol, @unchecked Sendable {
             }
         }
     }
+}
 
+// MARK: Public
+extension WidgetsManager {
     func start() {
         continuation.yield(.start)
     }
@@ -53,7 +57,22 @@ final class WidgetsManager: WidgetsManagerProtocol, @unchecked Sendable {
         continuation.yield(.updateLevel(watchedTopics))
     }
 
-    private func process(_ action: Actions) async {
+    func getUserLevel(_ watchedTopics: Set<String>?) -> (level: Level, progressInLevel: Int) {
+        guard let watchedTopics else { return (.newbie, 0) }
+
+        let watched = articles.filter { article in
+            watchedTopics.contains(where: { $0 == article.key })
+        }
+
+        let procents = watched.count * 100 / articles.count
+        let level = Level.getLevel(for: procents)
+        return (level, level.progressInLevel(for: procents))
+    }
+}
+
+// MARK: Private
+extension WidgetsManager {
+    fileprivate func process(_ action: Actions) async {
         switch action {
         case .start:
             await handleStart()
@@ -64,7 +83,7 @@ final class WidgetsManager: WidgetsManagerProtocol, @unchecked Sendable {
         }
     }
 
-    private func handleStart() async {
+    fileprivate func handleStart() async {
         for activity in Activity<NewsWidgetsAttributes>.activities {
             await activity.end(nil, dismissalPolicy: .immediate)
         }
@@ -79,7 +98,7 @@ final class WidgetsManager: WidgetsManagerProtocol, @unchecked Sendable {
         )
     }
 
-    private func handleUpdateLevel(watchedTopics: Set<String>) async {
+    fileprivate func handleUpdateLevel(watchedTopics: Set<String>) async {
         guard !articles.isEmpty else { return }
 
         let watched = articles.filter { article in
