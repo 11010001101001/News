@@ -42,7 +42,7 @@ final class ThermalManager: ThermalManagerProtocol, @unchecked Sendable {
     private func checkThermalState() {
         let state = ProcessInfo.processInfo.thermalState
 
-        if state == .serious || state == .critical || state == .fair {
+        if state == .serious || state == .critical {
             cooldownTask?.cancel()
             cooldownTask = nil
             isOverheated = true
