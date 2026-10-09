@@ -880,6 +880,29 @@
         }
       }
     },
+    "Expert.overheated" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI rating paused to cool down. Resuming soon..."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peringkat AI berhenti sejenak untuk mendinginkan. Segera dilanjutkan..."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оценка ИИ приостановлена для охлаждения. Ожидайте…"
+          }
+        }
+      }
+    },
     "Expert.prompt" : {
       "extractionState" : "manual",
       "localizations" : {

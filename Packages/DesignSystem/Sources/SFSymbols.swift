@@ -45,4 +45,5 @@ public enum SFSymbols: String {
     case lightMax = "light.max"
     case globe
     case speakerWave3Fill = "speaker.wave.3.fill"
+    case thermometerSunFill = "thermometer.sun.fill"
 }

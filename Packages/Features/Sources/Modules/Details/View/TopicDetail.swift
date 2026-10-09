@@ -25,11 +25,9 @@ struct TopicDetail: View {
         }
         .padding(.bottom, Constants.padding)
         .padding(.horizontal, Constants.padding / 2)
+        .animation(.spring(response: 0.4, dampingFraction: 0.58), value: rating)
         .task {
-            let rating = await viewModel.generateOpinion()
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.58)) {
-                self.rating = rating
-            }
+            self.rating = await viewModel.generateOpinion()
         }
     }
 }

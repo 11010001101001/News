@@ -22,8 +22,6 @@ actor ExpertManager: ExpertManagerProtocol {
     }
 
     func generateOpinion(from text: String) -> Rating {
-        guard !Task.isCancelled else { return .error }
-
         let systemPrompt = String(localized: Strings.expertPrompt)
 
         let fullPrompt =

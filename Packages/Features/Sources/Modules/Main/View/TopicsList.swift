@@ -37,10 +37,16 @@ struct TopicsList: View {
 extension TopicsList {
     fileprivate var list: some View {
         VerStack {
+            ConditionalView(viewModel.isOverheated) {
+                ThermalBannerView()
+                    .padding(.bottom, Constants.padding)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
             ForEach(viewModel.news, id: \.self) {
                 ModuleBuilder.shared.build(.details($0))
             }
         }
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.isOverheated)
     }
 
     fileprivate var loader: some View {

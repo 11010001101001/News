@@ -15,6 +15,7 @@ public struct ModuleBuilder {
     private let networkManager: NetworkManagerProtocol = NetworkManager()
     private let widgetsManager: WidgetsManagerProtocol = WidgetsManager()
     private let expertManager: ExpertManagerProtocol = ExpertManager()
+    private let thermalManager: ThermalManagerProtocol = ThermalManager()
 
     @ViewBuilder
     public func build(_ module: Module) -> some View {
@@ -26,7 +27,8 @@ public struct ModuleBuilder {
                 notificationManager: notificationManager,
                 settingsManager: settingsManager,
                 networkManager: networkManager,
-                widgetsManager: widgetsManager
+                widgetsManager: widgetsManager,
+                thermalManager: thermalManager
             )
             MainView(viewModel: viewModel)
 
@@ -37,6 +39,7 @@ public struct ModuleBuilder {
                 vibrateManager: vibrateManager,
                 widgetsManager: widgetsManager,
                 expertManager: expertManager,
+                thermalManager: thermalManager,
                 article: article
             )
             DetailsView(viewModel: viewModel)

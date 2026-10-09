@@ -101,6 +101,7 @@ final class DetailsViewModel {
     private let vibrateManager: VibrateManagerProtocol
     private let widgetsManager: WidgetsManagerProtocol
     private let expertManager: ExpertManagerProtocol
+    private let thermalManager: ThermalManagerProtocol
     private let article: Article
 
     // MARK: Init
@@ -110,6 +111,7 @@ final class DetailsViewModel {
         vibrateManager: VibrateManagerProtocol,
         widgetsManager: WidgetsManagerProtocol,
         expertManager: ExpertManagerProtocol,
+        thermalManager: ThermalManagerProtocol,
         article: Article
     ) {
         self.cacheManager = cacheManager
@@ -117,6 +119,7 @@ final class DetailsViewModel {
         self.vibrateManager = vibrateManager
         self.widgetsManager = widgetsManager
         self.expertManager = expertManager
+        self.thermalManager = thermalManager
         self.article = article
     }
 }
@@ -173,6 +176,9 @@ extension DetailsViewModel {
     }
 
     func generateOpinion() async -> Rating {
+        guard !thermalManager.isOverheated else { return .cooling }
+        guard !Task.isCancelled else { return .error }
+
         let key = article.key as AnyObject & Sendable
 
         if let cached = (cacheManager.get(key: key) as? CacheWrapper<Rating>)?.data {
@@ -180,6 +186,9 @@ extension DetailsViewModel {
         }
 
         let result = await expertManager.generateOpinion(from: description)
+
+        guard !Task.isCancelled else { return .error }
+
         cacheManager.save(object: CacheWrapper(data: result), key: key)
         return result
     }

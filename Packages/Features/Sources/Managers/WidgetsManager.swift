@@ -18,7 +18,7 @@ public protocol WidgetsManagerProtocol {
     func getUserLevel(_ watchedTopics: Set<String>?) -> (level: Level, progressInLevel: Int)
 }
 
-final class WidgetsManager: WidgetsManagerProtocol, @unchecked Sendable {
+final class WidgetsManager: @unchecked Sendable {
     fileprivate enum Actions {
         case start
         case updateArticles(_ articles: [Article])
@@ -43,8 +43,8 @@ final class WidgetsManager: WidgetsManagerProtocol, @unchecked Sendable {
     }
 }
 
-// MARK: Public
-extension WidgetsManager {
+// MARK: WidgetsManagerProtocol
+extension WidgetsManager: WidgetsManagerProtocol {
     func start() {
         continuation.yield(.start)
     }

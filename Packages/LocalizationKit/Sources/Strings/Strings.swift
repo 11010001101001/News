@@ -300,4 +300,7 @@ public enum Strings {
     public static var expertPrompt: LocalizedStringResource {
         LocalizedStringResource("Expert.prompt", bundle: .atURL(Bundle.module.bundleURL))
     }
+    public static var expertOverheated: LocalizedStringResource {
+        LocalizedStringResource("Expert.overheated", bundle: .atURL(Bundle.module.bundleURL))
+    }
 }

@@ -69,6 +69,10 @@ public final class MainViewModel {
         !settingsManager.favoriteTopics.isEmpty
     }
 
+    var isOverheated: Bool {
+        thermalManager.isOverheated
+    }
+
     // MARK: Private variables
     private let soundManager: SoundManagerProtocol
     private let vibrateManager: VibrateManagerProtocol
@@ -76,6 +80,7 @@ public final class MainViewModel {
     private let settingsManager: SettingsManagerProtocol
     private let networkManager: NetworkManagerProtocol
     private let widgetsManager: WidgetsManagerProtocol
+    private let thermalManager: ThermalManagerProtocol
     private var loadNewsTask: Task<Void, Never>?
 
     // MARK: Init
@@ -85,7 +90,8 @@ public final class MainViewModel {
         notificationManager: NotificationManagerProtocol,
         settingsManager: SettingsManagerProtocol,
         networkManager: NetworkManagerProtocol,
-        widgetsManager: WidgetsManagerProtocol
+        widgetsManager: WidgetsManagerProtocol,
+        thermalManager: ThermalManagerProtocol
     ) {
         self.soundManager = soundManager
         self.vibrateManager = vibrateManager
@@ -93,6 +99,7 @@ public final class MainViewModel {
         self.settingsManager = settingsManager
         self.networkManager = networkManager
         self.widgetsManager = widgetsManager
+        self.thermalManager = thermalManager
 
         widgetsManager.start()
     }
