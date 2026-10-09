@@ -7,24 +7,24 @@
 
 import Foundation
 
-@MainActor
 public protocol ThermalManagerProtocol: Sendable {
     var isOverheated: Bool { get }
 }
 
-@MainActor
 @Observable
-final class ThermalManager: ThermalManagerProtocol {
+final class ThermalManager: ThermalManagerProtocol, @unchecked Sendable {
     private(set) var isOverheated = false
     private var observerTask: Task<Void, Never>?
+    private var cooldownTask: Task<Void, Never>?
 
     init() {
         checkThermalState()
         setupNotification()
     }
 
-    isolated deinit {
+    deinit {
         observerTask?.cancel()
+        cooldownTask?.cancel()
     }
 
     private func setupNotification() {
@@ -41,6 +41,18 @@ final class ThermalManager: ThermalManagerProtocol {
 
     private func checkThermalState() {
         let state = ProcessInfo.processInfo.thermalState
-        self.isOverheated = (state == .serious || state == .critical)
+
+        if state == .serious || state == .critical || state == .fair {
+            cooldownTask?.cancel()
+            cooldownTask = nil
+            isOverheated = true
+        } else if isOverheated && cooldownTask == nil {
+            cooldownTask = Task { @MainActor [weak self] in
+                try? await Task.sleep(nanoseconds: 180_000_000_000)
+                guard !Task.isCancelled else { return }
+                self?.isOverheated = false
+                self?.cooldownTask = nil
+            }
+        }
     }
 }

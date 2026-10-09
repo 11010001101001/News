@@ -34,8 +34,8 @@ bool LocalLLM::loadModel(const std::string &path, int ctxSize) {
 
     auto cparams = llama_context_default_params();
     cparams.n_ctx = ctxSize;
-    cparams.n_threads = 1;
-    cparams.n_threads_batch = 1;
+    cparams.n_threads = 2;
+    cparams.n_threads_batch = 2;
     ctx = llama_new_context_with_model(model, cparams);
 
     return ctx != nullptr;
@@ -44,8 +44,6 @@ bool LocalLLM::loadModel(const std::string &path, int ctxSize) {
 std::string LocalLLM::generate(const std::string &promt) {
     if (!ctx || !model)
         return "Error: Model not loaded";
-
-    pthread_set_qos_class_self_np(QOS_CLASS_BACKGROUND, 0);
 
     llama_kv_cache_clear(ctx);
 
@@ -103,7 +101,7 @@ std::string LocalLLM::generate(const std::string &promt) {
             break;
         }
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(6));
+        std::this_thread::sleep_for(std::chrono::milliseconds(15));
     }
 
     return result.empty() ? "Error: Empty response" : result;

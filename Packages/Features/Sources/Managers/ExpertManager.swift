@@ -16,12 +16,17 @@ protocol ExpertManagerProtocol: Sendable {
 
 actor ExpertManager: ExpertManagerProtocol {
     private let engine = Engine()
+    private let thermalManager: ThermalManagerProtocol
 
-    init() {
+    init(thermalManager: ThermalManagerProtocol) {
+        self.thermalManager = thermalManager
         engine.loadModel()
     }
 
     func generateOpinion(from text: String) -> Rating {
+        guard !Task.isCancelled else { return .error }
+        guard !thermalManager.isOverheated else { return .cooling }
+
         let systemPrompt = String(localized: Strings.expertPrompt)
 
         let fullPrompt =

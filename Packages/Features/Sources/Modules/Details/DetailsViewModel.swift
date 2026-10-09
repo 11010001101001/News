@@ -95,6 +95,10 @@ final class DetailsViewModel {
         isFavorite ? Strings.contextMenuRemoveFromFavorites : Strings.contextMenuAddToFavorites
     }
 
+    var isOverheated: Bool {
+        thermalManager.isOverheated
+    }
+
     // MARK: Private variables
     private let cacheManager: CacheManagerProtocol
     private let settingsManager: SettingsManagerProtocol
@@ -179,16 +183,14 @@ extension DetailsViewModel {
         guard !Task.isCancelled else { return .error }
 
         let key = article.key as AnyObject & Sendable
-
         if let cached = (cacheManager.get(key: key) as? CacheWrapper<Rating>)?.data {
             return cached
         }
 
-        guard !thermalManager.isOverheated else { return .cooling }
-
         let result = await expertManager.generateOpinion(from: description)
 
         guard !Task.isCancelled else { return .error }
+        guard result != .cooling else { return .cooling }
 
         cacheManager.save(object: CacheWrapper(data: result), key: key)
         return result

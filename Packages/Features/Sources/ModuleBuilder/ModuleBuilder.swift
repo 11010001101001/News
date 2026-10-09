@@ -14,8 +14,12 @@ public struct ModuleBuilder {
     private let settingsManager: SettingsManagerProtocol = SettingsManager()
     private let networkManager: NetworkManagerProtocol = NetworkManager()
     private let widgetsManager: WidgetsManagerProtocol = WidgetsManager()
-    private let expertManager: ExpertManagerProtocol = ExpertManager()
+    private let expertManager: ExpertManagerProtocol
     private let thermalManager: ThermalManagerProtocol = ThermalManager()
+
+    init() {
+        self.expertManager = ExpertManager(thermalManager: thermalManager)
+    }
 
     @ViewBuilder
     public func build(_ module: Module) -> some View {
