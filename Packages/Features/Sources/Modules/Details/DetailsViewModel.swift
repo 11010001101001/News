@@ -176,7 +176,6 @@ extension DetailsViewModel {
     }
 
     func generateOpinion() async -> Rating {
-        guard !thermalManager.isOverheated else { return .cooling }
         guard !Task.isCancelled else { return .error }
 
         let key = article.key as AnyObject & Sendable
@@ -184,6 +183,8 @@ extension DetailsViewModel {
         if let cached = (cacheManager.get(key: key) as? CacheWrapper<Rating>)?.data {
             return cached
         }
+
+        guard !thermalManager.isOverheated else { return .cooling }
 
         let result = await expertManager.generateOpinion(from: description)
 
