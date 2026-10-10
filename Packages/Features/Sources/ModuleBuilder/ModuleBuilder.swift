@@ -16,9 +16,13 @@ public struct ModuleBuilder {
     private let widgetsManager: WidgetsManagerProtocol = WidgetsManager()
     private let expertManager: ExpertManagerProtocol
     private let thermalManager: ThermalManagerProtocol = ThermalManager()
+    private let powerManager: PowerManagerProtocol = PowerManager()
 
     init() {
-        self.expertManager = ExpertManager(thermalManager: thermalManager)
+        self.expertManager = ExpertManager(
+            thermalManager: thermalManager,
+            powerManager: powerManager
+        )
     }
 
     @ViewBuilder
@@ -44,6 +48,7 @@ public struct ModuleBuilder {
                 widgetsManager: widgetsManager,
                 expertManager: expertManager,
                 thermalManager: thermalManager,
+                powerManager: powerManager,
                 article: article
             )
             DetailsView(viewModel: viewModel)

@@ -95,8 +95,8 @@ final class DetailsViewModel {
         isFavorite ? Strings.contextMenuRemoveFromFavorites : Strings.contextMenuAddToFavorites
     }
 
-    var isOverheated: Bool {
-        thermalManager.isOverheated
+    var isThrottled: Bool {
+        thermalManager.isOverheated || powerManager.isLowPower
     }
 
     // MARK: Private variables
@@ -106,6 +106,7 @@ final class DetailsViewModel {
     private let widgetsManager: WidgetsManagerProtocol
     private let expertManager: ExpertManagerProtocol
     private let thermalManager: ThermalManagerProtocol
+    private let powerManager: PowerManagerProtocol
     private let article: Article
 
     // MARK: Init
@@ -116,6 +117,7 @@ final class DetailsViewModel {
         widgetsManager: WidgetsManagerProtocol,
         expertManager: ExpertManagerProtocol,
         thermalManager: ThermalManagerProtocol,
+        powerManager: PowerManagerProtocol,
         article: Article
     ) {
         self.cacheManager = cacheManager
@@ -124,6 +126,7 @@ final class DetailsViewModel {
         self.widgetsManager = widgetsManager
         self.expertManager = expertManager
         self.thermalManager = thermalManager
+        self.powerManager = powerManager
         self.article = article
     }
 }
@@ -191,6 +194,7 @@ extension DetailsViewModel {
 
         guard !Task.isCancelled else { return .error }
         guard result != .cooling else { return .cooling }
+        guard result != .lowPower else { return .lowPower }
 
         cacheManager.save(object: CacheWrapper(data: result), key: key)
         return result

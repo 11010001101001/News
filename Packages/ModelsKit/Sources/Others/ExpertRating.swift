@@ -13,7 +13,8 @@ public enum Rating: String, Sendable {
     case sucks = "SUCKS"
     case loading
     case error
-    case cooling
+    case cooling = "COOLING"
+    case lowPower = "LOW POWER"
 
     public var iconName: String {
         switch self {
@@ -23,6 +24,7 @@ public enum Rating: String, Sendable {
         case .loading: "sparkles"
         case .error: "slash.circle"
         case .cooling: "snowflake"
+        case .lowPower: "battery.25"
         }
     }
 
@@ -34,6 +36,7 @@ public enum Rating: String, Sendable {
         case .loading: .white
         case .error: .gray
         case .cooling: .cyan
+        case .lowPower: .yellow
         }
     }
 
