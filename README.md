@@ -58,13 +58,14 @@ The codebase is fully decoupled into 6 isolated local Swift Packages (`Packages/
 | **`CoreKit`** | Low-level utilities, networking, and platform abstractions | `CacheManager`, `VibrateManager`, date/string extensions, UIKit wrappers |
 | **`ModelsKit`** | Domain models, DTOs, SwiftData entities, and widget schemas | SwiftData schemas, network DTOs, widget timeline entries, `Level` gamification schemas, `HttpStatusCodes` |
 | **`DesignSystem`** | Reusable UI design system, tokens, and audio assets | Metal shaders (`Shaders.metal`), Lottie animations, custom sound engine, centralized glassmorphism (`.glassCard()`), adaptive orientation modifiers |
-| **`Features`** | Feature flows, coordinators, and presentations | MVVM + `@Observable`, `ExpertManager` actor (AI analysis UI), `WidgetsManager` actor, `ModuleBuilder` DI, structured task cancellation, context menus, custom sheet WebView |
+| **`Features`** | Feature flows, coordinators, and presentations | MVVM + `@Observable`, `ExpertManager` actor (AI analysis UI), `WidgetsManager` actor, `ThermalManager` & `PowerManager` (hardware telemetry & throttling), `ModuleBuilder` DI, structured task cancellation, context menus, custom sheet WebView |
 
 ---
 
 ## 🔥 Features & Highlights
 
 - **🧠 On-Device AI & Swift C++ Interoperability (`AIKit`)**: Fully offline generative AI analysis powered by **Qwen2.5-1.5B-Instruct** (4-bit quantized GGUF) executed via `llama.cpp` compiled into an optimized `xcframework`. Communicates directly between Swift and C++20 using native Swift C++ Interop (`.interoperabilityMode(.Cxx)`) without Objective-C overhead, providing asynchronous AI expert opinion ratings on news articles via `ExpertManager`.
+- **🌡️ Adaptive Thermal & Power Mitigation**: Hardware-aware AI inference governance powered by `ThermalManager` and `PowerManager`. Continuously observes `ProcessInfo.thermalStateDidChangeNotification` and `NSProcessInfoPowerStateDidChange`, automatically throttling compute-heavy on-device LLM evaluation during `.serious` or `.critical` thermal states and Low Power Mode. Features a 3-minute asynchronous cooldown stabilization cycle and dynamic UI banner alerts (`ThermalBannerView`) to safeguard SoC thermals and battery endurance.
 - **📦 100% Native SPM Modularization**: Scalable modular architecture with 6 local packages isolating AI inference, UI components, domain logic, localization, and networking.
 - **⚡ Swift 6 Concurrency & Actor Isolation**: Fully compliant with modern Swift Concurrency (`async/await`, `@Observable`, `@MainActor`, `actor`, `Sendable`, `ApproachableConcurrency`). Eliminates shared mutable state and data races across background services (`WidgetsManager`, `ExpertManager`) and features structured network cancellation (`Task.isCancelled`, `CancellationError`). Legacy `Combine` is completely removed.
 - **🔄 Modern Observation Architecture**: State management modernized with the Swift `@Observable` macro (`SettingsManager` with `@ObservationIgnored` properties and `@MainActor` thread safety), delivering granular reactive UI updates for loader states, themes, and reading caches.
@@ -100,7 +101,7 @@ The codebase is fully decoupled into 6 isolated local Swift Packages (`Packages/
 | **State Management**| Swift Observation (`@Observable`, `@ObservationIgnored`, `@MainActor`) |
 | **Localization** | Native Apple String Catalogs (`.xcstrings`) + `LocalizedStringResource` + Runtime Switcher |
 | **Testing** | Swift Testing (`@Test` Unit Tests) + XCTest (`NewsUITests` UI Tests) |
-| **System Integrations** | ActivityKit, WidgetKit, TipKit, AVFoundation (modernized throwing audio APIs), UNUserNotificationCenter, ScenePhase Fast Actions |
+| **System Integrations** | ActivityKit, WidgetKit, TipKit, AVFoundation (modernized throwing audio APIs), ProcessInfo (Thermal & Power State Telemetry), UNUserNotificationCenter, ScenePhase Fast Actions |
 | **Animations & Audio** | Lottie iOS, Custom SoundEngine, Core Haptics |
 | **Code Quality** | SwiftLint (`.swiftlint.yml`), `.swift-format` |
 | **Dependencies** | Lottie (Native SPM) |
