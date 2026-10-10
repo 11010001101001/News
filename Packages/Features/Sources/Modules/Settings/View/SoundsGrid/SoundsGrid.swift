@@ -18,8 +18,8 @@ struct SoundsGrid: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 12) {
-                ForEach(SoundTheme.allCases) { sound in
-                    SoundCard(viewModel: viewModel, sound: sound)
+                ForEach(SoundTheme.allCases) {
+                    SoundCard(viewModel: viewModel, soundTheme: $0)
                 }
             }
             .padding()

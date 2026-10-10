@@ -27,12 +27,12 @@ struct LoaderCard: View {
                 .foregroundStyle(.gray)
                 .padding(Constants.padding)
         }
-        .markIsSelected(viewModel.loader == loader.rawValue)
+        .markIsSelected(viewModel.loader == loader)
         .glassClearInteractive()
         .applyOrNotSettingsModifier(
-            isEnabled: viewModel.loader == loader.rawValue
+            isEnabled: viewModel.loader == loader
         ) {
-            viewModel.applySettings(loader.rawValue)
+            viewModel.loader = loader
         }
     }
 }

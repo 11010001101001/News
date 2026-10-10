@@ -7,33 +7,26 @@
 
 import Foundation
 
-public struct AppLanguage: Identifiable, Equatable, Hashable, Sendable {
-    public let rawValue: String
-    public let title: String
-    public let flag: String
+public enum AppLanguage: String, CaseIterable, Identifiable, Sendable, Codable {
+    public var id: Self { return self }
 
-    public var id: String { rawValue }
+    case english = "en"
+    case russian = "ru"
+    case indonesian = "id"
 
-    public static let english = AppLanguage(rawValue: "en", title: "English", flag: "🇬🇧")
-    public static let russian = AppLanguage(rawValue: "ru", title: "Русский", flag: "🇷🇺")
-    public static let indonesian = AppLanguage(rawValue: "id", title: "Bahasa Indonesia", flag: "🇮🇩")
-
-    public static var allCases: [AppLanguage] {
-        [.english, .russian, .indonesian]
+    public var title: String {
+        switch self {
+        case .english: "English"
+        case .russian: "Русский"
+        case .indonesian: "Bahasa Indonesia"
+        }
     }
 
-    public init(rawValue: String, title: String, flag: String) {
-        self.rawValue = rawValue
-        self.title = title
-        self.flag = flag
-    }
-
-    public init?(rawValue: String) {
-        switch rawValue {
-        case "en": self = .english
-        case "ru": self = .russian
-        case "id": self = .indonesian
-        default: return nil
+    public var flag: String {
+        switch self {
+        case .english: "🇬🇧"
+        case .russian: "🇷🇺"
+        case .indonesian: "🇮🇩"
         }
     }
 }

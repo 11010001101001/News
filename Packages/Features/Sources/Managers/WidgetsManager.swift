@@ -61,7 +61,7 @@ extension WidgetsManager: WidgetsManagerProtocol {
         guard let watchedTopics, !articles.isEmpty else { return (.newbie, 0) }
 
         let watched = articles.filter { article in
-            watchedTopics.contains(where: { $0 == article.key })
+            watchedTopics.contains(article.key)
         }
 
         let procents = watched.count * 100 / articles.count
@@ -102,7 +102,7 @@ extension WidgetsManager {
         guard !articles.isEmpty else { return }
 
         let watched = articles.filter { article in
-            watchedTopics.contains(where: { $0 == article.key })
+            watchedTopics.contains(article.key)
         }
 
         let procents = watched.count * 100 / articles.count

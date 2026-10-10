@@ -40,10 +40,10 @@ struct Provider: TimelineProvider {
             else { return }
 
             let entry = Entry(
-                category: NewsCategory.init(rawValue: settings.category)!.displayName,
+                category: settings.category.displayName,
                 level: level,
                 procentsToNextLevel: procentsToNextLevel,
-                lastViewedTitle: settings.lastViewedTitle.orEmpty
+                lastViewedTitle: settings.lastViewedTitle
             )
 
             guard
@@ -72,7 +72,7 @@ struct Provider: TimelineProvider {
         let model = try JSONDecoder().decode(CommonInfo.self, from: data)
         let articles = model.articles.orEmpty
         let watched = articles.filter { article in
-            watchedTopics.contains(where: { $0 == article.key })
+            watchedTopics.contains(article.key)
         }
 
         let procents = watched.count * 100 / articles.count

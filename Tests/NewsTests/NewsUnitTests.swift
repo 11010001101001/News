@@ -54,7 +54,6 @@ private final class MockSettingsManager: SettingsManagerProtocol, @unchecked Sen
     var language: String = DefaultSettings.language
     var watchedTopics: Set<String> = []
     var favoriteTopics: [FavoriteArticle] = []
-    var loaderShadowColor: Color = .clear
     var keyword: String = ""
     var lastViewedTitle: String = ""
 

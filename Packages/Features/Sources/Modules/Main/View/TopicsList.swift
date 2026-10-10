@@ -54,10 +54,7 @@ extension TopicsList {
     fileprivate var loader: some View {
         VerStack(alignment: .center) {
             Spacer()
-            Loader(
-                loaderName: viewModel.loader,
-                shadowColor: viewModel.loaderShadowColor
-            )
+            Loader(name: viewModel.loader.rawValue)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             Spacer()
         }

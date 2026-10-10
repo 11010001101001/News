@@ -16,7 +16,7 @@ import SwiftUI
 @MainActor
 final class DetailsViewModel {
     // MARK: Public variables
-    var loader: String {
+    var loader: LoaderConfiguration {
         get { settingsManager.loader }
         set { settingsManager.save(loader: newValue) }
     }
@@ -33,10 +33,6 @@ final class DetailsViewModel {
 
     var keyword: String {
         settingsManager.keyword
-    }
-
-    var loaderShadowColor: Color {
-        settingsManager.loaderShadowColor
     }
 
     var title: String {
@@ -139,7 +135,7 @@ extension DetailsViewModel {
     }
 
     fileprivate func checkIsRead(_ key: String) -> Bool {
-        watchedTopics.contains(where: { $0 == key })
+        watchedTopics.contains(key)
     }
 }
 

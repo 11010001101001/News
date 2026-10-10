@@ -11,27 +11,28 @@ import ModelsKit
 
 struct SoundCard: View {
     let viewModel: SettingsViewModel
-    let sound: SoundTheme
+    let soundTheme: SoundTheme
 
     @State private var isPlaying = false
 
     var body: some View {
         VerStack(alignment: .center, spacing: Constants.padding) {
-            Image(systemName: isPlaying ? SFSymbols.speakerWave3Fill.rawValue : sound.image.rawValue)
+            Image(systemName: isPlaying ? SFSymbols.speakerWave3Fill.rawValue : soundTheme.image.rawValue)
                 .font(.title2)
-            DesignedText(sound.displayName)
+            DesignedText(soundTheme.displayName)
                 .font(.callout)
+                .multilineTextAlignment(.center)
         }
         .frame(height: 100)
         .frame(maxWidth: .infinity)
-        .markIsSelected(viewModel.soundTheme == sound.rawValue)
+        .markIsSelected(viewModel.soundTheme == soundTheme)
         .glassClearInteractive()
         .applyOrNotSettingsModifier(
-            isEnabled: viewModel.soundTheme == sound.rawValue
+            isEnabled: viewModel.soundTheme == soundTheme
         ) {
             isPlaying = true
-            viewModel.applySettings(sound.rawValue.lowercased())
-            viewModel.playRefresh(theme: sound)
+            viewModel.soundTheme = soundTheme
+            viewModel.playRefresh(theme: soundTheme)
             Task {
                 try? await Task.sleep(for: .seconds(0.5))
                 isPlaying = false

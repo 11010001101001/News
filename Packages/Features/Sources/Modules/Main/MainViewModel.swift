@@ -21,16 +21,12 @@ public final class MainViewModel {
     public var settingsShortcutItemTapped = false
     public var shareShortcutItemTapped = false
 
-    var loader: String {
+    var loader: LoaderConfiguration {
         get { settingsManager.loader }
         set { settingsManager.save(loader: newValue) }
     }
 
-    var loaderShadowColor: Color {
-        settingsManager.loaderShadowColor
-    }
-
-    var soundTheme: String {
+    var soundTheme: SoundTheme {
         get { settingsManager.soundTheme }
         set {
             settingsManager.save(soundTheme: newValue)
@@ -38,12 +34,12 @@ public final class MainViewModel {
         }
     }
 
-    var category: String {
+    var category: NewsCategory {
         get { settingsManager.category }
         set { settingsManager.save(category: newValue) }
     }
 
-    var appIcon: String {
+    var appIcon: AppIconConfiguration {
         get { settingsManager.appIcon }
         set { settingsManager.save(appIcon: newValue) }
     }
@@ -53,11 +49,20 @@ public final class MainViewModel {
         set { settingsManager.save(watchedTopics: newValue) }
     }
 
+    var language: AppLanguage {
+        get { settingsManager.language }
+        set {
+            guard newValue != language else {
+                notificationOccurred(.error)
+                return
+            }
+            settingsManager.save(language: newValue)
+            notificationOccurred(.success)
+        }
+    }
+
     var isDefaultSettings: Bool {
-        category == DefaultSettings.category
-            && soundTheme == DefaultSettings.soundTheme
-            && loader == DefaultSettings.loader
-            && appIcon == DefaultSettings.appIcon
+        settingsManager.isDefaultSettings
     }
 
     var isAllRead: Bool {
@@ -119,7 +124,7 @@ extension MainViewModel {
         loadNewsTask?.cancel()
         loadNewsTask = Task {
             do {
-                let loadedArticles = try await networkManager.loadNews(category: category)
+                let loadedArticles = try await networkManager.loadNews(category: category.rawValue)
                 guard !Task.isCancelled else { return }
                 let sortedNews = sortIsRead(loadedArticles)
                 news = sortedNews
@@ -182,9 +187,8 @@ extension MainViewModel {
 
     /// sound theme can change - do it during every app launch and sound changing
     func configureNotifications() {
-        let notificationSound = (SoundTheme(rawValue: soundTheme)?.notificationSound).orEmpty
         Task {
-            await notificationManager.configureNotifications(with: notificationSound)
+            await notificationManager.configureNotifications(with: soundTheme.notificationSound)
         }
     }
 
@@ -218,7 +222,7 @@ extension MainViewModel {
     }
 
     fileprivate func checkIsRead(_ key: String) -> Bool {
-        watchedTopics.contains(where: { $0 == key })
+        watchedTopics.contains(key)
     }
 
     fileprivate func notificationOccurred(
@@ -228,10 +232,10 @@ extension MainViewModel {
     }
 
     fileprivate func playRefresh() {
-        guard soundTheme != SoundTheme.silentMode.rawValue else { return }
+        guard soundTheme != .silentMode else { return }
 
         let refreshSound =
-            switch SoundTheme(rawValue: soundTheme) {
+            switch soundTheme {
             case .starwars:
                 Set(["starwars_refresh", "starwars_refresh1"]).randomElement().orEmpty
             case .cats:
@@ -245,10 +249,10 @@ extension MainViewModel {
     }
 
     fileprivate func playError() {
-        guard soundTheme != SoundTheme.silentMode.rawValue else { return }
+        guard soundTheme != .silentMode else { return }
 
         let errorSound =
-            switch SoundTheme(rawValue: soundTheme) {
+            switch soundTheme {
             case .starwars:
                 "starwars_error"
             case .cats:

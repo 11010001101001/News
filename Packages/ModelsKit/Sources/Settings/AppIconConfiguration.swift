@@ -8,7 +8,7 @@
 import Foundation
 import LocalizationKit
 
-public enum AppIconConfiguration: String, CaseIterable, Identifiable {
+public enum AppIconConfiguration: String, CaseIterable, Identifiable, Sendable, Codable {
     public var id: Self { return self }
 
     case globe

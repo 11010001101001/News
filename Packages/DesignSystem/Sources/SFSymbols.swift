@@ -46,4 +46,6 @@ public enum SFSymbols: String {
     case globe
     case speakerWave3Fill = "speaker.wave.3.fill"
     case thermometerSunFill = "thermometer.sun.fill"
+    case magnifyingGlass = "magnifyingglass"
+    case xmarkCircleFill = "xmark.circle.fill"
 }

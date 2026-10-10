@@ -8,7 +8,7 @@
 import Foundation
 import LocalizationKit
 
-public enum LoaderConfiguration: String, CaseIterable, Identifiable {
+public enum LoaderConfiguration: String, CaseIterable, Identifiable, Sendable, Codable {
     public var id: Self { return self }
 
     case rocket

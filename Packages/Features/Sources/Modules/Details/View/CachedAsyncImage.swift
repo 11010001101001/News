@@ -50,10 +50,7 @@ extension CachedAsyncImage {
     }
 
     fileprivate var loader: some View {
-        Loader(
-            loaderName: viewModel.loader,
-            shadowColor: viewModel.loaderShadowColor
-        )
+        Loader(name: viewModel.loader.rawValue)
     }
 }
 

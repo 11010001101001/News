@@ -11,6 +11,7 @@ public extension String {
     static let empty = ""
     static let spacer = " "
     static let dash = " / "
+    static let dots = "..."
 
     func toReadableDate() -> String {
         let dateFormatter = DateFormatter()

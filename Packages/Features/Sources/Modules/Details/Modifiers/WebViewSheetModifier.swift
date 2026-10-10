@@ -61,12 +61,9 @@ extension WebViewSheetModifier {
 // MARK: - Views
 extension WebViewSheetModifier {
     fileprivate var loader: some View {
-        Loader(
-            loaderName: viewModel.loader,
-            shadowColor: viewModel.loaderShadowColor
-        )
-        .frame(height: Constants.imageHeight)
-        .opacity(webViewModel.loadingState.loaderOpacity)
+        Loader(name: viewModel.loader.rawValue)
+            .frame(height: Constants.imageHeight)
+            .opacity(webViewModel.loadingState.loaderOpacity)
     }
 
     fileprivate var webView: some View {

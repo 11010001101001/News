@@ -31,12 +31,12 @@ struct AppIconCard: View {
         }
         .frame(height: 130)
         .frame(maxWidth: .infinity)
-        .markIsSelected(viewModel.appIcon == appIcon.rawValue)
+        .markIsSelected(viewModel.appIcon == appIcon)
         .glassClearInteractive()
         .applyOrNotSettingsModifier(
-            isEnabled: viewModel.appIcon == appIcon.rawValue
+            isEnabled: viewModel.appIcon == appIcon
         ) {
-            viewModel.applySettings(appIcon.rawValue)
+            viewModel.appIcon = appIcon
         }
     }
 }

@@ -26,12 +26,12 @@ struct CategoryCard: View {
         }
         .frame(height: 90)
         .frame(maxWidth: .infinity)
-        .markIsSelected(viewModel.category == category.rawValue)
+        .markIsSelected(viewModel.category == category)
         .glassClearInteractive()
         .applyOrNotSettingsModifier(
-            isEnabled: viewModel.category == category.rawValue
+            isEnabled: viewModel.category == category
         ) {
-            viewModel.applySettings(category.rawValue)
+            viewModel.category = category
         }
     }
 }

@@ -15,40 +15,64 @@ import DesignSystem
 @Observable
 @MainActor
 public final class SettingsViewModel {
-    var loader: String {
+    var loader: LoaderConfiguration {
         get { settingsManager.loader }
-        set { settingsManager.save(loader: newValue) }
+        set {
+            guard newValue != loader else {
+                notificationOccurred(.error)
+                return
+            }
+            settingsManager.save(loader: newValue)
+            notificationOccurred(.success)
+        }
     }
 
-    var soundTheme: String {
+    var soundTheme: SoundTheme {
         get { settingsManager.soundTheme }
         set {
+            guard newValue != soundTheme else {
+                notificationOccurred(.error)
+                return
+            }
             settingsManager.save(soundTheme: newValue)
+            notificationOccurred(.success)
             configureNotifications()
         }
     }
 
-    var category: String {
+    var category: NewsCategory {
         get { settingsManager.category }
-        set { settingsManager.save(category: newValue) }
+        set {
+            guard newValue != category else {
+                notificationOccurred(.error)
+                return
+            }
+            settingsManager.save(category: newValue)
+        }
     }
 
-    var appIcon: String {
+    var appIcon: AppIconConfiguration {
         get { settingsManager.appIcon }
-        set { settingsManager.save(appIcon: newValue) }
+        set {
+            guard newValue != appIcon else {
+                notificationOccurred(.error)
+                return
+            }
+            settingsManager.save(appIcon: newValue)
+            notificationOccurred(.success)
+        }
     }
 
-    var language: String {
+    var language: AppLanguage {
         get { settingsManager.language }
-        set { settingsManager.save(language: newValue) }
-    }
-
-    public var currentLanguageItem: AppLanguage {
-        AppLanguage(rawValue: language) ?? .english
-    }
-
-    var availableLanguages: [AppLanguage] {
-        AppLanguage.allCases
+        set {
+            guard newValue != language else {
+                notificationOccurred(.error)
+                return
+            }
+            settingsManager.save(language: newValue)
+            notificationOccurred(.success)
+        }
     }
 
     var watchedTopics: Set<String> {
@@ -61,15 +85,10 @@ public final class SettingsViewModel {
         set { settingsManager.save(keyword: newValue) }
     }
 
-    var loaderShadowColor: Color {
-        settingsManager.loaderShadowColor
-    }
-
     var entry: Entry {
         let (lvl, procentsToNextLevel) = widgetsManager.getUserLevel(watchedTopics)
-        let name = NewsCategory(rawValue: category)!.displayName
         return .init(
-            category: name,
+            category: category.displayName,
             level: lvl,
             procentsToNextLevel: procentsToNextLevel,
             lastViewedTitle: .empty
@@ -105,63 +124,6 @@ extension SettingsViewModel {
         vibrateManager.vibrate(style)
     }
 
-    // swiftlint: disable cyclomatic_complexity
-    public func applySettings(_ key: String) {
-        switch key {
-        case let name
-        where NewsCategory.allCases.contains(where: { $0.rawValue == name }):
-            guard name != category else {
-                notificationOccurred(.error)
-                return
-            }
-            category = name
-
-        case let name
-        where SoundTheme.allCases.contains(where: { $0.rawValue == name }):
-            guard name != soundTheme else {
-                notificationOccurred(.error)
-                return
-            }
-            soundTheme = name
-            notificationOccurred(.success)
-
-        case let name
-        where LoaderConfiguration.allCases.contains(where: {
-            $0.rawValue == name
-        }):
-            guard name != loader else {
-                notificationOccurred(.error)
-                return
-            }
-            loader = name
-            notificationOccurred(.success)
-
-        case let name
-        where AppIconConfiguration.allCases.contains(where: {
-            $0.rawValue == name
-        }):
-            guard name != appIcon else {
-                notificationOccurred(.error)
-                return
-            }
-            appIcon = name
-            notificationOccurred(.success)
-
-        case let name
-        where AppLanguage.allCases.contains(where: { $0.rawValue == name }):
-            guard name != language else {
-                notificationOccurred(.error)
-                return
-            }
-            language = name
-            notificationOccurred(.success)
-
-        default:
-            break
-        }
-    }
-    // swiftlint: enable cyclomatic_complexity
-
     public func notificationOccurred(
         _ feedBackType: UINotificationFeedbackGenerator.FeedbackType
     ) {
@@ -188,11 +150,9 @@ extension SettingsViewModel {
 extension SettingsViewModel {
     /// sound theme can change - do it during every app launch and sound changing
     fileprivate func configureNotifications() {
-        let notificationSound =
-            (SoundTheme(rawValue: soundTheme)?.notificationSound).orEmpty
         Task {
             await notificationManager.configureNotifications(
-                with: notificationSound
+                with: soundTheme.notificationSound
             )
         }
     }

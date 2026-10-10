@@ -24,11 +24,7 @@ struct MainView: View {
 
     var body: some View {
         content
-            .environment(
-                \.locale,
-                Locale(
-                    identifier: savedSettings.first?.language ?? DefaultSettings.language)
-            )
+            .environment(\.locale, Locale(identifier: viewModel.language.rawValue))
     }
 }
 
@@ -126,7 +122,7 @@ extension TopicsList {
             ToolbarItem(placement: .principal) {
                 HorStack(spacing: 16) {
                     Text(">>")
-                    DesignedText(NewsCategory.init(rawValue: viewModel.category)!.displayName)
+                    DesignedText(viewModel.category.displayName)
                     Spacer()
                 }
                 .font(.title)

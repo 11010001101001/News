@@ -8,13 +8,10 @@
 import CoreKit
 import Foundation
 import LocalizationKit
+import SwiftData
 
-public enum NewsCategory: String, CaseIterable, Identifiable {
+public enum NewsCategory: String, CaseIterable, Identifiable, Sendable, Codable {
     public var id: Self { self }
-
-    static var random: String {
-        allCases.randomElement()?.rawValue ?? .empty
-    }
 
     case business
     case entertainment

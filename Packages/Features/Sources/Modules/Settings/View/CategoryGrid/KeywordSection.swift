@@ -21,7 +21,7 @@ struct KeywordSection: View {
                 .textCase(.uppercase)
 
             HorStack(spacing: 8) {
-                Image(systemName: "magnifyingglass")
+                Image(systemName: SFSymbols.magnifyingGlass.rawValue)
                     .foregroundStyle(.tertiary)
 
                 TextField(Strings.keywordPlaceHolder, text: $viewModel.keyword)
@@ -33,9 +33,9 @@ struct KeywordSection: View {
 
                 if !viewModel.keyword.isEmpty {
                     Button(action: {
-                        viewModel.keyword = ""
+                        viewModel.keyword = String.empty
                     }, label: {
-                        Image(systemName: "xmark.circle.fill")
+                        Image(systemName: SFSymbols.xmarkCircleFill.rawValue)
                             .foregroundStyle(.tertiary)
                     })
                 }

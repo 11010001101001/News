@@ -30,11 +30,11 @@ struct LanguageCard: View {
 extension LanguageCard {
     fileprivate var menu: some View {
         Menu {
-            ForEach(viewModel.availableLanguages) { language in
+            ForEach(AppLanguage.allCases) { language in
                 Button {
-                    viewModel.applySettings(language.rawValue)
+                    viewModel.language = language
                 } label: {
-                    if viewModel.language == language.rawValue {
+                    if viewModel.language == language {
                         Label(
                             "\(language.flag)  \(language.title)",
                             systemImage: "checkmark"
@@ -46,9 +46,9 @@ extension LanguageCard {
             }
         } label: {
             HorStack(spacing: 6) {
-                Text(viewModel.currentLanguageItem.flag)
+                Text(viewModel.language.flag)
                     .font(.callout)
-                Text(viewModel.currentLanguageItem.title)
+                Text(viewModel.language.title)
                     .font(.callout)
                 Image(systemName: "chevron.up.chevron.down")
                     .font(.caption2)
