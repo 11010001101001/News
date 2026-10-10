@@ -38,45 +38,14 @@ public protocol SettingsManagerProtocol: Sendable {
 @MainActor
 @Observable
 final class SettingsManager: SettingsManagerProtocol {
-    var category: NewsCategory {
-        get { savedSettings?.category ?? .business }
-        set { savedSettings?.category = newValue }
-    }
-
-    var soundTheme: SoundTheme {
-        get { savedSettings?.soundTheme ?? .silentMode }
-        set { savedSettings?.soundTheme = newValue }
-    }
-
-    var loader: LoaderConfiguration {
-        get { savedSettings?.loader ?? .hourGlass }
-        set { savedSettings?.loader = newValue }
-    }
-
-    var appIcon: AppIconConfiguration {
-        get { savedSettings?.appIcon ?? .globe }
-        set { savedSettings?.appIcon = newValue }
-    }
-
-    var language: AppLanguage {
-        get { savedSettings?.language ?? .english }
-        set { savedSettings?.language = newValue }
-    }
-
-    var keyword: String {
-        get { savedSettings?.keyword ?? .empty }
-        set { savedSettings?.keyword = newValue }
-    }
-
-    var watchedTopics: Set<String> {
-        get { savedSettings?.watchedTopics ?? [] }
-        set { savedSettings?.watchedTopics = newValue }
-    }
-
-    var favoriteTopics: [Article] {
-        get { savedSettings?.favoriteTopics ?? [] }
-        set { savedSettings?.favoriteTopics = newValue }
-    }
+    private(set) var category = NewsCategory.business
+    private(set) var soundTheme = SoundTheme.silentMode
+    private(set) var loader = LoaderConfiguration.hourGlass
+    private(set) var appIcon = AppIconConfiguration.globe
+    private(set) var language = AppLanguage.english
+    private(set) var keyword = String.empty
+    private(set) var watchedTopics = Set<String>()
+    private(set) var favoriteTopics = [Article]()
 
     @ObservationIgnored
     private var savedSettings: SettingsModel?
@@ -89,39 +58,45 @@ final class SettingsManager: SettingsManagerProtocol {
     }
 
     func loadSettings(_ model: SettingsModel) {
-        self.savedSettings = model
-        self.category = model.category
-        self.soundTheme = model.soundTheme
-        self.loader = model.loader
-        self.appIcon = model.appIcon
-        self.language = model.language
-        self.keyword = model.keyword
-        self.watchedTopics = model.watchedTopics
-        self.favoriteTopics = rangeFavorites(model.favoriteTopics)
+        savedSettings = model
+        category = model.category
+        soundTheme = model.soundTheme
+        loader = model.loader
+        appIcon = model.appIcon
+        language = model.language
+        keyword = model.keyword
+        watchedTopics = model.watchedTopics
+        favoriteTopics = rangeFavorites(model.favoriteTopics)
     }
 
     func save(category: NewsCategory) {
+        savedSettings?.category = category
         self.category = category
     }
 
     func save(appIcon: AppIconConfiguration) {
+        savedSettings?.appIcon = appIcon
         self.appIcon = appIcon
         UIApplication.shared.setAlternateIconName(appIcon.iconName)
     }
 
     func save(soundTheme: SoundTheme) {
+        savedSettings?.soundTheme = soundTheme
         self.soundTheme = soundTheme
     }
 
     func save(loader: LoaderConfiguration) {
+        savedSettings?.loader = loader
         self.loader = loader
     }
 
     func save(language: AppLanguage) {
+        savedSettings?.language = language
         self.language = language
     }
 
     func save(watchedTopics: Set<String>) {
+        savedSettings?.watchedTopics = watchedTopics
         self.watchedTopics = watchedTopics
         if let savedSettings {
             self.favoriteTopics = rangeFavorites(savedSettings.favoriteTopics)
@@ -129,6 +104,7 @@ final class SettingsManager: SettingsManagerProtocol {
     }
 
     func save(favorites: [Article]) {
+        savedSettings?.favoriteTopics = favorites
         self.favoriteTopics = favorites
         if let savedSettings {
             self.favoriteTopics = rangeFavorites(savedSettings.favoriteTopics)
@@ -136,6 +112,7 @@ final class SettingsManager: SettingsManagerProtocol {
     }
 
     func save(keyword: String) {
+        savedSettings?.keyword = keyword
         self.keyword = keyword
     }
 

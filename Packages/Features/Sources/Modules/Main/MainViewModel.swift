@@ -14,39 +14,21 @@ import DesignSystem
 
 @Observable
 @MainActor
-public final class MainViewModel {
+final class MainViewModel {
     // MARK: Internal variables
-    public var loadingState = LoadingStateModel.loading
-    public var news = [Article]()
-    public var settingsShortcutItemTapped = false
-    public var shareShortcutItemTapped = false
+    var loadingState = LoadingStateModel.loading
+    var news = [Article]()
+    var settingsShortcutItemTapped = false
+    var shareShortcutItemTapped = false
 
     var loader: LoaderConfiguration {
         get { settingsManager.loader }
         set { settingsManager.save(loader: newValue) }
     }
 
-    var soundTheme: SoundTheme {
-        get { settingsManager.soundTheme }
-        set {
-            settingsManager.save(soundTheme: newValue)
-            configureNotifications()
-        }
-    }
-
     var category: NewsCategory {
         get { settingsManager.category }
         set { settingsManager.save(category: newValue) }
-    }
-
-    var appIcon: AppIconConfiguration {
-        get { settingsManager.appIcon }
-        set { settingsManager.save(appIcon: newValue) }
-    }
-
-    var watchedTopics: Set<String> {
-        get { settingsManager.watchedTopics }
-        set { settingsManager.save(watchedTopics: newValue) }
     }
 
     var language: AppLanguage {
@@ -79,6 +61,19 @@ public final class MainViewModel {
     }
 
     // MARK: Private variables
+    private var soundTheme: SoundTheme {
+        get { settingsManager.soundTheme }
+        set {
+            settingsManager.save(soundTheme: newValue)
+            configureNotifications()
+        }
+    }
+
+    private var watchedTopics: Set<String> {
+        get { settingsManager.watchedTopics }
+        set { settingsManager.save(watchedTopics: newValue) }
+    }
+
     private let soundManager: SoundManagerProtocol
     private let vibrateManager: VibrateManagerProtocol
     private let notificationManager: NotificationManagerProtocol
@@ -114,6 +109,11 @@ public final class MainViewModel {
 extension MainViewModel {
     func loadSettings(_ model: SettingsModel) {
         settingsManager.loadSettings(model)
+        self.loader = model.loader
+        self.soundTheme = model.soundTheme
+        self.category = model.category
+        self.watchedTopics = model.watchedTopics
+        self.language = model.language
     }
 
     public func loadNews(isRefresh: Bool = false) {
