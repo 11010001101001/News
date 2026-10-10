@@ -76,9 +76,10 @@ extension MainView {
             let defaultModel = SettingsModel()
             modelContext.insert(defaultModel)
             try? modelContext.save()
-            viewModel.loadSettings([defaultModel])
+            viewModel.loadSettings(defaultModel)
         } else {
-            viewModel.loadSettings(savedSettings)
+            guard let first = savedSettings.first else { return }
+            viewModel.loadSettings(first)
         }
     }
 

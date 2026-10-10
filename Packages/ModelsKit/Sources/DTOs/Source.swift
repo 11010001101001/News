@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Source: Decodable, Equatable, Hashable, Sendable {
+public struct Source: Codable, Equatable, Hashable, Sendable {
     public var id: String?
     public var name: String?
 }

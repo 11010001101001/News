@@ -24,7 +24,7 @@ public struct PlasmaSelectionModifier: ViewModifier {
                     .scaleEffect(y: isAnimating ? 1.0 : 0.2, anchor: .bottom)
                     .opacity(isAnimating ? 1 : 0)
             }
-            .onAppear {
+            .onChange(of: isSelected, initial: true) {
                 withAnimation(.snappy(duration: 0.25, extraBounce: 0.15)) {
                     isAnimating = isSelected
                 }
@@ -32,7 +32,7 @@ public struct PlasmaSelectionModifier: ViewModifier {
     }
 
     private var timelineView: some View {
-        TimelineView(.animation) { context in
+        TimelineView(.animation(paused: !isSelected)) { context in
             let time = Float(
                 context.date.timeIntervalSince1970.truncatingRemainder(dividingBy: 1000)
             )

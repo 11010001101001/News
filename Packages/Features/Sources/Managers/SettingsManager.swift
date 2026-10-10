@@ -18,7 +18,7 @@ public protocol SettingsManagerProtocol: Sendable {
     var appIcon: AppIconConfiguration { get }
     var language: AppLanguage { get }
     var watchedTopics: Set<String> { get }
-    var favoriteTopics: [FavoriteArticle] { get }
+    var favoriteTopics: [Article] { get }
     var keyword: String { get }
     var isDefaultSettings: Bool { get }
 
@@ -28,106 +28,128 @@ public protocol SettingsManagerProtocol: Sendable {
     func save(appIcon: AppIconConfiguration)
     func save(language: AppLanguage)
     func save(watchedTopics: Set<String>)
-    func save(favorites: [FavoriteArticle])
+    func save(favorites: [Article])
     func save(keyword: String)
     func save(lastViewedTitle: String)
 
-    func loadSettings(_ settings: [SettingsModel])
+    func loadSettings(_ model: SettingsModel)
 }
 
 @MainActor
 @Observable
 final class SettingsManager: SettingsManagerProtocol {
-    var category = NewsCategory.business
-    var soundTheme = SoundTheme.silentMode
-    var loader = LoaderConfiguration.hourGlass
-    var appIcon = AppIconConfiguration.globe
-    var language = AppLanguage.english
-    var keyword: String = ""
-    var watchedTopics: Set<String> = []
-    var favoriteTopics: [FavoriteArticle] = []
+    var category: NewsCategory {
+        get { savedSettings?.category ?? .business }
+        set { savedSettings?.category = newValue }
+    }
+
+    var soundTheme: SoundTheme {
+        get { savedSettings?.soundTheme ?? .silentMode }
+        set { savedSettings?.soundTheme = newValue }
+    }
+
+    var loader: LoaderConfiguration {
+        get { savedSettings?.loader ?? .hourGlass }
+        set { savedSettings?.loader = newValue }
+    }
+
+    var appIcon: AppIconConfiguration {
+        get { savedSettings?.appIcon ?? .globe }
+        set { savedSettings?.appIcon = newValue }
+    }
+
+    var language: AppLanguage {
+        get { savedSettings?.language ?? .english }
+        set { savedSettings?.language = newValue }
+    }
+
+    var keyword: String {
+        get { savedSettings?.keyword ?? .empty }
+        set { savedSettings?.keyword = newValue }
+    }
+
+    var watchedTopics: Set<String> {
+        get { savedSettings?.watchedTopics ?? [] }
+        set { savedSettings?.watchedTopics = newValue }
+    }
+
+    var favoriteTopics: [Article] {
+        get { savedSettings?.favoriteTopics ?? [] }
+        set { savedSettings?.favoriteTopics = newValue }
+    }
 
     @ObservationIgnored
-    private var savedSettings: [SettingsModel]?
+    private var savedSettings: SettingsModel?
 
     var isDefaultSettings: Bool {
         category == .business
             && soundTheme == .silentMode
             && loader == .hourGlass
-        && appIcon == .globe
+            && appIcon == .globe
     }
 
-    func loadSettings(_ settings: [SettingsModel]) {
-        self.savedSettings = settings
-        if let model = settings.first {
-            self.category = model.category
-            self.soundTheme = model.soundTheme
-            self.loader = model.loader
-            self.appIcon = model.appIcon
-            self.language = model.language
-            self.keyword = model.keyword
-            self.watchedTopics = model.watchedTopics
-            self.favoriteTopics = computeFavorites(model.favoriteTopics)
-        }
+    func loadSettings(_ model: SettingsModel) {
+        self.savedSettings = model
+        self.category = model.category
+        self.soundTheme = model.soundTheme
+        self.loader = model.loader
+        self.appIcon = model.appIcon
+        self.language = model.language
+        self.keyword = model.keyword
+        self.watchedTopics = model.watchedTopics
+        self.favoriteTopics = rangeFavorites(model.favoriteTopics)
     }
 
     func save(category: NewsCategory) {
         self.category = category
-        savedSettings?.first?.category = category
     }
 
     func save(appIcon: AppIconConfiguration) {
         self.appIcon = appIcon
-        savedSettings?.first?.appIcon = appIcon
         UIApplication.shared.setAlternateIconName(appIcon.iconName)
     }
 
     func save(soundTheme: SoundTheme) {
         self.soundTheme = soundTheme
-        savedSettings?.first?.soundTheme = soundTheme
     }
 
     func save(loader: LoaderConfiguration) {
         self.loader = loader
-        savedSettings?.first?.loader = loader
     }
 
     func save(language: AppLanguage) {
         self.language = language
-        savedSettings?.first?.language = language
     }
 
     func save(watchedTopics: Set<String>) {
         self.watchedTopics = watchedTopics
-        savedSettings?.first?.watchedTopics = watchedTopics
-        if let model = savedSettings?.first {
-            self.favoriteTopics = computeFavorites(model.favoriteTopics)
+        if let savedSettings {
+            self.favoriteTopics = rangeFavorites(savedSettings.favoriteTopics)
         }
     }
 
-    func save(favorites: [FavoriteArticle]) {
-        savedSettings?.first?.favoriteTopics = favorites
-        if let model = savedSettings?.first {
-            self.favoriteTopics = computeFavorites(model.favoriteTopics)
+    func save(favorites: [Article]) {
+        self.favoriteTopics = favorites
+        if let savedSettings {
+            self.favoriteTopics = rangeFavorites(savedSettings.favoriteTopics)
         }
     }
 
     func save(keyword: String) {
         self.keyword = keyword
-        savedSettings?.first?.keyword = keyword
     }
 
     func save(lastViewedTitle: String) {
-        savedSettings?.first?.lastViewedTitle = lastViewedTitle
+        savedSettings?.lastViewedTitle = lastViewedTitle
     }
 
-    private func computeFavorites(_ favorites: [FavoriteArticle]) -> [FavoriteArticle] {
-        var read = [FavoriteArticle]()
-        var notRead = [FavoriteArticle]()
+    private func rangeFavorites(_ favorites: [Article]) -> [Article] {
+        var read = [Article]()
+        var notRead = [Article]()
+        let watchedTopics = self.watchedTopics
 
         favorites.forEach {
-            let key = ($0.url).or(($0.title).orEmpty)
-            let isRead = watchedTopics.contains(key)
+            let isRead = watchedTopics.contains($0.key)
             if isRead {
                 read.append($0)
             } else {

@@ -26,7 +26,7 @@ final class DetailsViewModel {
         set { settingsManager.save(watchedTopics: newValue) }
     }
 
-    var favoriteTopics: [FavoriteArticle] {
+    var favoriteTopics: [Article] {
         get { settingsManager.favoriteTopics }
         set { settingsManager.save(favorites: newValue) }
     }
@@ -64,7 +64,7 @@ final class DetailsViewModel {
     }
 
     var isFavorite: Bool {
-        favoriteTopics.contains(article.favorite)
+        favoriteTopics.contains(article)
     }
 
     var favoriteIcon: String {
@@ -167,9 +167,9 @@ extension DetailsViewModel {
         impactOccured(.light)
 
         if isFavorite {
-            favoriteTopics.removeAll(where: { $0 == article.favorite })
+            favoriteTopics.removeAll(where: { $0 == article })
         } else {
-            favoriteTopics.append(article.favorite)
+            favoriteTopics.append(article)
         }
     }
 

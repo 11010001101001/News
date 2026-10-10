@@ -112,8 +112,8 @@ public final class MainViewModel {
 
 // MARK: - Public
 extension MainViewModel {
-    func loadSettings(_ settings: [SettingsModel]) {
-        settingsManager.loadSettings(settings)
+    func loadSettings(_ model: SettingsModel) {
+        settingsManager.loadSettings(model)
     }
 
     public func loadNews(isRefresh: Bool = false) {

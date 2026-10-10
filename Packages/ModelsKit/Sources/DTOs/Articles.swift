@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Article: Decodable, Equatable, Hashable, Sendable {
+public struct Article: Equatable, Hashable, Sendable, Codable {
     public var key: String {
         let saltNumber = 10
         let title = self.title.orEmpty.prefix(saltNumber)
@@ -27,30 +27,8 @@ public struct Article: Decodable, Equatable, Hashable, Sendable {
     public var content: String?
 }
 
-// MARK: - FavoriteArticle
-public extension Article {
-    var favorite: FavoriteArticle {
-        .init(
-            source: .init(id: source?.id, name: source?.name),
-            author: author,
-            title: title,
-            articleDescription: description,
-            url: url,
-            urlToImage: urlToImage,
-            publishedAt: publishedAt,
-            content: content
-        )
-    }
-}
-
-public extension Optional where Wrapped == [Article] {
-    var orEmpty: [Article] {
-        self ?? []
-    }
-}
-
-public extension Optional where Wrapped == [FavoriteArticle] {
-    var orEmpty: [FavoriteArticle] {
+extension Optional where Wrapped == [Article] {
+    public var orEmpty: [Article] {
         self ?? []
     }
 }

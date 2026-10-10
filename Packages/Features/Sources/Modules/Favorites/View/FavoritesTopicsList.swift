@@ -29,7 +29,7 @@ extension FavoritesTopicsList {
         ConditionalView(!viewModel.favoriteTopics.isEmpty) {
             VerStack {
                 ForEach(viewModel.favoriteTopics, id: \.self) { article in
-                    ModuleBuilder.shared.build(.details(article.article))
+                    ModuleBuilder.shared.build(.details(article))
                 }
             }
         }

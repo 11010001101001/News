@@ -53,7 +53,7 @@ private final class MockSettingsManager: SettingsManagerProtocol, @unchecked Sen
     var appIcon: String = DefaultSettings.appIcon
     var language: String = DefaultSettings.language
     var watchedTopics: Set<String> = []
-    var favoriteTopics: [FavoriteArticle] = []
+    var favoriteTopics: [Article] = []
     var keyword: String = ""
     var lastViewedTitle: String = ""
 
@@ -63,7 +63,7 @@ private final class MockSettingsManager: SettingsManagerProtocol, @unchecked Sen
     func save(appIcon: String) { self.appIcon = appIcon }
     func save(language: String) { self.language = language }
     func save(watchedTopics: Set<String>) { self.watchedTopics = watchedTopics }
-    func save(favorites: [FavoriteArticle]) { self.favoriteTopics = favorites }
+    func save(favorites: [Article]) { self.favoriteTopics = favorites }
     func save(keyword: String) { self.keyword = keyword }
     func save(lastViewedTitle: String) { self.lastViewedTitle = lastViewedTitle }
     func loadSettings(_ settings: [SettingsModel]) {}

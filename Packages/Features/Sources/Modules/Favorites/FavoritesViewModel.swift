@@ -6,7 +6,7 @@ import ModelsKit
 @MainActor
 final class FavoritesViewModel {
     // MARK: Internal variables
-    var favoriteTopics: [FavoriteArticle] {
+    var favoriteTopics: [Article] {
         get { settingsManager.favoriteTopics }
         set { settingsManager.save(favorites: newValue) }
     }

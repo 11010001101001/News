@@ -8,28 +8,28 @@
 import Foundation
 import SwiftUI
 
-public extension View {
+extension View {
     /// more glassy
-    func glassClearInteractive() -> some View {
+    public func glassClearInteractive() -> some View {
         self
             .glassEffect(
                 .clear.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
     }
 
     /// less glassy
-    func glassRegularInteractive() -> some View {
+    public func glassRegularInteractive() -> some View {
         self
             .glassEffect(
                 .regular.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
     }
 
-    func glassEffectRegular() -> some View {
+    public func glassEffectRegular() -> some View {
         self
             .glassEffect(.regular)
     }
 
     @ViewBuilder
-    func applyOrNotSettingsModifier(
+    public func applyOrNotSettingsModifier(
         isEnabled: Bool,
         execute: @escaping () -> Void
     ) -> some View {
@@ -41,19 +41,12 @@ public extension View {
     }
 
     @ViewBuilder
-    func markAsReadOrHighlight(
+    public func markAsReadOrHighlight(
         isRead: Bool,
         isShadowEnabled: Bool
     ) -> some View {
-        let opacity = isRead ? 0.5 : 1.0
-
-        switch (isRead, isShadowEnabled) {
-        case (false, false):
-            self
-        case (true, false), (true, true):
-            self.opacity(opacity)
-        case (false, true):
-            self.modifier(PlasmaSelectionModifier(isSelected: isShadowEnabled))
-        }
+        self
+            .modifier(PlasmaSelectionModifier(isSelected: isShadowEnabled && !isRead))
+            .opacity(isRead ? 0.5 : 1.0)
     }
 }

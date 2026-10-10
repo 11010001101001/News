@@ -15,14 +15,6 @@ struct DetailsView: View {
 
     var body: some View {
         content
-            .scrollTransition(
-                topLeading: .identity,
-                bottomTrailing: .interactive,
-                transition: { content, phase in
-                    content
-                        .blur(radius: phase.isIdentity ? 0 : 1)
-                }
-            )
             .onTapGesture {
                 viewModel.impactOccured(.light)
                 withAnimation(.spring(response: 0.2, dampingFraction: 0.7)) {

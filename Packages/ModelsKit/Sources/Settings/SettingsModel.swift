@@ -15,7 +15,7 @@ public final class SettingsModel {
     public var loader = LoaderConfiguration.hourGlass
     public var appIcon = AppIconConfiguration.globe
     public var watchedTopics = Set<String>()
-    public var favoriteTopics = [FavoriteArticle]()
+    public var favoriteTopics = [Article]()
     public var keyword = String.empty
     public var language = AppLanguage.english
     public var lastViewedTitle = String.dots
