@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  HideSystemGrabberModifier.swift
 //  Features
 //
 //  Created by Slava on 25.09.2026.

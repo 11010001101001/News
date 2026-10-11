@@ -28,6 +28,11 @@ extension View {
             .glassEffect(.regular)
     }
 
+    public func glassEffectClear() -> some View {
+        self
+            .glassEffect(.clear)
+    }
+
     @ViewBuilder
     public func applyOrNotSettingsModifier(
         isEnabled: Bool,

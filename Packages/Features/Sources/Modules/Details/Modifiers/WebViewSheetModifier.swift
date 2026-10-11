@@ -83,6 +83,7 @@ extension WebViewSheetModifier {
             .tint(.white)
             .animation(.smooth, value: webViewModel.estimatedProgress)
             .opacity(webViewModel.estimatedProgress <= 0.85 ? 1 : 0)
+            .shadow(color: webViewModel.estimatedProgress > 0 ? .white : .clear, radius: 2, y: 2)
     }
 
     fileprivate var scrollProgressView: some View {
@@ -90,6 +91,11 @@ extension WebViewSheetModifier {
             .frame(width: 60, height: 5)
             .tint(.blue)
             .animation(.smooth, value: webViewModel.scrollProgress)
+            .shadow(color: webViewModel.scrollProgress > 0 ? .blue : .clear, radius: 2, y: 2)
+            .sensoryFeedback(trigger: webViewModel.scrollProgress >= 0.98) { _, reached in
+                reached ? .impact(flexibility: .solid, intensity: 0.7) : nil
+
+            }
     }
 
     fileprivate var grabber: some View {
@@ -97,6 +103,12 @@ extension WebViewSheetModifier {
             scrollProgressView
             estimatedProgressView
         }
-        .glassEffectRegular()
+        .padding(8)
+        .glassEffectClear()
+        .scaleEffect(webViewModel.scrollProgress >= 0.98 ? 1.1 : 1)
+        .animation(
+            .spring(duration: 0.2).repeatCount(1, autoreverses: true),
+            value: webViewModel.scrollProgress >= 0.98
+        )
     }
 }
