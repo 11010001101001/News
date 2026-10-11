@@ -22,6 +22,8 @@ struct SoundCard: View {
             DesignedText(soundTheme.displayName)
                 .font(.callout)
                 .multilineTextAlignment(.center)
+                .padding(.horizontal, Constants.padding)
+                .lineLimit(1)
         }
         .frame(height: 100)
         .frame(maxWidth: .infinity)

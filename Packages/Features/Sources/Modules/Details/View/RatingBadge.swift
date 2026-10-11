@@ -18,28 +18,30 @@ struct RatingBadge: View {
             loader
         } else {
             state
-                .transition(.blurReplace.combined(with: .opacity))
+                .transition(.blurReplace)
         }
     }
 
     var loader: some View {
         HorStack {
-            Circle()
-                .fill(rating.color)
-                .frame(width: 8, height: 8)
-                .shadow(color: rating.color.opacity(0.8), radius: 4)
-                .scaleEffect(isPulsing ? 1.2 : 0.85)
-                .opacity(isPulsing ? 1.0 : 0.5)
-                .onAppear {
-                    withAnimation(
-                        .easeInOut(duration: 1.0)
-                            .repeatForever(autoreverses: true)
-                    ) {
-                        isPulsing = true
-                    }
-                }
+            TimelineView(.animation(minimumInterval: 1.2)) { context in
+                Circle()
+                    .fill(rating.color)
+                    .frame(width: 7, height: 7)
+                    .shadow(
+                        color: rating.color,
+                        radius: CGFloat.random(in: 3.0...8.0),
+                        x: CGFloat.random(in: -3.0...3.0),
+                        y: CGFloat.random(in: -3.0...3.0)
+                    )
+                    .scaleEffect(CGFloat.random(in: 0.7...1.3))
+                    .animation(.easeInOut(duration: 1.2), value: context.date)
+            }
+
             Spacer()
         }
+        .padding(.leading, 10)
+        .padding(.top, 1.5)
     }
 
     var state: some View {

@@ -36,3 +36,10 @@ struct NewsWidgetsLiveActivity: Widget {
         }
     }
 }
+
+#Preview(
+    as: .dynamicIsland(.minimal),
+    using: NewsWidgetsAttributes(),
+    widget: { NewsWidgetsLiveActivity() },
+    contentStates: { NewsWidgetsAttributes.ContentState(level: .newbie, procents: 10) }
+)

@@ -15,6 +15,7 @@ struct MinimalView: View {
     var body: some View {
         Text(level.image)
             .font(.caption)
-            .shadow(color: level.color, radius: 5)
+            .shadow(color: level.color, radius: 10)
+            .padding(.leading, 1)
     }
 }

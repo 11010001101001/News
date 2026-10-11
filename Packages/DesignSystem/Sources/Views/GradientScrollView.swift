@@ -15,25 +15,22 @@ public struct GradientScrollView<T: View>: View {
     }
 
     public var body: some View {
-        ZStack {
-            ScrollView {
-                content()
-            }
+        ScrollView {
+            content()
+        }
+        .overlay(alignment: .bottom) {
             gradient
+                .ignoresSafeArea(edges: .bottom)
         }
     }
 
     private var gradient: some View {
-        VerStack {
-            Spacer()
-            LinearGradient(
-                gradient: Gradient(colors: [.clear, .black]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .frame(height: Constants.gradientHeight)
-        }
-        .ignoresSafeArea()
+        LinearGradient(
+            gradient: Gradient(colors: [.clear, .black]),
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .frame(height: Constants.gradientHeight)
         .allowsHitTesting(false)
     }
 }

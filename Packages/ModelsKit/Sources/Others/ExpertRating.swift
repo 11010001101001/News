@@ -11,7 +11,7 @@ public enum Rating: String, Sendable {
     case cool = "COOL"
     case whoCares = "WHO CARES"
     case sucks = "SUCKS"
-    case loading
+    case loading = "LOADING"
     case error = "ERROR"
     case cooling = "COOLING"
     case lowPower = "LOW POWER"
