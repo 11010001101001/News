@@ -30,7 +30,7 @@ struct NewsWidgetsLiveActivity: Widget {
                     TrailingView(level: context.state.level)
                 },
                 minimal: {
-                    TrailingView(level: context.state.level)
+                    MinimalView(level: context.state.level)
                 }
             )
         }
