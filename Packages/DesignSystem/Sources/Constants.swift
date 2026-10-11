@@ -15,5 +15,4 @@ public enum Constants {
     public static let imageHeight: CGFloat = 300
     public static let detailsButtonsSpacing: CGFloat = 8
     public static let gradientHeight: CGFloat = 50
-    public static let loaderCardSize: CGSize = .init(width: 250, height: 200)
 }

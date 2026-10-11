@@ -18,6 +18,7 @@ actor ExpertManager: ExpertManagerProtocol {
     private let engine = Engine()
     private let thermalManager: ThermalManagerProtocol
     private let powerManager: PowerManagerProtocol
+    private var isLoaded = false
 
     init(
         thermalManager: ThermalManagerProtocol,
@@ -25,13 +26,15 @@ actor ExpertManager: ExpertManagerProtocol {
     ) {
         self.thermalManager = thermalManager
         self.powerManager = powerManager
-        engine.loadModel()
     }
 
     func generateOpinion(from text: String) -> Rating {
         guard !Task.isCancelled else { return .error }
         guard !powerManager.isLowPower else { return .lowPower }
         guard !thermalManager.isOverheated else { return .cooling }
+
+        if !isLoaded { isLoaded = engine.loadModel() }
+        guard isLoaded else { return .modelNotLoaded }
 
         let systemPrompt = String(localized: Strings.expertPrompt)
 

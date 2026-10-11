@@ -17,7 +17,6 @@ public class Engine {
 
     public init() {}
 
-    @discardableResult
     public func loadModel() -> Bool {
         guard let modelPath else { return false }
         let cppPath = std.string(modelPath)

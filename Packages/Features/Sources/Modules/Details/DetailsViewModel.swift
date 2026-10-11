@@ -188,8 +188,7 @@ extension DetailsViewModel {
         let result = await expertManager.generateOpinion(from: description)
 
         guard !Task.isCancelled else { return .error }
-        guard result != .cooling else { return .cooling }
-        guard result != .lowPower else { return .lowPower }
+        guard !Rating.transientRatings.contains(result) else { return result }
 
         cacheManager.save(object: CacheWrapper(data: result), key: key)
         return result

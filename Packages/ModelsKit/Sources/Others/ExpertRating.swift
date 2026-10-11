@@ -12,9 +12,10 @@ public enum Rating: String, Sendable {
     case whoCares = "WHO CARES"
     case sucks = "SUCKS"
     case loading
-    case error = "🖕"
+    case error = "ERROR"
     case cooling = "COOLING"
     case lowPower = "LOW POWER"
+    case modelNotLoaded = "MODEL NOT LOADED"
 
     public var iconName: String {
         switch self {
@@ -25,6 +26,7 @@ public enum Rating: String, Sendable {
         case .error: "slash.circle"
         case .cooling: "snowflake"
         case .lowPower: "battery.25"
+        case .modelNotLoaded: "exclamationmark.triangle"
         }
     }
 
@@ -37,10 +39,15 @@ public enum Rating: String, Sendable {
         case .error: .gray
         case .cooling: .cyan
         case .lowPower: .yellow
+        case .modelNotLoaded: .indigo
         }
     }
 
-    public static var validRatings: [Rating] {
+    public static var validRatings: Set<Rating> {
         [.cool, .whoCares, .sucks]
+    }
+
+    public static var transientRatings: Set<Rating> {
+        [.cooling, .lowPower, .modelNotLoaded]
     }
 }

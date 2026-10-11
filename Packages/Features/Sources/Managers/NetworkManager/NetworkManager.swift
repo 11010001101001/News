@@ -13,44 +13,53 @@ public protocol NetworkManagerProtocol: Sendable {
     func loadNews(category: String) async throws -> [Article]
 }
 
-actor NetworkManager: NetworkManagerProtocol {
+final class NetworkManager: NetworkManagerProtocol {
     func loadNews(category: String) async throws -> [Article] {
+        let url = try makeURL(category: category)
+        let (data, response) = try await fetch(url)
+        try validate(response)
+        return try decode(data).articles.orEmpty
+    }
+}
+
+private extension NetworkManager {
+    func makeURL(category: String) throws -> URL {
         guard let url = URL(string: Mode.category(category).urlString) else {
             throw ApiError.mappingError(msg: Strings.errorsMapping)
         }
+        return url
+    }
 
-        let (data, response): (Data, URLResponse)
+    func fetch(_ url: URL) async throws -> (Data, URLResponse) {
         do {
-            (data, response) = try await URLSession.shared.data(from: url)
-        } catch let urlError as URLError {
-            if urlError.code == .notConnectedToInternet {
-                throw ApiError.noConnection(msg: Strings.errorsNoConnection)
-            } else {
-                let errStr =
-                    "\(Errors.mappingError)/ errorCode:\(urlError.errorCode)/ code:\(urlError.code)"
-                throw ApiError.mappingError(
-                    msg: "\(errStr)/ loc.description:\(urlError.localizedDescription)"
-                )
-            }
+            return try await URLSession.shared.data(from: url)
+        } catch let error as URLError where error.code == .cancelled {
+            throw CancellationError()
+        } catch let error as URLError where error.code == .notConnectedToInternet {
+            throw ApiError.noConnection(msg: Strings.errorsNoConnection)
+        } catch let error as URLError {
+            let info = "errorCode:\(error.errorCode)/ code:\(error.code)/ loc.description:\(error.localizedDescription)"
+            let error = "\(Errors.mappingError)/ \(info)"
+            throw ApiError.mappingError(msg: .init(stringLiteral: error))
         } catch {
             throw ApiError.mappingError(msg: Strings.errorsMapping)
         }
+    }
 
-        guard let httpResponse = response as? HTTPURLResponse else {
+    func validate(_ response: URLResponse) throws {
+        guard let http = response as? HTTPURLResponse else {
             throw ApiError.mappingError(msg: Strings.errorsMapping)
         }
-
-        let statusCode = httpResponse.statusCode
-
-        guard statusCode == HttpStatusCodes.ok.rawValue else {
-            let message = HttpStatusCodes(rawValue: statusCode)?.message ?? Strings.errorsUnhandled
+        guard http.statusCode == HttpStatusCodes.ok.rawValue else {
+            let message = HttpStatusCodes(rawValue: http.statusCode)?.message ?? Strings.errorsUnhandled
             throw ApiError.definite(msg: message)
         }
+    }
 
+    func decode(_ data: Data) throws -> CommonInfo {
         guard let model = try? JSONDecoder().decode(CommonInfo.self, from: data) else {
             throw ApiError.mappingError(msg: Strings.errorsMapping)
         }
-
-        return model.articles.orEmpty
+        return model
     }
 }
