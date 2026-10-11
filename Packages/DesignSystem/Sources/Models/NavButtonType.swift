@@ -24,16 +24,17 @@ public enum NavButtonType {
     }
 
     public var imageName: String {
-        switch self {
+        let name: SFSymbols = switch self {
         case .settings(let isDefault):
-            isDefault ? SFSymbols.gearshape.rawValue : SFSymbols.gearshapeFill.rawValue
+            isDefault ? .gearshape : .gearshapeFill
         case .markAsRead(let isAllRead):
-            isAllRead ? SFSymbols.checkmarkSealFill.rawValue : SFSymbols.checkmarkSeal.rawValue
-        case .close: SFSymbols.chevronDown.rawValue
+            isAllRead ? .checkmarkSealFill : .checkmarkSeal
+        case .close: .chevronDown
         case .favorites(let hasFavorites):
-            hasFavorites ? SFSymbols.heartFill.rawValue : SFSymbols.heart.rawValue
+            hasFavorites ? .heartFill : .heart
         case .removeFavorites(let hasFavorites):
-            hasFavorites ? SFSymbols.trashFill.rawValue : SFSymbols.trash.rawValue
+            hasFavorites ? .trashFill : .trash
         }
+        return name.rawValue
     }
 }

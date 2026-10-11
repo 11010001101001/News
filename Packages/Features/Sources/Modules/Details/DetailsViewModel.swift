@@ -17,8 +17,7 @@ import SwiftUI
 final class DetailsViewModel {
     // MARK: Public variables
     var loader: LoaderConfiguration {
-        get { settingsManager.loader }
-        set { settingsManager.save(loader: newValue) }
+        settingsManager.loader
     }
 
     var watchedTopics: Set<String> {

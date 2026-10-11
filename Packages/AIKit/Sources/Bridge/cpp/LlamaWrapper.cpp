@@ -21,9 +21,8 @@ LocalLLM::~LocalLLM() {
 }
 
 // Thread starvation -> Glitches resolved by n_gpu_layers = 0;
-// Battery drain & heating resolved by caching in DetailsViewModel, limiting
-// cores & gpu_layers number to 1, setting QOS_CLASS_BACKGROUND and
-// std::this_thread::sleep_for(std::chrono::milliseconds(6));
+// Battery drain & heating reduced by caching in DetailsViewModel & limiting cores number &
+// std::this_thread::sleep_for(std::chrono::milliseconds(15));
 bool LocalLLM::loadModel(const std::string &path, int ctxSize) {
     auto mparams = llama_model_default_params();
     mparams.n_gpu_layers = 0;

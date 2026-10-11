@@ -35,9 +35,3 @@ public struct AnswerNegative: ViewModifier {
             }
     }
 }
-
-#Preview {
-    Circle()
-        .frame(width: 100, height: 100, alignment: .center)
-        .modifier(AnswerNegative(execute: {}))
-}
