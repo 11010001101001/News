@@ -37,7 +37,7 @@ extension LanguageCard {
                     if viewModel.language == language {
                         Label(
                             "\(language.flag)  \(language.title)",
-                            systemImage: "checkmark"
+                            systemImage: SFSymbols.checkmark.rawValue
                         )
                     } else {
                         Text("\(language.flag)  \(language.title)")
@@ -50,7 +50,7 @@ extension LanguageCard {
                     .font(.callout)
                 Text(viewModel.language.title)
                     .font(.callout)
-                Image(systemName: "chevron.up.chevron.down")
+                Image(systemName: SFSymbols.chevronUpChevronDown.rawValue)
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }

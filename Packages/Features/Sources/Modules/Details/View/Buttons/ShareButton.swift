@@ -14,16 +14,17 @@ import LocalizationKit
 
 struct ShareButton: View {
     @State var imageWrapper: ContentWrapper?
-    let viewModel: DetailsViewModel
+    let action: () -> Void
+    let urlString: String
     let isGlass: Bool
 
     var body: some View {
         CustomButton(
             action: {
-                viewModel.impactOccured(.light)
+                action()
 
                 self.imageWrapper = ContentWrapper(
-                    link: (URL(string: viewModel.url)?.absoluteString).orEmpty,
+                    link: (URL(string: urlString)?.absoluteString).orEmpty,
                     description: DeveloperInfo.shareInfo
                 )
             },

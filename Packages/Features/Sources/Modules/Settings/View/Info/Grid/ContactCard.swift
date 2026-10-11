@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 import DesignSystem
-import ModelsKit
+import CoreKit
 import LocalizationKit
 
 struct ContactCard: View {

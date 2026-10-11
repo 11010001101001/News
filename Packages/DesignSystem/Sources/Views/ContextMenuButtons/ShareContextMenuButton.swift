@@ -8,22 +8,26 @@
 import Foundation
 import SwiftUI
 import CoreKit
-import ModelsKit
-import DesignSystem
 import LocalizationKit
 
-struct ShareContextMenuButton: View {
+public struct ShareContextMenuButton: View {
     @Binding var imageWrapper: ContentWrapper?
+    private let action: () -> Void
+    private let urlString: String
 
-    let viewModel: DetailsViewModel
+    public init(imageWrapper: Binding<ContentWrapper?>, action: @escaping () -> Void, urlString: String) {
+        self._imageWrapper = imageWrapper
+        self.action = action
+        self.urlString = urlString
+    }
 
-    var body: some View {
+    public var body: some View {
         CustomButton(
             action: {
-                viewModel.impactOccured(.light)
+                action()
 
                 imageWrapper = ContentWrapper(
-                    link: (URL(string: viewModel.url)?.absoluteString).orEmpty,
+                    link: (URL(string: urlString)?.absoluteString).orEmpty,
                     description: DeveloperInfo.shareInfo
                 )
             },

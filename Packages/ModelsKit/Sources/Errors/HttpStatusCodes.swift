@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import LocalizationKit
 
 public enum HttpStatusCodes: Int {
     case badRequest = 400
@@ -19,7 +20,7 @@ public enum HttpStatusCodes: Int {
     public var message: LocalizedStringResource {
         switch self {
         case .ok:
-            "OK"
+            Strings.ok
         case .badRequest:
             Errors.badRequest.localizedDescription
         case .internalServerError:

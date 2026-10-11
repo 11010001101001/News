@@ -12,9 +12,9 @@ public struct Article: Equatable, Hashable, Sendable, Codable {
         let saltNumber = 10
         let title = self.title.orEmpty.prefix(saltNumber)
         let description = self.description.orEmpty.prefix(saltNumber)
-        let url = self.url.orEmpty.prefix(saltNumber)
+        let url = self.url.orEmpty
         let date = self.publishedAt.orEmpty.prefix(saltNumber)
-        return String(title + description + url + date)
+        return title + description + url + date
     }
 
     public var source: Source?

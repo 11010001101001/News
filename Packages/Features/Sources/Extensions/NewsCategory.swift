@@ -15,7 +15,7 @@ extension NewsCategory {
 
     public var image: SFSymbols {
         switch self {
-        case .business: .brainFilledHeadProfile
+        case .business: .briefcase
         case .entertainment: .play
         case .general: .listClipboard
         case .health: .boltHeart

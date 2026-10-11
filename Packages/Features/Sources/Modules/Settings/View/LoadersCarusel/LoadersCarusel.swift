@@ -41,19 +41,7 @@ struct LoadersCarusel: View {
                     Spacer()
                 }
             }
-            .background(
-                Circle()
-                    .fill(activeColor)
-                    .frame(width: 250, height: 250)
-                    .blur(radius: 60)
-                    .opacity(isPulsing ? 0.45 : 0.25)
-                    .scaleEffect(isPulsing ? 1.05 : 0.95)
-                    .onAppear {
-                        withAnimation(.easeInOut(duration: 3.0).repeatForever(autoreverses: true)) {
-                            isPulsing = true
-                        }
-                    }
-            )
+            .background(backgroundView)
             .scrollPosition(id: $scrolledID)
             .sensoryFeedback(.selection, trigger: scrolledID)
             .scrollIndicators(.hidden)
@@ -70,5 +58,19 @@ struct LoadersCarusel: View {
                 }
             }
         }
+    }
+
+    private var backgroundView: some View {
+        Circle()
+            .fill(activeColor)
+            .frame(width: 250, height: 250)
+            .blur(radius: 60)
+            .opacity(isPulsing ? 0.45 : 0.25)
+            .scaleEffect(isPulsing ? 1.05 : 0.95)
+            .onAppear {
+                withAnimation(.easeInOut(duration: 3.0).repeatForever(autoreverses: true)) {
+                    isPulsing = true
+                }
+            }
     }
 }

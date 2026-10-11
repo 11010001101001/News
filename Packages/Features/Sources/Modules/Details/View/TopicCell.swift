@@ -61,18 +61,31 @@ extension TopicCell {
     }
 
     fileprivate var favoriteButton: some View {
-        FavoritesButton(
-            viewModel: viewModel,
-            isGlass: false,
-            title: nil
+        CustomButton(
+            action: { viewModel.toggleFavorite() },
+            title: nil,
+            iconName: viewModel.favoriteIcon,
+            isGlass: false
         )
     }
 
     @ViewBuilder
     fileprivate var contextMenu: some View {
-        FavoritesContextMenuButton(viewModel: viewModel)
-        ShareContextMenuButton(imageWrapper: $imageWrapper, viewModel: viewModel)
-        MarkAsReadContextMenuButton(viewModel: viewModel)
-        CopyContextMenuButton(viewModel: viewModel)
+        FavoritesContextMenuButton(
+            action: { viewModel.toggleFavorite() },
+            title: viewModel.favoritesContextMenuTitle,
+            iconName: viewModel.favoriteIcon
+        )
+        ShareContextMenuButton(
+            imageWrapper: $imageWrapper,
+            action: { viewModel.impactOccured(.light) },
+            urlString: viewModel.url
+        )
+        MarkAsReadContextMenuButton(
+            action: { viewModel.markAsReadOrUnread() },
+            title: viewModel.isReadTitle,
+            iconName: viewModel.isReadIcon
+        )
+        CopyContextMenuButton(action: { viewModel.copyDescription() })
     }
 }

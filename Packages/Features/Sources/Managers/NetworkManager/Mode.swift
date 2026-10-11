@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import ModelsKit
 import DesignSystem
+import CoreKit
 
 public enum Mode {
     case keyword(_: String)

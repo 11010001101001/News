@@ -28,7 +28,7 @@ struct LinkButton: View {
         )
         .modifier(
             WebViewSheetModifier(
-                viewModel: viewModel,
+                loaderName: viewModel.loader.rawValue,
                 webViewPresented: $webViewPresented,
                 url: viewModel.url
             )

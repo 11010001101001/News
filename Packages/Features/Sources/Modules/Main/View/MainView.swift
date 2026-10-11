@@ -5,12 +5,12 @@
 //  Created by Ярослав Куприянов on 04.10.2025.
 //
 
+import CoreKit
+import DesignSystem
+import ModelsKit
 import SwiftData
 import SwiftUI
 import TipKit
-import CoreKit
-import ModelsKit
-import DesignSystem
 
 struct MainView: View {
     @Environment(\.scenePhase) var phase
@@ -121,12 +121,7 @@ extension TopicsList {
             }
 
             ToolbarItem(placement: .principal) {
-                HorStack(spacing: 16) {
-                    Text(">>")
-                    DesignedText(viewModel.category.displayName)
-                    Spacer()
-                }
-                .font(.title)
+                Image(systemName: viewModel.category.image.rawValue)
             }
 
             ToolbarItem(placement: .topBarTrailing) {

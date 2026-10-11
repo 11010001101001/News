@@ -41,7 +41,7 @@ extension TopicDetail {
         }
         .padding(.all, Constants.padding)
         .glassClearInteractive()
-        .contextMenu { CopyContextMenuButton(viewModel: viewModel) }
+        .contextMenu { CopyContextMenuButton(action: { viewModel.copyDescription() }) }
     }
 
     fileprivate var buttons: some View {
@@ -58,7 +58,8 @@ extension TopicDetail {
 
     fileprivate var shareButton: some View {
         ShareButton(
-            viewModel: viewModel,
+            action: { viewModel.impactOccured(.light) },
+            urlString: viewModel.url,
             isGlass: false
         )
     }
@@ -68,10 +69,11 @@ extension TopicDetail {
     }
 
     fileprivate var favoriteButton: some View {
-        FavoritesButton(
-            viewModel: viewModel,
-            isGlass: false,
-            title: nil
+        CustomButton(
+            action: { viewModel.toggleFavorite() },
+            title: nil,
+            iconName: viewModel.favoriteIcon,
+            isGlass: false
         )
     }
 }

@@ -7,15 +7,18 @@
 
 import Foundation
 import SwiftUI
-import DesignSystem
 import LocalizationKit
 
-struct CopyContextMenuButton: View {
-    let viewModel: DetailsViewModel
+public struct CopyContextMenuButton: View {
+    private let action: () -> Void
 
-    var body: some View {
+    public init(action: @escaping () -> Void) {
+        self.action = action
+    }
+
+    public var body: some View {
         CustomButton(
-            action: { viewModel.copyDescription() },
+            action: action,
             title: Strings.contextMenuCopy,
             iconName: SFSymbols.documentOnDocument.rawValue,
             isGlass: false

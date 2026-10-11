@@ -9,6 +9,9 @@ import SwiftUI
 
 public enum SFSymbols: String {
     case heart
+    case checkmark
+    case briefcase
+    case chevronUpChevronDown = "chevron.up.chevron.down"
     case sparkles = "sparkles"
     case heartFill = "heart.fill"
     case starFill = "star.fill"

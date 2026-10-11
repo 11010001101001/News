@@ -14,18 +14,16 @@ import SwiftUI
 struct HeroCard: View {
     let entry: Entry
 
-    @State private var isRulesExpanded = false
-
     var body: some View {
         VerStack {
             LevelView(entry: entry)
             progressLine
-            rules
+            RulesView(entry: entry)
         }
         .glassClearInteractive()
     }
 
-    var progressLine: some View {
+    fileprivate var progressLine: some View {
         VerStack(spacing: 8) {
             HorStack {
                 Text(entry.isMaxLevel ? Strings.widgetsMaxLevel : Strings.widgetsProgress)
@@ -49,57 +47,5 @@ struct HeroCard: View {
             .black.opacity(0.25), in: RoundedRectangle(cornerRadius: 16, style: .continuous)
         )
         .padding(.horizontal, Constants.padding)
-    }
-
-    var rules: some View {
-        HorStack {
-            VerStack(spacing: 16) {
-                Button(
-                    action: {
-                        withAnimation(.snappy(duration: 0.25, extraBounce: 0.15)) {
-                            isRulesExpanded.toggle()
-                        }
-                    },
-                    label: {
-                        HorStack(spacing: 4) {
-                            DesignedText(Strings.infoRules)
-                                .font(.caption)
-                            Image(systemName: SFSymbols.chevronDown.rawValue)
-                                .rotationEffect(.degrees(isRulesExpanded ? 180 : 0))
-                        }
-                        .tint(.secondary)
-                    })
-
-                ConditionalView(isRulesExpanded) {
-                    DesignedText(Strings.widgetsInstuction)
-                        .font(.callout)
-                    buildDescription(level: .techNinja)
-                    buildDescription(level: .insider)
-                    buildDescription(level: .observer)
-                    buildDescription(level: .newbie)
-                }
-            }
-            Spacer()
-        }
-        .padding(Constants.padding)
-        .background(
-            .black.opacity(0.25), in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-        )
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-    }
-
-    fileprivate func buildDescription(level: Level) -> some View {
-        VerStack(spacing: 8) {
-            HorStack {
-                DesignedText(.init(stringLiteral: level.image + .spacer))
-                DesignedText(level.name)
-            }
-            .font(.callout)
-            .shadow(color: entry.level == level ? level.color : .clear, radius: 7)
-
-            DesignedText(Strings.widgetsRange(level.range))
-                .font(.callout)
-        }
     }
 }

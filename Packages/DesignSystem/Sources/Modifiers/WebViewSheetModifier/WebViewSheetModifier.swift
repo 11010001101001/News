@@ -5,27 +5,26 @@
 //  Created by Yaroslav Kupriyanov on 11.02.2025.
 //
 
-import DesignSystem
 import LocalizationKit
 import SwiftUI
 
-struct WebViewSheetModifier: ViewModifier {
-    @Bindable private var viewModel: DetailsViewModel
+public struct WebViewSheetModifier: ViewModifier {
+    private let loaderName: String
     @Binding private var webViewPresented: Bool
 
     private let webViewModel = WebViewModel()
 
-    init(
-        viewModel: DetailsViewModel,
+    public init(
+        loaderName: String,
         webViewPresented: Binding<Bool>,
         url: String
     ) {
-        self.viewModel = viewModel
+        self.loaderName = loaderName
         _webViewPresented = webViewPresented
         webViewModel.url = URL(string: url)
     }
 
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .sheet(isPresented: $webViewPresented) {
                 buildCoverContents()
@@ -61,7 +60,7 @@ extension WebViewSheetModifier {
 // MARK: - Views
 extension WebViewSheetModifier {
     fileprivate var loader: some View {
-        Loader(name: viewModel.loader.rawValue)
+        Loader(name: loaderName)
             .frame(height: Constants.imageHeight)
             .opacity(webViewModel.loadingState.loaderOpacity)
     }
@@ -94,7 +93,6 @@ extension WebViewSheetModifier {
             .shadow(color: webViewModel.scrollProgress > 0 ? .blue : .clear, radius: 2, y: 2)
             .sensoryFeedback(trigger: webViewModel.scrollProgress >= 0.98) { _, reached in
                 reached ? .impact(flexibility: .solid, intensity: 0.7) : nil
-
             }
     }
 

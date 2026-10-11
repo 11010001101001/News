@@ -27,11 +27,7 @@ struct TopicsList: View {
             .padding(.top, Constants.padding)
         }
         .safeAreaInset(edge: .top) {
-            ConditionalView(viewModel.isOverheated) {
-                ThermalBannerView()
-                    .padding(.top, 8)
-                    .transition(.move(edge: .top).combined(with: .opacity))
-            }
+            thermalBanner
         }
         .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.isOverheated)
         .refreshable {
@@ -60,5 +56,13 @@ extension TopicsList {
         }
         .frame(maxWidth: .infinity)
         .containerRelativeFrame(.vertical)
+    }
+
+    fileprivate var thermalBanner: some View {
+        ConditionalView(viewModel.isOverheated) {
+            ThermalBannerView()
+                .padding(.top, 8)
+                .transition(.move(edge: .top).combined(with: .opacity))
+        }
     }
 }

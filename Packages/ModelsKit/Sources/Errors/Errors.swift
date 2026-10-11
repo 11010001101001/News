@@ -8,18 +8,6 @@
 import Foundation
 import LocalizationKit
 
-public enum ApiError: LocalizedError {
-    case invalidRequest(msg: LocalizedStringResource)
-    case tooManyRequests(msg: LocalizedStringResource)
-    case internalServerError(msg: LocalizedStringResource)
-    case notFound(msg: LocalizedStringResource)
-    case badRequest(msg: LocalizedStringResource)
-    case mappingError(msg: LocalizedStringResource)
-    case undefined(msg: LocalizedStringResource)
-    case noConnection(msg: LocalizedStringResource)
-    case definite(msg: LocalizedStringResource)
-}
-
 public enum Errors {
     case topicLabelNoInfo
     case badRequest
