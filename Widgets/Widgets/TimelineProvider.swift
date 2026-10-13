@@ -11,6 +11,7 @@ import WidgetKit
 import ModelsKit
 import CoreKit
 import LocalizationKit
+import Features
 
 struct Provider: TimelineProvider {
     let container = try? ModelContainer(

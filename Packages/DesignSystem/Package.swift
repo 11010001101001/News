@@ -25,7 +25,6 @@ let package = Package(
                 .product(name: "CoreKit", package: "CoreKit")
             ],
             resources: [
-                .process("LottieJsons"),
                 .process("Assets.xcassets"),
                 .process("Sounds")
             ],

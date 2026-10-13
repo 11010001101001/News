@@ -9,17 +9,17 @@ import LocalizationKit
 import SwiftUI
 
 public struct WebViewSheetModifier: ViewModifier {
-    private let loaderName: String
+    private let loaderType: ShaderLoaderType
     @Binding private var webViewPresented: Bool
 
     private let webViewModel = WebViewModel()
 
     public init(
-        loaderName: String,
+        loaderType: ShaderLoaderType,
         webViewPresented: Binding<Bool>,
         url: String
     ) {
-        self.loaderName = loaderName
+        self.loaderType = loaderType
         _webViewPresented = webViewPresented
         webViewModel.url = URL(string: url)
     }
@@ -60,8 +60,7 @@ extension WebViewSheetModifier {
 // MARK: - Views
 extension WebViewSheetModifier {
     fileprivate var loader: some View {
-        Loader(name: loaderName)
-            .frame(height: Constants.imageHeight)
+        ShaderLoader(type: loaderType)
             .opacity(webViewModel.loadingState.loaderOpacity)
     }
 

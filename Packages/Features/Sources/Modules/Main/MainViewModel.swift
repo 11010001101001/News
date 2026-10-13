@@ -21,7 +21,7 @@ final class MainViewModel {
     var settingsShortcutItemTapped = false
     var shareShortcutItemTapped = false
 
-    var loader: LoaderConfiguration {
+    var loader: ShaderLoaderType {
         get { settingsManager.loader }
         set { settingsManager.save(loader: newValue) }
     }

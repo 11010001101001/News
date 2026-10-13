@@ -16,7 +16,7 @@ import SwiftUI
 @MainActor
 final class DetailsViewModel {
     // MARK: Public variables
-    var loader: LoaderConfiguration {
+    var loader: ShaderLoaderType {
         settingsManager.loader
     }
 

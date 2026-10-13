@@ -21,8 +21,8 @@ struct CachedAsyncImage: View {
         buildCachedAsyncImage()
             .onAppear {
                 cachedImage = viewModel.getCachedImage()
+                viewModel.markAsRead()
             }
-            .onAppear { viewModel.markAsRead() }
     }
 }
 
@@ -43,14 +43,12 @@ extension CachedAsyncImage {
                     ErrorView(title: Strings.errorsImageLoadingError, action: nil)
                         .transition(.opacity)
                 } else {
-                    loader
+                    ShaderLoader(type: viewModel.loader)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 170)
                 }
             }
         }
-    }
-
-    fileprivate var loader: some View {
-        Loader(name: viewModel.loader.rawValue)
     }
 }
 

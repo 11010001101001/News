@@ -15,7 +15,7 @@ import DesignSystem
 @Observable
 @MainActor
 public final class SettingsViewModel {
-    var loader: LoaderConfiguration {
+    var loader: ShaderLoaderType {
         get { settingsManager.loader }
         set {
             guard newValue != loader else {

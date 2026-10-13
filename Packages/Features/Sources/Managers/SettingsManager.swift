@@ -14,7 +14,7 @@ import SwiftUI
 public protocol SettingsManagerProtocol: Sendable {
     var category: NewsCategory { get }
     var soundTheme: SoundTheme { get }
-    var loader: LoaderConfiguration { get }
+    var loader: ShaderLoaderType { get }
     var appIcon: AppIconConfiguration { get }
     var language: AppLanguage { get }
     var watchedTopics: Set<String> { get }
@@ -24,7 +24,7 @@ public protocol SettingsManagerProtocol: Sendable {
 
     func save(category: NewsCategory)
     func save(soundTheme: SoundTheme)
-    func save(loader: LoaderConfiguration)
+    func save(loader: ShaderLoaderType)
     func save(appIcon: AppIconConfiguration)
     func save(language: AppLanguage)
     func save(watchedTopics: Set<String>)
@@ -40,7 +40,7 @@ public protocol SettingsManagerProtocol: Sendable {
 final class SettingsManager: SettingsManagerProtocol {
     private(set) var category = NewsCategory.business
     private(set) var soundTheme = SoundTheme.silentMode
-    private(set) var loader = LoaderConfiguration.hourGlass
+    private(set) var loader = ShaderLoaderType.auroraBorealis
     private(set) var appIcon = AppIconConfiguration.globe
     private(set) var language = AppLanguage.english
     private(set) var keyword = String.empty
@@ -53,7 +53,7 @@ final class SettingsManager: SettingsManagerProtocol {
     var isDefaultSettings: Bool {
         category == .business
             && soundTheme == .silentMode
-            && loader == .hourGlass
+            && loader == .auroraBorealis
             && appIcon == .globe
     }
 
@@ -85,7 +85,7 @@ final class SettingsManager: SettingsManagerProtocol {
         self.soundTheme = soundTheme
     }
 
-    func save(loader: LoaderConfiguration) {
+    func save(loader: ShaderLoaderType) {
         savedSettings?.loader = loader
         self.loader = loader
     }

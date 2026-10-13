@@ -12,8 +12,8 @@ import SwiftUI
 struct LoadersCarusel: View {
     let viewModel: SettingsViewModel
 
-    @State private var scrolledID: LoaderConfiguration? = .rocket
-    @State private var activeColor: Color = LoaderConfiguration.rocket.shadowColor
+    @State private var scrolledID: ShaderLoaderType? = .auroraBorealis
+    @State private var activeColor: Color = ShaderLoaderType.auroraBorealis.shadowColor
     @State private var isPulsing = false
 
     var body: some View {
@@ -25,7 +25,7 @@ struct LoadersCarusel: View {
                 VerStack {
                     Spacer()
                     HorStack(spacing: Constants.padding * 2) {
-                        ForEach(LoaderConfiguration.allCases) { loader in
+                        ForEach(ShaderLoaderType.allCases) { loader in
                             LoaderCard(viewModel: viewModel, loader: loader)
                                 .frame(width: cardSize.width, height: cardSize.height)
                         }
@@ -48,7 +48,7 @@ struct LoadersCarusel: View {
             .scrollTargetBehavior(.viewAligned)
             .onChange(of: scrolledID) {
                 guard let scrolledID,
-                    let currentLoader = LoaderConfiguration.allCases.first(where: {
+                    let currentLoader = ShaderLoaderType.allCases.first(where: {
                         $0.id == scrolledID
                     })
                 else { return }

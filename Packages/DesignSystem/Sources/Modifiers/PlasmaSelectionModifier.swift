@@ -8,7 +8,6 @@
 import SwiftUI
 
 public struct PlasmaSelectionModifier: ViewModifier {
-    private let packageShaders = ShaderLibrary.bundle(.module)
     private let isSelected: Bool
 
     @State private var isAnimating = false
@@ -41,7 +40,7 @@ public struct PlasmaSelectionModifier: ViewModifier {
                 .fill(.black.opacity(0.01))
                 .visualEffect { viewContent, proxy in
                     viewContent.layerEffect(
-                        packageShaders.liquidGlassLens(
+                        ShaderLibrary.designSystem.liquidGlassLens(
                             .float(time),
                             .float2(proxy.size),
                             .float(Constants.cornerRadius)

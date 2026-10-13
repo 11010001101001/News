@@ -48,14 +48,10 @@ extension TopicsList {
     }
 
     fileprivate var loader: some View {
-        VerStack(alignment: .center) {
-            Spacer()
-            Loader(name: viewModel.loader.rawValue)
+        ShaderLoader(type: viewModel.loader)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            Spacer()
-        }
-        .frame(maxWidth: .infinity)
-        .containerRelativeFrame(.vertical)
+            .frame(maxWidth: .infinity)
+            .containerRelativeFrame(.vertical)
     }
 
     fileprivate var thermalBanner: some View {

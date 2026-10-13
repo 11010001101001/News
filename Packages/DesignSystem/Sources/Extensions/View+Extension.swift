@@ -9,14 +9,12 @@ import Foundation
 import SwiftUI
 
 extension View {
-    /// more glassy
     public func glassClearInteractive() -> some View {
         self
             .glassEffect(
                 .clear.interactive(), in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
     }
 
-    /// less glassy
     public func glassRegularInteractive() -> some View {
         self
             .glassEffect(
@@ -25,12 +23,12 @@ extension View {
 
     public func glassEffectRegular() -> some View {
         self
-            .glassEffect(.regular)
+            .glassEffect(.regular, in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
     }
 
     public func glassEffectClear() -> some View {
         self
-            .glassEffect(.clear)
+            .glassEffect(.regular, in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
     }
 
     @ViewBuilder

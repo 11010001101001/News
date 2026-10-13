@@ -16,7 +16,7 @@ struct SettingsView: View {
 
     var body: some View {
         TabView {
-            Tab(Strings.loaderTitle, systemImage: LoaderConfiguration.tabImage) {
+            Tab(Strings.loaderTitle, systemImage: ShaderLoaderType.tabImage) {
                 LoadersCarusel(viewModel: viewModel)
             }
 
