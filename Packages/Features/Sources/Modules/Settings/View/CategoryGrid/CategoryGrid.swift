@@ -11,7 +11,7 @@ import DesignSystem
 import ModelsKit
 
 struct CategoryGrid: View {
-    @Bindable var viewModel: SettingsViewModel
+    let viewModel: SettingsViewModel
 
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
 

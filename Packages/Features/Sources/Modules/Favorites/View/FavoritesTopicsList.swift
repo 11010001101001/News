@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 struct FavoritesTopicsList: View {
-    @Bindable var viewModel: FavoritesViewModel
+    let viewModel: FavoritesViewModel
 
     var body: some View {
         GradientScrollView {

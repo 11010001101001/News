@@ -10,12 +10,26 @@ import ModelsKit
 import SwiftUI
 
 struct RatingBadge: View {
-    let rating: Rating
-    @State private var isPulsing = false
+    let viewModel: DetailsViewModel
+
+    @State private var rating: Rating = .loading
 
     var body: some View {
+        content
+            .frame(height: 16)
+            .task(id: viewModel.isThrottled) {
+                let rating = await viewModel.generateOpinion()
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.58)) {
+                    self.rating = rating
+                }
+            }
+    }
+
+    @ViewBuilder
+    var content: some View {
         if rating == .loading {
             loader
+                .transition(.blurReplace)
         } else {
             state
                 .transition(.blurReplace)

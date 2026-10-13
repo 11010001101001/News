@@ -12,7 +12,7 @@ import ModelsKit
 import DesignSystem
 
 struct InfoView: View {
-    @Bindable var viewModel: SettingsViewModel
+    let viewModel: SettingsViewModel
 
     var body: some View {
         ScrollView {

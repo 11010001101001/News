@@ -3,7 +3,7 @@ import LocalizationKit
 import SwiftUI
 
 struct TopicsList: View {
-    @Bindable var viewModel: MainViewModel
+    let viewModel: MainViewModel
 
     var body: some View {
         GradientScrollView {

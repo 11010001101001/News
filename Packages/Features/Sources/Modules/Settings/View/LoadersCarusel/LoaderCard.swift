@@ -11,7 +11,7 @@ import ModelsKit
 import SwiftUI
 
 struct LoaderCard: View {
-    @Bindable var viewModel: SettingsViewModel
+    let viewModel: SettingsViewModel
 
     let loader: LoaderConfiguration
 

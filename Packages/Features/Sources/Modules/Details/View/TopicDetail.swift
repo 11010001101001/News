@@ -12,8 +12,7 @@ import SwiftUI
 import UIKit
 
 struct TopicDetail: View {
-    @Bindable var viewModel: DetailsViewModel
-    @State private var rating = Rating.loading
+    let viewModel: DetailsViewModel
 
     var body: some View {
         VerStack(spacing: Constants.padding) {
@@ -25,10 +24,6 @@ struct TopicDetail: View {
         }
         .padding(.bottom, Constants.padding)
         .padding(.horizontal, Constants.padding / 2)
-        .animation(.spring(response: 0.4, dampingFraction: 0.58), value: rating)
-        .task(id: viewModel.isThrottled) {
-            self.rating = await viewModel.generateOpinion()
-        }
     }
 }
 
@@ -46,7 +41,7 @@ extension TopicDetail {
 
     fileprivate var buttons: some View {
         HorStack(spacing: Constants.detailsButtonsSpacing) {
-            RatingBadge(rating: rating)
+            RatingBadge(viewModel: viewModel)
             Spacer()
             shareButton
             Divider()

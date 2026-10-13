@@ -13,7 +13,7 @@ import CoreKit
 import LocalizationKit
 
 struct CachedAsyncImage: View {
-    @Bindable var viewModel: DetailsViewModel
+    let viewModel: DetailsViewModel
 
     @State private var cachedImage: Image?
 

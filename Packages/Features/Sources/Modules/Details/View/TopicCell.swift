@@ -12,7 +12,7 @@ import DesignSystem
 import LocalizationKit
 
 struct TopicCell: View {
-    @Bindable var viewModel: DetailsViewModel
+    let viewModel: DetailsViewModel
     @State var imageWrapper: ContentWrapper?
 
     var body: some View {

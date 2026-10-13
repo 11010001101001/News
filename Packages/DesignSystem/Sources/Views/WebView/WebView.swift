@@ -10,7 +10,7 @@ import SwiftUI
 import WebKit
 
 public struct WebView: UIViewRepresentable {
-    @Bindable var viewModel: WebViewModel
+    let viewModel: WebViewModel
 
     public init(viewModel: WebViewModel) {
         self.viewModel = viewModel
