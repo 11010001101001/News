@@ -13,6 +13,10 @@ import SwiftUI
 struct FavoritesEmptyView: View {
     @Environment(\.dismiss) private var dismiss
 
+    let viewModel: FavoritesViewModel
+
+    @State private var motion: CGPoint = .zero
+
     var body: some View {
         HorStack {
             Spacer()
@@ -48,6 +52,16 @@ extension FavoritesEmptyView {
             .frame(width: 170, height: 170)
             .scaledToFill()
             .padding(.horizontal)
+            .rotation3DEffect(.degrees(motion.x * 45), axis: (x: 0, y: 1, z: 0))
+            .rotation3DEffect(.degrees(motion.y * 45), axis: (x: 1, y: 0, z: 0))
+            .onAppear {
+                viewModel.startMotion { motion in
+                    self.motion = motion
+                }
+            }
+            .onDisappear {
+                viewModel.stopMotion()
+            }
     }
 
     fileprivate var reloadButton: some View {

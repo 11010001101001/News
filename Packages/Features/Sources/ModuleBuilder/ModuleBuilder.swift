@@ -17,6 +17,7 @@ public struct ModuleBuilder {
     private let expertManager: ExpertManagerProtocol
     private let thermalManager: ThermalManagerProtocol = ThermalManager()
     private let powerManager: PowerManagerProtocol = PowerManager()
+    private let motionManager: MotionManagerProtocol = MotionManager()
 
     init() {
         self.expertManager = ExpertManager(
@@ -65,7 +66,8 @@ public struct ModuleBuilder {
 
         case .favorites:
             let viewModel = FavoritesViewModel(
-                settingsManager: settingsManager
+                settingsManager: settingsManager,
+                motionManager: motionManager
             )
             FavoritesView(viewModel: viewModel)
         }

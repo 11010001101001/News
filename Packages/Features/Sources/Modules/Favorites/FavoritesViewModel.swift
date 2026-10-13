@@ -13,12 +13,15 @@ final class FavoritesViewModel {
 
     // MARK: Private variables
     private let settingsManager: SettingsManagerProtocol
+    private let motionManager: MotionManagerProtocol
 
     // MARK: Init
     init(
-        settingsManager: SettingsManagerProtocol
+        settingsManager: SettingsManagerProtocol,
+        motionManager: MotionManagerProtocol
     ) {
         self.settingsManager = settingsManager
+        self.motionManager = motionManager
     }
 }
 
@@ -30,5 +33,13 @@ extension FavoritesViewModel {
 
     func removeFavorites() {
         favoriteTopics.removeAll()
+    }
+
+    func startMotion(completion: @escaping (CGPoint) -> Void) {
+        motionManager.start(completion: completion)
+    }
+
+    func stopMotion() {
+        motionManager.stop()
     }
 }

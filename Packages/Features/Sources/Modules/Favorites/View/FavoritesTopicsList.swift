@@ -37,7 +37,7 @@ extension FavoritesTopicsList {
 
     fileprivate var emptyView: some View {
         ConditionalView(viewModel.favoriteTopics.isEmpty) {
-            FavoritesEmptyView()
+            FavoritesEmptyView(viewModel: viewModel)
         }
     }
 }
