@@ -69,10 +69,10 @@ extension RulesView {
         VerStack(spacing: 8) {
             HorStack {
                 DesignedText(.init(stringLiteral: level.image + .spacer))
+                    .shadow(color: entry.level == level ? level.color : .clear, radius: 3)
                 DesignedText(level.name)
             }
             .font(.callout)
-            .shadow(color: entry.level == level ? level.color : .clear, radius: 7)
 
             DesignedText(Strings.widgetsRange(level.range))
                 .font(.callout)
