@@ -38,7 +38,7 @@ The codebase is fully decoupled into 6 isolated local Swift Packages (`Packages/
             ▼                            ▼    ▼                            ▼
 ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐
 │      AIKit       │  │   DesignSystem   │  │     CoreKit      │  │    ModelsKit     │
-│(C++ LLM Engine)  │  │ (Glass, Lottie)  │  │(Network, Caching)│  │ (SwiftData, DTO) │
+│(C++ LLM Engine)  │  │ (Glass, Metal)   │  │(Network, Caching)│  │ (SwiftData, DTO) │
 └────────┬─────────┘  └────────┬─────────┘  └────────┬─────────┘  └────────┬─────────┘
          │                     │                     │                     │
          └─────────────────────┴───────────┬─────────┴─────────────────────┘
@@ -57,7 +57,7 @@ The codebase is fully decoupled into 6 isolated local Swift Packages (`Packages/
 | **`LocalizationKit`** | Single source of truth for app-wide localization | Native String Catalogs (`.xcstrings`), `LocalizedStringResource`, `AccessLevelOnStringCatalogs` |
 | **`CoreKit`** | Low-level utilities, networking, and platform abstractions | `CacheManager`, `VibrateManager`, date/string extensions, UIKit wrappers |
 | **`ModelsKit`** | Domain models, DTOs, SwiftData entities, and widget schemas | SwiftData schemas, network DTOs, widget timeline entries, `Level` gamification schemas, `HttpStatusCodes` |
-| **`DesignSystem`** | Reusable UI design system, tokens, and audio assets | Metal shaders (`Shaders.metal`), Lottie animations, custom sound engine, centralized glassmorphism (`.glassCard()`), adaptive orientation modifiers |
+| **`DesignSystem`** | Reusable UI design system, tokens, and audio assets | Metal shaders (`Shaders.metal`), custom sound engine, centralized glassmorphism (`.glassCard()`), adaptive orientation modifiers |
 | **`Features`** | Feature flows, coordinators, and presentations | MVVM + `@Observable`, `ExpertManager` actor (AI analysis UI), `WidgetsManager` actor, `ThermalManager` & `PowerManager` (hardware telemetry & throttling), `ModuleBuilder` DI, structured task cancellation, context menus, custom sheet WebView |
 
 ---
@@ -83,7 +83,7 @@ The codebase is fully decoupled into 6 isolated local Swift Packages (`Packages/
 - **🔔 Local Notifications**: Scheduled local notifications via `UNUserNotificationCenter` (`UNCalendarNotificationTrigger`) with custom audio themes.
 - **🧹 Multi-Package SwiftLint**: Standardized `.swiftlint.yml` at project root covering `App/`, all 6 `Packages/`, `Widgets/`, and `Tests/`.
 - **📌 Offline Favorites & Persistence**: SwiftData storage for saved articles, read/unread history, and user preferences with App Group container support (`group.news2.0.News`).
-- **🎨 Glassmorphism & Media Personalization**: Custom glassmorphic UI (`.glassCard()`), 5 Lottie loaders (Rocket 🚀, Hourglass ⏳, Astronaut 👩‍🚀, Hamster 🐹, Kitten 🐱), 3 audio themes (*Star Wars*, *Cats*, *Silent* - modernized with iOS 27 throwing audio APIs), alternate app icons, and haptics.
+- **🎨 Glassmorphism & Media Personalization**: Custom glassmorphic UI (`.glassCard()`), 7 GPU Metal shader loaders (*Singularity*, *Quantum Orbit*, *Cyberpunk Prisma*, *Aurora Borealis*, *Holographic*, *Matrix Rain*, *Half-Life Lambda*), 3 audio themes (*Star Wars*, *Cats*, *Silent* - modernized with iOS 27 throwing audio APIs), alternate app icons, and haptics.
 - **🧩 WidgetKit Widgets**: Static & dynamic Home Screen widgets sharing state via App Groups (`group.news2.0.News`).
 
 ---
@@ -102,9 +102,9 @@ The codebase is fully decoupled into 6 isolated local Swift Packages (`Packages/
 | **Localization** | Native Apple String Catalogs (`.xcstrings`) + `LocalizedStringResource` + Runtime Switcher |
 | **Testing** | Swift Testing (`@Test` Unit Tests) + XCTest (`NewsUITests` UI Tests) |
 | **System Integrations** | ActivityKit, WidgetKit, TipKit, AVFoundation (modernized throwing audio APIs), ProcessInfo (Thermal & Power State Telemetry), UNUserNotificationCenter, ScenePhase Fast Actions |
-| **Animations & Audio** | Lottie iOS, Custom SoundEngine, Core Haptics |
+| **Animations & Audio** | Custom Metal Shaders (MSL), Custom SoundEngine, Core Haptics |
 | **Code Quality** | SwiftLint (`.swiftlint.yml`), `.swift-format` |
-| **Dependencies** | Lottie (Native SPM) |
+| **Dependencies** | Zero external SPM dependencies (Pure native Apple frameworks + Local SPM + llama.xcframework) |
 
 ---
 
@@ -120,7 +120,7 @@ News/
 │   ├── LocalizationKit/    # String Catalogs (.xcstrings), LocalizedStringResource
 │   ├── CoreKit/            # Networking, CacheManager, Utilities, Extensions
 │   ├── ModelsKit/          # Domain Entities, DTOs, SwiftData Schemas, Widget Models
-│   ├── DesignSystem/       # Glassmorphism UI, Metal Shaders, Lottie, Sounds, Tokens
+│   ├── DesignSystem/       # Glassmorphism UI, Metal Shaders, Sounds, Tokens
 │   └── Features/           # Main, Details, Favorites, Settings Modules & ViewModels
 ├── Widgets/                # WidgetKit Extension & Live Activities (ActivityKit)
 │   ├── LiveActivity/       # Dynamic Island & Lock Screen Live Activity views
